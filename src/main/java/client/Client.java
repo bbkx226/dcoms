@@ -1,5 +1,12 @@
 package client;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Scanner;
+
 import models.Food;
 import models.Order;
 import models.User;
@@ -7,13 +14,6 @@ import remote.AuthServiceRemote;
 import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
 import remote.UserServiceRemote;
-
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.List;
-import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) throws MalformedURLException, NotBoundException, RemoteException {
@@ -31,7 +31,7 @@ public class Client {
         System.out.println(authService.authenticate("kaizhe", "123").toString());
         try {
             System.out.println(authService.authenticate("wrong username", "wrong password").toString());
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             System.err.println("incorrect username / password");
         }
 
@@ -70,6 +70,7 @@ public class Client {
 
         Scanner scanner = new Scanner(System.in);
 
+        OUTER:
         while (true) {
             System.out.println("Welcome to McGee! Please select an option to get started.");
             System.out.println("1. Login");
@@ -78,35 +79,35 @@ public class Client {
             System.out.println("4. Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // consume/flush next line
-
-            if (choice == 1) {
-                System.out.println("Enter your username:");
-                String username = scanner.nextLine();
-                System.out.println("Enter your password:");
-                String password = scanner.nextLine();
-
-                User currentUser = authService.authenticate(username, password);
-                if (currentUser == null) {
-                    System.out.println("Invalid credentials. Please try again.");
-                } else {
-                    System.out.println(currentUser.getUserTypeString());
-                }
-            } else if (choice == 2) {
-                List<Food> foodList = foodService.getAllFoods();
-                for (Food food : foodList) {
-                    System.out.println(food.toString());
-                }
-                System.out.println("\nPress any key to continue...");
-                scanner.nextLine();
-            } else if (choice == 3) {
-                // username and password cannot have space( ) or underscore(_)
-                System.out.println("Registration menu");
-                break;
-            } else if (choice == 4) {
-                System.exit(1);
-            } else {
-                System.out.println("Invalid input. Please try again.");
+            scanner.nextLine();
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter your username:");
+                    String username = scanner.nextLine();
+                    System.out.println("Enter your password:");
+                    String password = scanner.nextLine();
+                    User currentUser = authService.authenticate(username, password);
+                    if (currentUser == null) {
+                        System.out.println("Invalid credentials. Please try again.");
+                    } else {
+                        System.out.println(currentUser.getUserTypeString());
+                    }   break;
+                case 2:
+                    List<Food> foodList = foodService.getAllFoods();
+                    for (Food food : foodList) {
+                        System.out.println(food.toString());
+                    }   System.out.println("\nPress any key to continue...");
+                    scanner.nextLine();
+                    break;
+                case 3:
+                    // username and password cannot have space( ) or underscore(_)
+                    System.out.println("Registration menu");
+                    break OUTER;
+                case 4:
+                    System.exit(1);
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    break;
             }
         }
 
