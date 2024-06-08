@@ -3,6 +3,7 @@ package client;
 import models.Food;
 import models.Order;
 import models.User;
+
 import remote.AuthServiceRemote;
 import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
@@ -12,10 +13,11 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+
 import java.util.List;
 
-public class Client {
-    public static void main(String[] args) throws MalformedURLException, NotBoundException, RemoteException {
+public class Test {
+    public static void test() throws MalformedURLException, NotBoundException, RemoteException {
         AuthServiceRemote authService = (AuthServiceRemote) Naming.lookup("rmi://localhost:7777/authService");
         UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
         FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
@@ -28,11 +30,11 @@ public class Client {
         System.out.println(authService.authenticate("axt", "123").toString());
         System.out.println(authService.authenticate("bran", "123").toString());
         System.out.println(authService.authenticate("kaizhe", "123").toString());
-        // try {
-        //     System.out.println(authService.authenticate("wrong username", "wrong password").toString());
-        // } catch (Exception e) {
-        //     System.err.println("incorrect username / password");
-        // }
+        try {
+            System.out.println(authService.authenticate("wrong username", "wrong password").toString());
+        } catch (Exception e) {
+            System.err.println("incorrect username / password");
+        }
 
         List<User> users = userService.getAllUsers();
         System.out.println("\nUserService testing");
@@ -66,13 +68,5 @@ public class Client {
         //TODO: test checkout function
         System.out.println("\n-------------------------------------------- End of testing section --------------------------------------------\n\n");
         // end of remote testing section
-
-        // call Login register menu
-        LoginMenu loginMenu = new LoginMenu();
-        loginMenu.loginMenu();
-
     }
-
-
-
 }

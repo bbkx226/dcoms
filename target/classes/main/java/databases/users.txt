@@ -1,0 +1,5 @@
+1,ADMIN,they,kai zhe,0123456789,tkz,123
+2,CUSTOMER,ang,xu tian,0123456789,axt,123
+3,CUSTOMER,brandon,ban kai xian,0123456789,bran,123
+4,CUSTOMER,They,Kai Zhe,123456789,kaizhe,123
+5,CUSTOMER,axt,axt,axt,dashabi,123
