@@ -1,12 +1,16 @@
 package models;
 
-public class User {
-    private int id;
-    private UserType userType;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class User implements Serializable {
+    private final int id;
+    private final UserType userType;
     private String firstName;
     private String lastName;
-    private String ICNum;
-    private String username;
+    private final String ICNum;
+    private final String username;
     private String password;
 
     public User(int id, UserType userType, String firstName, String lastName, String ICNum, String username, String password) {
@@ -20,19 +24,14 @@ public class User {
     }
 
     public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
     public UserType getUserType() { return userType; }
-    public void setUserType(UserType userType) { this.userType = userType; }
     public String getUserTypeString() { return userType.getStringValue(); }
-    public void setUserTypeString(String userTypeString) { this.userType = UserType.valueOf(userTypeString); }
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
     public String getICNum() { return ICNum; }
-    public void setICNum(String ICNum) { this.ICNum = ICNum; }
     public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 

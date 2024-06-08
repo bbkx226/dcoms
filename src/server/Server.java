@@ -1,26 +1,20 @@
 package server;
 
-import models.User;
-import remote.FoodOrderInterface;
-import utils.FileUtils;
-
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
-public class Server extends UnicastRemoteObject implements FoodOrderInterface {
-    public Server() throws RemoteException {
-        super();
-    }
+public class Server {
+    public static void main(String[] args) throws RemoteException {
+        // Create RMI registry
+        Registry reg = LocateRegistry.createRegistry(7777);
 
-    @Override
-    public boolean login(String username, String password) throws RemoteException {
-        List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
-        for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return true;
-            }
-        }
-        return false;
+        // bind objects
+        reg.rebind("authService", new AuthServiceImpl());
+        reg.rebind("userDAOService", new UserDAOImpl());
+        reg.rebind("foodDAOService", new FoodDAOImpl());
+        reg.rebind("orderService", new OrderServiceImpl());
+
+        System.out.println("Food order service is running...");
     }
 }
