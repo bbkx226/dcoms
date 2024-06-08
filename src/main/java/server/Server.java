@@ -3,18 +3,28 @@ package server;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server {
-    public static void main(String[] args) throws RemoteException {
-        // Create RMI registry
-        Registry reg = LocateRegistry.createRegistry(7777);
+    private static final int PORT = 7777;
 
-        // bind objects
-        reg.rebind("authService", new AuthServiceImpl());
-        reg.rebind("userService", new UserServiceImpl());
-        reg.rebind("foodService", new FoodServiceImpl());
-        reg.rebind("orderService", new OrderServiceImpl());
+    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
-        System.out.println("Food order service is running...");
+    public static void main(String[] args) {
+        try {
+            // Create RMI registry
+            Registry serverRegister = LocateRegistry.createRegistry(PORT);
+
+            // Bind objects to the registry
+            serverRegister.rebind("authService", new AuthServiceImpl());
+            serverRegister.rebind("userService", new UserServiceImpl());
+            serverRegister.rebind("foodService", new FoodServiceImpl());
+            serverRegister.rebind("orderService", new OrderServiceImpl());
+
+            System.out.println("Food order service is running...");
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, "Server exception: ", e);
+        }
     }
 }

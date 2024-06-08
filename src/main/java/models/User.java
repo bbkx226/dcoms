@@ -1,9 +1,8 @@
 package models;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
+// Represents a user in the system
 public class User implements Serializable {
     private final int id;
     private final UserType userType;
@@ -13,6 +12,7 @@ public class User implements Serializable {
     private final String username;
     private String password;
 
+    // Constructor to initialize the user
     public User(int id, UserType userType, String firstName, String lastName, String ICNum, String username, String password) {
         this.id = id;
         this.userType = userType;
@@ -23,6 +23,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    // Getters and setters
     public int getId() { return id; }
     public UserType getUserType() { return userType; }
     public String getUserTypeString() { return userType.getStringValue(); }
@@ -35,6 +36,7 @@ public class User implements Serializable {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
+    // Converts the user to a string
     @Override
     public String toString() {
         return  id + " " +
@@ -46,6 +48,7 @@ public class User implements Serializable {
                 password;
     }
 
+    // Creates a user from a string
     public static User fromString(String userString) {
         String[] parts = userString.split(",");
         int id = Integer.parseInt(parts[0]);
