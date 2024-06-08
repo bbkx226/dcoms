@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 // CRUD functions for text files
 public class FileUtils {
-    private static final String PROJECT_FILE_PATH = System.getProperty("user.dir") + "/src/databases/";
+    private static final String PROJECT_FILE_PATH = System.getProperty("user.dir") + "/src/main/java/databases/";
 
     public enum FileType {
         USER(PROJECT_FILE_PATH + "users.txt"),
