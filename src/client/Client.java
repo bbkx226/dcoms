@@ -3,6 +3,7 @@ package client;
 import models.Food;
 import models.Order;
 import models.User;
+import models.Menu;
 import remote.AuthServiceRemote;
 import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
@@ -11,6 +12,7 @@ import remote.UserServiceRemote;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.util.InputMismatchException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Scanner;
@@ -68,48 +70,12 @@ public class Client {
         System.out.println("\n-------------------------------------------- End of testing section --------------------------------------------\n\n");
         // end of remote testing section
 
-        Scanner scanner = new Scanner(System.in);
+        // call Login register menu
+        LoginMenu loginMenu = new LoginMenu();
+        loginMenu.loginMenu();
 
-        while (true) {
-            System.out.println("Welcome to McGee! Please select an option to get started.");
-            System.out.println("1. Login");
-            System.out.println("2. View Menu");
-            System.out.println("3. Register");
-            System.out.println("4. Exit");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume/flush next line
-
-            if (choice == 1) {
-                System.out.println("Enter your username:");
-                String username = scanner.nextLine();
-                System.out.println("Enter your password:");
-                String password = scanner.nextLine();
-
-                User currentUser = authService.authenticate(username, password);
-                if (currentUser == null) {
-                    System.out.println("Invalid credentials. Please try again.");
-                } else {
-                    System.out.println(currentUser.getUserTypeString());
-                }
-            } else if (choice == 2) {
-                List<Food> foodList = foodService.getAllFoods();
-                for (Food food : foodList) {
-                    System.out.println(food.toString());
-                }
-                System.out.println("\nPress any key to continue...");
-                scanner.nextLine();
-            } else if (choice == 3) {
-                // username and password cannot have space( ) or underscore(_)
-                System.out.println("Registration menu");
-                break;
-            } else if (choice == 4) {
-                System.exit(1);
-            } else {
-                System.out.println("Invalid input. Please try again.");
-            }
-        }
-
-        scanner.close();
     }
+
+
+
 }
