@@ -1,16 +1,15 @@
 package server;
 
 import models.Food;
-import remote.FoodDAORemote;
+import remote.FoodServiceRemote;
 import utils.FileUtils;
 
-import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class FoodDAOImpl extends UnicastRemoteObject implements FoodDAORemote {
-    public FoodDAOImpl() throws RemoteException {
+public class FoodServiceImpl extends UnicastRemoteObject implements FoodServiceRemote {
+    public FoodServiceImpl() throws RemoteException {
         super();
     }
 

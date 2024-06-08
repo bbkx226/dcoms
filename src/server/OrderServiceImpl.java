@@ -12,12 +12,12 @@ import java.util.List;
 // CRUD functions for orders
 public class OrderServiceImpl extends UnicastRemoteObject implements OrderServiceRemote {
     private List<Order> orders;
-    private FoodDAOImpl foodDAO;
+    private FoodServiceImpl foodDAO;
 
     public OrderServiceImpl() throws RemoteException {
         super();
         orders = new ArrayList<>();
-        foodDAO = new FoodDAOImpl();
+        foodDAO = new FoodServiceImpl();
     }
 
     @Override

@@ -2,7 +2,7 @@ package server;
 
 import models.User;
 import models.UserType;
-import remote.UserDAORemote;
+import remote.UserServiceRemote;
 import utils.FileUtils;
 
 import java.rmi.RemoteException;
@@ -10,8 +10,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 // CRUD functions for user
-public class UserDAOImpl extends UnicastRemoteObject implements UserDAORemote {
-    public UserDAOImpl() throws RemoteException {
+public class UserServiceImpl extends UnicastRemoteObject implements UserServiceRemote {
+    public UserServiceImpl() throws RemoteException {
         super();
     }
 

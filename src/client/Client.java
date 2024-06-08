@@ -4,9 +4,9 @@ import models.Food;
 import models.Order;
 import models.User;
 import remote.AuthServiceRemote;
-import remote.FoodDAORemote;
+import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
-import remote.UserDAORemote;
+import remote.UserServiceRemote;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -18,8 +18,8 @@ import java.util.Scanner;
 public class Client {
     public static void main(String[] args) throws MalformedURLException, NotBoundException, RemoteException {
         AuthServiceRemote authService = (AuthServiceRemote) Naming.lookup("rmi://localhost:7777/authService");
-        UserDAORemote userDAOService = (UserDAORemote) Naming.lookup("rmi://localhost:7777/userDAOService");
-        FoodDAORemote foodDAOService = (FoodDAORemote) Naming.lookup("rmi://localhost:7777/foodDAOService");
+        UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
+        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
         OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
 
         // remote testing section, remove later or implement in testing part
@@ -35,14 +35,14 @@ public class Client {
             System.err.println("incorrect username / password");
         }
 
-        List<User> users = userDAOService.getAllUsers();
-        System.out.println("\nUserDAO testing");
+        List<User> users = userService.getAllUsers();
+        System.out.println("\nUserService testing");
         for (User user : users) {
             System.out.println(user.toString());
         }
 
-        List<Food> foods = foodDAOService.getAllFoods();
-        System.out.println("\nFoodDAO testing");
+        List<Food> foods = foodService.getAllFoods();
+        System.out.println("\nFoodService testing");
         for (Food food : foods) {
             System.out.println(food.toString());
         }
@@ -93,7 +93,7 @@ public class Client {
                     System.out.println(currentUser.getUserTypeString());
                 }
             } else if (choice == 2) {
-                List<Food> foodList = foodDAOService.getAllFoods();
+                List<Food> foodList = foodService.getAllFoods();
                 for (Food food : foodList) {
                     System.out.println(food.toString());
                 }

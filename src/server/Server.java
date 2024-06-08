@@ -11,8 +11,8 @@ public class Server {
 
         // bind objects
         reg.rebind("authService", new AuthServiceImpl());
-        reg.rebind("userDAOService", new UserDAOImpl());
-        reg.rebind("foodDAOService", new FoodDAOImpl());
+        reg.rebind("userService", new UserServiceImpl());
+        reg.rebind("foodService", new FoodServiceImpl());
         reg.rebind("orderService", new OrderServiceImpl());
 
         System.out.println("Food order service is running...");
