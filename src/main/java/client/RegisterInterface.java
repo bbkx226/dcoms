@@ -47,7 +47,6 @@ public class RegisterInterface {
 
             System.out.println("User created successfully!");
 
-
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             e.printStackTrace();

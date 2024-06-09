@@ -1,7 +1,9 @@
 package client;
 
+import models.Food;
 import models.Menu;
 import models.Table;
+import remote.FoodServiceRemote;
 import remote.UserServiceRemote;
 import utils.ClearScreen;
 
@@ -36,7 +38,7 @@ public class AdminInterface {
                         viewUserDetails();
                         break;
                     case 2:
-//                        viewMenu(scanner);
+                        viewFoodMenu();
                         break;
                     case 3:
                         // Implement checkOrder() method
@@ -69,6 +71,7 @@ public class AdminInterface {
         String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
         String prompt = "Enter an action: ";
         List<String[]> rows = new ArrayList<>();
+        List<Integer> optionsID = new ArrayList<>();
 
         for (User user : userList) {
             rows.add(new String[] {
@@ -77,9 +80,10 @@ public class AdminInterface {
                 user.getLastName(),
                 user.getICNum(),
             });
+            optionsID.add(user.getId());
         }
 
-        Table table = new Table("A List of User", options, prompt, "");
+        Table table = new Table("A List of User", options, optionsID, prompt, "");
 
         try {
             // ClearScreen.clrscr();
@@ -107,6 +111,65 @@ public class AdminInterface {
             System.out.println("\nPress any key to continue...");
             scanner.nextLine();
         }
+
+
+    }
+
+    private void viewFoodMenu() throws MalformedURLException, NotBoundException, RemoteException {
+        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
+        List<Food> foodList = foodService.getAllFoods();
+        FoodFunction foodFunction = new FoodFunction();
+        Scanner scanner = new Scanner(System.in);
+
+        List<String> options = List.of("Create Product", "Update Product", "Delete Product", "Back");
+        String[] titles = {"ID", "Product", "Quantity", "Price"};
+        String prompt = "Enter an action: ";
+        List<String[]> rows = new ArrayList<>();
+        List<Integer> optionsID = new ArrayList<>();
+
+        for (Food food : foodList) {
+            rows.add(new String[] {
+                String.valueOf(food.getId()),
+                food.getName(),
+                String.valueOf(food.getQty()),
+                String.valueOf(food.getPrice()),
+            });
+            optionsID.add(food.getId());
+        }
+
+        Table table = new Table("McGee's Food List", options, optionsID, prompt, "");
+        while (true) {
+            try {
+                // ClearScreen.clrscr();
+                int choice = table.displayTable(rows, titles);
+
+                switch (choice) {
+                    case 1:
+                        foodFunction.createFood();
+                        break;
+                    case 2:
+                        foodFunction.updateFood();
+                        break;
+                    case 3:
+                        foodFunction.deleteFood();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        System.out.println("\nInvalid input. Please try again.");
+                        scanner.nextLine();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter a number between 1 and 4.");
+                System.out.println("\nPress any key to continue...");
+                scanner.nextLine();
+            } catch (RemoteException e) {
+                System.out.println("Error occurred while updating user details: " + e.getMessage());
+                System.out.println("Please try again later.");
+            }
+
+        }
+
 
 
     }

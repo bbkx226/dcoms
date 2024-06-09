@@ -8,12 +8,14 @@ import java.util.Scanner;
 public class Table {
     private String header;
     private List<String> options;
+    private List<Integer> optionsID;
     private String prompt;
     private String exitOption;
 
-    public Table(String header, List<String> options, String prompt, String exitOption) {
+    public Table(String header, List<String> options, List<Integer> optionsID, String prompt, String exitOption) {
         this.header = header;
         this.options = options;
+        this.optionsID = optionsID;
         this.prompt = prompt;
         this.exitOption = exitOption;
     }
@@ -36,8 +38,8 @@ public class Table {
 
 
         if (options != null && !options.isEmpty()) {
-            for (int i = 0; i < options.size(); i++) {
-                System.out.println((i + 1) + ". " + options.get(i));
+            for (int i = 0; i < options.size(); i++) { //print optionID
+                System.out.println(i + 1 + ". " + options.get(i));
             }
             if (exitOption != null && !exitOption.isEmpty()) {
                 System.out.println("0. " + exitOption);

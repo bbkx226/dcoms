@@ -86,6 +86,7 @@ public class LoginMenu {
 
         String[] titles = {"ID", "Product", "Quantity", "Price"};
         List<String[]> rows = new ArrayList<>();
+        List<Integer> optionsID = new ArrayList<>();
 
         for (Food food : foodList) {
             rows.add(new String[]{
@@ -94,22 +95,15 @@ public class LoginMenu {
                     String.valueOf(food.getQty()),
                     String.format("$%.2f", food.getPrice())
             });
+            optionsID.add(food.getId());
         }
 
-        Table table = new Table("McGee Food Menu", new ArrayList<>(), "", "");
+        Table table = new Table("McGee Food Menu", new ArrayList<>(), optionsID, "", "");
         table.displayTable(rows, titles);
 
         System.out.println("Press any key to continue...");
         scanner.nextLine();
 
-//        for (Food food : foodList) {
-//            System.out.println(food.toString());
-//        }
-    }
-
-    private static void register() {
-        System.out.println("Registration menu");
-        // Add registration logic here
     }
 
     private static void exitApp() {

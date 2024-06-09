@@ -30,6 +30,7 @@ public class UserFunction {
         String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
         String prompt = "Enter the ID of the user to update ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
+        List<Integer> optionsID = new ArrayList<>();
 
         for (User user : userList) {
             rows.add(new String[] {
@@ -38,9 +39,10 @@ public class UserFunction {
                     user.getLastName(),
                     user.getICNum(),
             });
+            optionsID.add(user.getId());
         }
 
-        Table table = new Table("A List of User", new ArrayList<>(), prompt, "");
+        Table table = new Table("A List of User", new ArrayList<>(), optionsID, prompt, "");
 
 
         while (true) {
@@ -86,6 +88,7 @@ public class UserFunction {
         String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
         String prompt = "Enter the ID of the user to delete ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
+        List<Integer> optionsID = new ArrayList<>();
 
         for (User user : userList) {
             rows.add(new String[] {
@@ -94,9 +97,10 @@ public class UserFunction {
                     user.getLastName(),
                     user.getICNum(),
             });
+            optionsID.add(user.getId());
         }
 
-        Table table = new Table("A List of User", new ArrayList<>(), prompt, "");
+        Table table = new Table("A List of User", new ArrayList<>(), optionsID, prompt, "");
 
         while (true) {
             try {
@@ -135,37 +139,57 @@ public class UserFunction {
 
     private void userDeleteProcess(int selectedUserId) throws MalformedURLException, NotBoundException, RemoteException {
         UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
-        User userToDelete = userService.getUserById(selectedUserId);
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             try {
-                System.out.println("\n------------------------------------------------------------");
-                System.out.println("Are you sure you want to delete the following user?");
-                System.out.println("------------------------------------------------------------");
-                System.out.println("ID: " + userToDelete.getId());
-                System.out.println("First Name: " + userToDelete.getFirstName());
-                System.out.println("Last Name: " + userToDelete.getLastName());
-                System.out.println("IC/Passport: " + userToDelete.getICNum());
-                System.out.println("------------------------------------------------------------");
-                System.out.println("Type 'y' to confirm deletion, 'n' to cancel, or 'b' to go back.");
-                String confirmation = scanner.next();
-                if (confirmation.equalsIgnoreCase("y")) {
-                    boolean deleted = userService.removeUser(userToDelete);
-                    if (deleted) {
-                        System.out.println("User deleted successfully.");
-                    } else {
-                        System.out.println("Failed to delete user.");
+                // Check if the user ID exists
+                boolean isUserExist = userService.checkUserId(selectedUserId);
+                if (isUserExist) {
+                    // Retrieve the user details
+                    User userToDelete = userService.getUserById(selectedUserId);
+
+                    // Handle null userToDelete object
+                    if (userToDelete == null) {
+                        System.out.println("User not found.");
+                        return;
                     }
-                    break; // Exit the loop after deletion
-                } else if (confirmation.equalsIgnoreCase("n")) {
-                    System.out.println("Deletion canceled.");
-                    break; // Exit the loop if deletion is canceled
-                } else if (confirmation.equalsIgnoreCase("b")) {
-                    System.out.println("Returning to previous menu.");
-                    return; // Exit the method and return to the previous menu
+
+                    // Display user details and confirmation prompt
+                    System.out.println("\n------------------------------------------------------------");
+                    System.out.println("Are you sure you want to delete the following user?");
+                    System.out.println("------------------------------------------------------------");
+                    System.out.println("ID: " + userToDelete.getId());
+                    System.out.println("First Name: " + userToDelete.getFirstName());
+                    System.out.println("Last Name: " + userToDelete.getLastName());
+                    System.out.println("IC/Passport: " + userToDelete.getICNum());
+                    System.out.println("------------------------------------------------------------");
+                    System.out.println("Type 'y' to confirm deletion, 'n' to cancel, or 'b' to go back.");
+
+                    // Prompt for confirmation
+                    String confirmation = scanner.next();
+                    if (confirmation.equalsIgnoreCase("y")) {
+                        // Delete the user
+                        boolean deleted = userService.removeUser(userToDelete);
+                        if (deleted) {
+                            System.out.println("User deleted successfully.");
+                        } else {
+                            System.out.println("Failed to delete user.");
+                        }
+                        break; // Exit the loop after deletion
+                    } else if (confirmation.equalsIgnoreCase("n")) {
+                        System.out.println("Deletion canceled.");
+                        break; // Exit the loop if deletion is canceled
+                    } else if (confirmation.equalsIgnoreCase("b")) {
+                        System.out.println("Returning to previous menu.");
+                        return; // Exit the method and return to the previous menu
+                    } else {
+                        System.out.println("Invalid input. Please enter 'y', 'n', or 'b'.");
+                    }
                 } else {
-                    System.out.println("Invalid input. Please enter 'y', 'n', or 'b'.");
+                    // Inform the user that the user ID does not exist
+                    System.out.println("UserID does not exist.");
+                    break; // Exit the loop if the user ID does not exist
                 }
             } catch (RemoteException e) {
                 System.out.println("Error occurred while deleting user details: " + e.getMessage());
@@ -176,7 +200,6 @@ public class UserFunction {
                 scanner.nextLine();
             }
         }
-
     }
 
     private void userUpdateProcess(int selectedUserId) throws MalformedURLException, NotBoundException, RemoteException {
