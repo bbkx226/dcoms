@@ -16,15 +16,33 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
     }
 
     // Adds a new user if the username is not already taken
-    @Override
+//    @Override
+//    public boolean addUser(String newFirstName, String newLastName, String newICNum, String newUsername, String newPassword) throws RemoteException {
+//        List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
+//        if (users.stream().anyMatch(user -> newUsername.equals(user.getUsername()))) {
+//            return false;
+//        }
+//        int newId = users.size() + 1;
+//        UserType newUserType = UserType.CUSTOMER;
+//        User newUser = new User(newId, newUserType, newFirstName, newLastName, newICNum, newUsername, newPassword);
+//        FileUtils.appendToFile(FileUtils.FileType.USER, newUser, User::toString);
+//        return true;
+//    }
+
     public boolean addUser(String newFirstName, String newLastName, String newICNum, String newUsername, String newPassword) throws RemoteException {
         List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
+        // Find the maximum user ID in the list
+        int maxUserId = users.isEmpty() ? 0 : users.stream().mapToInt(User::getId).max().orElse(0);
+        // Increment the maximum user ID to get the next available user ID
+        int newId = maxUserId + 1;
+        // Check if the username already exists
         if (users.stream().anyMatch(user -> newUsername.equals(user.getUsername()))) {
-            return false;
+            return false; // Username already exists
         }
-        int newId = users.size() + 1;
+        // Create the new user
         UserType newUserType = UserType.CUSTOMER;
         User newUser = new User(newId, newUserType, newFirstName, newLastName, newICNum, newUsername, newPassword);
+        // Append the new user to the file
         FileUtils.appendToFile(FileUtils.FileType.USER, newUser, User::toString);
         return true;
     }
@@ -68,6 +86,13 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
     public boolean checkUserName(String newUsername) throws RemoteException {
         List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
         return users.stream().anyMatch(user -> newUsername.equals(user.getUsername()));
+    }
+
+    // Returns a user by their ID, or null if no such user exists
+    @Override
+    public boolean checkUserId(int userId) throws RemoteException {
+        List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
+        return users.stream().anyMatch(user -> Integer.valueOf(userId).equals(user.getId()));
     }
 
 }

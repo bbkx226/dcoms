@@ -8,7 +8,8 @@ public class User implements Serializable {
     private final UserType userType;
     private String firstName;
     private String lastName;
-    private final String ICNum;
+//    private final String ICNum;
+    private String ICNum;
     private final String username;
     private String password;
 
@@ -32,6 +33,7 @@ public class User implements Serializable {
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
     public String getICNum() { return ICNum; }
+    public void setICNum(String ICNum) { this.ICNum = ICNum; }
     public String getUsername() { return username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }

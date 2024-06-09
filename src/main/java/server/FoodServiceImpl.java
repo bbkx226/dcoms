@@ -63,4 +63,18 @@ public class FoodServiceImpl extends UnicastRemoteObject implements FoodServiceR
             return true;
         } else return false;
     }
+
+    // Method that when creating food before check the food item if exists
+    @Override
+    public boolean checkIsFoodExisted(String newFood) throws RemoteException {
+        List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
+        return foods.stream().anyMatch(food -> newFood.equals(food.getName()));
+    }
+
+    // Method that check the food if exists
+    @Override
+    public boolean checkExistedFoodId(int foodId) throws RemoteException {
+        List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
+        return foods.stream().anyMatch(food -> Integer.valueOf(foodId).equals(food.getId()));
+    }
 }
