@@ -97,7 +97,7 @@ public class LoginMenu {
         }
 
         Table table = new Table("McGee Food Menu", new ArrayList<>(), "", "");
-        table.displayTable(rows, titles, "McGee's Food Menu");
+        table.displayTable(rows, titles);
 
         System.out.println("Press any key to continue...");
         scanner.nextLine();

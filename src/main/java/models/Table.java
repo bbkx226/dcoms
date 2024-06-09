@@ -3,6 +3,7 @@ package models;
 import utils.MenuTableUtils;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Table {
     private String header;
@@ -17,9 +18,10 @@ public class Table {
         this.exitOption = exitOption;
     }
 
-    public void displayTable(List<String[]> rows, String[] titles, String header) {
+    public int displayTable(List<String[]> rows, String[] titles) {
         int[] columnWidths = getColumnWidths(rows, titles);
         int totalWidth = getTotalWidth(columnWidths);
+        Scanner scanner = new Scanner(System.in);
         MenuTableUtils menuTableUtils = new MenuTableUtils();
 
         menuTableUtils.line(totalWidth);
@@ -31,6 +33,34 @@ public class Table {
             printRow(row, columnWidths);
         }
         menuTableUtils.line(totalWidth);
+
+
+        if (options != null && !options.isEmpty()) {
+            for (int i = 0; i < options.size(); i++) {
+                System.out.println((i + 1) + ". " + options.get(i));
+            }
+            if (exitOption != null && !exitOption.isEmpty()) {
+                System.out.println("0. " + exitOption);
+            }
+            menuTableUtils.line(totalWidth);
+            System.out.print(prompt + " ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume the newline
+
+            if (exitOption != null && choice == 0) {
+                return 0;  // Indicate exit
+            } else if (choice > 0 && choice <= options.size()) {
+                return choice;  // Return the chosen option
+            } else {
+                System.out.println("\nInvalid choice, please try again.");
+                return displayTable(rows, titles);  // Retry if invalid input
+            }
+        } else if (prompt != "") {
+//            menuTableUtils.line(totalWidth);
+            System.out.print(prompt + " ");
+        }
+        return -1;
     }
 
     private int[] getColumnWidths(List<String[]> rows, String[] titles) {

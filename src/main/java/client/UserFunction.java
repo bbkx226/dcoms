@@ -1,0 +1,255 @@
+package client;
+
+import models.Menu;
+import models.Table;
+import models.User;
+import remote.UserServiceRemote;
+
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+
+public class UserFunction {
+
+    public void createUser() throws MalformedURLException, NotBoundException, RemoteException {
+        RegisterInterface register = new RegisterInterface();
+        register.register();
+    }
+
+    public void updateUserInterface() throws MalformedURLException, NotBoundException, RemoteException {
+        UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
+        List<User> userList = userService.getAllUsers();
+        UserFunction userFunction = new UserFunction();
+        Scanner scanner = new Scanner(System.in);
+
+        String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
+        String prompt = "Enter the ID of the user to update ('b' for back): ";
+        List<String[]> rows = new ArrayList<>();
+
+        for (User user : userList) {
+            rows.add(new String[] {
+                    String.valueOf(user.getId()),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getICNum(),
+            });
+        }
+
+        Table table = new Table("A List of User", new ArrayList<>(), prompt, "");
+
+
+        while (true) {
+            try {
+                table.displayTable(rows, titles);
+                if (scanner.hasNextInt()) { // Check the user input is int
+                    int selectedUserId = scanner.nextInt();
+                    boolean isUserExist = userService.checkUserId(selectedUserId);
+                    if (isUserExist) {
+                        userUpdateProcess(selectedUserId);
+                        break;
+                    } else {
+                        System.out.println("UserID does not exist.");
+                        scanner.nextLine(); // Consume the newline
+                    }
+                } else { // user input is string
+                    String userInput = scanner.next();
+                    if (userInput.equalsIgnoreCase("b")) {
+                        break; // Exit the loop if the user wants to go back
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid userID or 'b' to go back.");
+                        scanner.nextLine();
+                    }
+                }
+
+            } catch (RemoteException e) {
+                System.out.println("Error occurred while checking username existence: " + e.getMessage());
+                System.out.println("Please try again later.");
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter a valid userID.");
+//                System.out.println("Press any key here to continue...");
+            }
+        }
+
+    }
+
+    public void deleteUserInterface() throws MalformedURLException, NotBoundException, RemoteException {
+        UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
+        List<User> userList = userService.getAllUsers();
+        UserFunction userFunction = new UserFunction();
+        Scanner scanner = new Scanner(System.in);
+
+        String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
+        String prompt = "Enter the ID of the user to delete ('b' for back): ";
+        List<String[]> rows = new ArrayList<>();
+
+        for (User user : userList) {
+            rows.add(new String[] {
+                    String.valueOf(user.getId()),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getICNum(),
+            });
+        }
+
+        Table table = new Table("A List of User", new ArrayList<>(), prompt, "");
+
+        while (true) {
+            try {
+                table.displayTable(rows, titles);
+                if (scanner.hasNextInt()) { // Check the user input is int
+                    int selectedUserId = scanner.nextInt();
+                    boolean isUserExist = userService.checkUserId(selectedUserId);
+                    if (isUserExist) {
+                        userDeleteProcess(selectedUserId);
+                        break;
+                    } else {
+                        System.out.println("UserID does not exist.");
+                        scanner.nextLine(); // Consume the newline
+                    }
+                } else { // user input is string
+                    String userInput = scanner.next();
+                    if (userInput.equalsIgnoreCase("b")) {
+                        break; // Exit the loop if the user wants to go back
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid userID or 'b' to go back.");
+                        scanner.nextLine();
+                    }
+                }
+
+            } catch (RemoteException e) {
+                System.out.println("Error occurred while checking username existence: " + e.getMessage());
+                System.out.println("Please try again later.");
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter a valid userID.");
+//                System.out.println("Press any key here to continue...");
+            }
+        }
+
+
+    }
+
+    private void userDeleteProcess(int selectedUserId) throws MalformedURLException, NotBoundException, RemoteException {
+        UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
+        User userToDelete = userService.getUserById(selectedUserId);
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.println("\n------------------------------------------------------------");
+                System.out.println("Are you sure you want to delete the following user?");
+                System.out.println("------------------------------------------------------------");
+                System.out.println("ID: " + userToDelete.getId());
+                System.out.println("First Name: " + userToDelete.getFirstName());
+                System.out.println("Last Name: " + userToDelete.getLastName());
+                System.out.println("IC/Passport: " + userToDelete.getICNum());
+                System.out.println("------------------------------------------------------------");
+                System.out.println("Type 'y' to confirm deletion, 'n' to cancel, or 'b' to go back.");
+                String confirmation = scanner.next();
+                if (confirmation.equalsIgnoreCase("y")) {
+                    boolean deleted = userService.removeUser(userToDelete);
+                    if (deleted) {
+                        System.out.println("User deleted successfully.");
+                    } else {
+                        System.out.println("Failed to delete user.");
+                    }
+                    break; // Exit the loop after deletion
+                } else if (confirmation.equalsIgnoreCase("n")) {
+                    System.out.println("Deletion canceled.");
+                    break; // Exit the loop if deletion is canceled
+                } else if (confirmation.equalsIgnoreCase("b")) {
+                    System.out.println("Returning to previous menu.");
+                    return; // Exit the method and return to the previous menu
+                } else {
+                    System.out.println("Invalid input. Please enter 'y', 'n', or 'b'.");
+                }
+            } catch (RemoteException e) {
+                System.out.println("Error occurred while deleting user details: " + e.getMessage());
+                System.out.println("Please try again later.");
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter a valid options.");
+                System.out.println("Press any key here to continue...");
+                scanner.nextLine();
+            }
+        }
+
+    }
+
+    private void userUpdateProcess(int selectedUserId) throws MalformedURLException, NotBoundException, RemoteException {
+        UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
+        Scanner scanner = new Scanner(System.in);
+
+        // Retrieve original user details
+        User userToUpdate = userService.getUserById(selectedUserId);
+        if (userToUpdate == null) {
+            System.out.println("User not found.");
+            return;
+        }
+
+        // Display original user details
+
+        // Prompt user to select detail to update
+        while (true) {
+            try {
+                System.out.println("\n------------------------------------------------------------");
+                System.out.println("Original User Details:");
+                System.out.println("------------------------------------------------------------");
+                System.out.println("ID: " + userToUpdate.getId());
+                System.out.println("First Name: " + userToUpdate.getFirstName());
+                System.out.println("Last Name: " + userToUpdate.getLastName());
+                System.out.println("IC/Passport: " + userToUpdate.getICNum());
+                System.out.println("------------------------------------------------------------");
+
+                List<String> options = List.of("First Name", "Last Name", "IC/Passport", "Back");
+                Menu menu = new Menu("", options, "Select a detail to update: ", "", 60);
+                int choice = menu.display();
+
+                switch (choice) {
+                    case 1:
+                        System.out.println("Enter New First Name: ");
+                        String newFirstName = scanner.nextLine();
+                        userToUpdate.setFirstName(newFirstName);
+                        break;
+                    case 2:
+                        System.out.println("Enter New Last Name: ");
+                        String newLastName = scanner.nextLine();
+                        userToUpdate.setLastName(newLastName);
+                        break;
+                    case 3:
+                        System.out.println("Enter New IC/Passport: ");
+                        String newICNum = scanner.nextLine();
+                        userToUpdate.setICNum(newICNum);
+                        break;
+                    case 4:
+                        // Exit the method if user selects "Back"
+                        return;
+                    default:
+                        System.out.println("\nInvalid input. Please try again.");
+                        continue;
+                }
+
+                // Update the user details
+                boolean success = userService.updateUser(userToUpdate);
+                if (success) {
+                    System.out.println("User details updated successfully.");
+                } else {
+                    System.out.println("Failed to update user details.");
+                }
+
+            } catch (RemoteException e) {
+                System.out.println("Error occurred while updating user details: " + e.getMessage());
+                System.out.println("Please try again later.");
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter a valid options.");
+                System.out.println("Press any key here to continue...");
+                scanner.nextLine();
+            }
+        }
+    }
+
+
+}

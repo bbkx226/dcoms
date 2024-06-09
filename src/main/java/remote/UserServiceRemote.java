@@ -24,4 +24,6 @@ public interface UserServiceRemote extends Remote {
     boolean removeUser(User userToRemove) throws RemoteException;
 
     boolean checkUserName(String newUsername) throws RemoteException;
+
+    boolean checkUserId(int userId) throws RemoteException;
 }
