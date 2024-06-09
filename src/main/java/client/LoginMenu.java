@@ -1,9 +1,6 @@
 package client;
 
-import models.Food;
-import models.Menu;
-import models.User;
-import models.UserType;
+import models.*;
 import remote.AuthServiceRemote;
 import remote.FoodServiceRemote;
 import utils.ClearScreen;
@@ -12,6 +9,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -43,11 +41,11 @@ public class LoginMenu {
                         exitApp();
                         break;
                     default:
-                        System.out.println("Invalid input. Please try again.");
+                        System.out.println("\nInvalid input. Please try again.");
                         scanner.nextLine();
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number between 1 and 4.");
+                System.out.println("\nInvalid input. Please enter a number between 1 and 4.");
                 System.out.println("\nPress any key to continue...");
                 scanner.nextLine();
             }
@@ -85,11 +83,28 @@ public class LoginMenu {
     private static void viewMenu(Scanner scanner) throws MalformedURLException, NotBoundException, RemoteException {
         FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
         List<Food> foodList = foodService.getAllFoods();
+
+        String[] titles = {"ID", "Product", "Quantity", "Price"};
+        List<String[]> rows = new ArrayList<>();
+
         for (Food food : foodList) {
-            System.out.println(food.toString());
+            rows.add(new String[]{
+                    String.valueOf(food.getId()),
+                    food.getName(),
+                    String.valueOf(food.getQty()),
+                    String.format("$%.2f", food.getPrice())
+            });
         }
-        System.out.println("\nPress any key to continue...");
+
+        Table table = new Table("McGee Food Menu", new ArrayList<>(), "", "");
+        table.displayTable(rows, titles, "McGee's Food Menu");
+
+        System.out.println("Press any key to continue...");
         scanner.nextLine();
+
+//        for (Food food : foodList) {
+//            System.out.println(food.toString());
+//        }
     }
 
     private static void register() {

@@ -17,10 +17,10 @@ public class AdminInterface {
 
         while (true) {
             String fullName = user.getFirstName() + " " + user.getLastName();
-            List<String> options = List.of("View User Details", "View Menu", "Check Order", "Order", "Back"); // Add "Back" option
-            Menu menu = new Menu(" Welcome to McGee, " + fullName + "!!!", options, "Enter your choice:", "", 60); // Change "back" to "Back"
+            List<String> options = List.of("View User Details", "View Menu", "Check Order", "Order", "Back");
+            Menu menu = new Menu(" Welcome to McGee, " + fullName + "!!!", options, "Enter your choice:", "", 60);
             try {
-                ClearScreen.clrscr();
+//                ClearScreen.clrscr();
                 int choice = menu.display();
 
                 switch (choice) {
@@ -39,15 +39,20 @@ public class AdminInterface {
                     case 5: // Back option
                         return; // Return to the previous menu or perform any desired action
                     default:
-                        System.out.println("Invalid input. Please try again.");
+                        System.out.println("\nInvalid input. Please try again.");
+                        System.out.println("\nPress any key to continue...");
                         scanner.nextLine();
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number between 1 and 4.");
+                System.out.println("\nInvalid input. Please enter a number between 1 and 5.");
                 System.out.println("\nPress any key to continue...");
                 scanner.nextLine();
             }
         }
+    }
+
+    private void viewUserDetails() {
+
     }
 
     private void viewMenu(Scanner scanner) {
