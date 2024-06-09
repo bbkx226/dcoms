@@ -23,12 +23,12 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
 
     // Adds a new order for a food item if the food item exists and there is enough quantity.
     @Override
-    public boolean addOrder(int foodId, int qty) throws RemoteException {
+    public boolean addOrder(int userId, int foodId, int qty) throws RemoteException {
         Food food = foodRepository.getFoodById(foodId);
         if (food != null && food.getQty() > 0) {
             boolean foodOrderExists = false;
             for (Order order : orders) {
-                if (order.getFoodId() == food.getId()) {
+                if (order.getFoodId() == food.getId() && order.getUserId() == userId) { // Check userId as well
                     foodOrderExists = true;
                     int newQty = order.getQuantity() + qty;
                     if (newQty > food.getQty()) { return false; }
@@ -41,7 +41,7 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
             if (!foodOrderExists) {
                 if (qty > food.getQty()) { return false; }
                 double newPrice = qty * food.getPrice();
-                Order newOrder = new Order(foodId, food.getName(), qty, newPrice);
+                Order newOrder = new Order(orders.size() + 1, foodId, food.getName(), userId, qty, newPrice); // Ensure unique ID
                 orders.add(newOrder);
             }
             return true;
@@ -54,9 +54,9 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
 
     // Returns an order for a specific food item by its ID, or null if no such order exists.
     @Override
-    public Order getOrderByFoodId(int foodId) throws RemoteException {
+    public Order getOrderByOrderId(int orderId) throws RemoteException {
         for (Order order : orders) {
-            if (order.getFoodId() == foodId) {
+            if (order.getId() == orderId) {
                 return order;
             }
         }
@@ -66,31 +66,42 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
     // Updates an existing order if it exists and there is enough quantity of the food item.
     @Override
     public boolean updateOrder(Order updatedOrder) throws RemoteException {
-        Order orderToUpdate = getOrderByFoodId(updatedOrder.getFoodId());
-        if (orderToUpdate == null) { return false; }
-        if (updatedOrder.getQuantity() > foodRepository.getFoodById(updatedOrder.getFoodId()).getQty()) { return false; }
+        Order orderToUpdate = getOrderByOrderId(updatedOrder.getId());
+        if (orderToUpdate == null) {
+            System.out.println("Order not found.");
+            return false;
+        }
         Food food = foodRepository.getFoodById(updatedOrder.getFoodId());
-        if (food != null) {
-            for (Order order : orders) {
-                if (order.getFoodId() == food.getId()) {
-                    if (updatedOrder.getQuantity() == 0) {
-                        return deleteOrder(updatedOrder);
-                    } else {
-                        orders.set(orders.indexOf(order), updatedOrder);
-                    }
+        if (food == null) {
+            System.out.println("Food not found.");
+            return false;
+        }
+
+        if (updatedOrder.getQuantity() > food.getQty()) {
+            System.out.println("Insufficient stock.");
+            return false;
+        }
+        // Find and update the order in the list
+        for (Order order : orders) {
+            if (order.getId() == updatedOrder.getId()) {
+                if (updatedOrder.getQuantity() == 0) {
+                    return deleteOrder(updatedOrder);
+                } else {
+                    orders.set(orders.indexOf(order), updatedOrder);
                     return true;
                 }
             }
         }
+        System.out.println("Order not found in the list.");
         return false;
     }
 
     // Deletes an existing order by its food ID if it exists.
     @Override
     public boolean deleteOrder(Order orderToRemove) throws RemoteException {
-        if (getOrderByFoodId(orderToRemove.getFoodId()) == null) { return false; }
+        if (getOrderByOrderId(orderToRemove.getId()) == null) { return false; }
         for (Order order : orders) {
-            if (order.getFoodId() == orderToRemove.getFoodId()) {
+            if (order.getId() == orderToRemove.getId()) {
                 return orders.remove(order);
             }
         }

@@ -31,8 +31,13 @@ public class Table {
         menuTableUtils.line(totalWidth);
         printRow(titles, columnWidths);
         menuTableUtils.line(totalWidth);
-        for (String[] row : rows) {
-            printRow(row, columnWidths);
+        // Check if there are no rows to display (data)
+        if (rows.isEmpty()) {
+            printCenteredMessage(totalWidth, "No data available");
+        } else {
+            for (String[] row : rows) {
+                printRow(row, columnWidths);
+            }
         }
         menuTableUtils.line(totalWidth);
 
@@ -96,5 +101,9 @@ public class Table {
         System.out.println(sb.toString());
     }
 
-
+    private void printCenteredMessage(int width, String message) {
+        int paddingSize = ((width - message.length()) / 2) - 1; // -1 because the "|" have 2
+        String padding = " ".repeat(Math.max(0, paddingSize));
+        System.out.println("|" + padding + message + padding + "|");
+    }
 }

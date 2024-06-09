@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 public class FoodFunction {
 
-    public void createFood() throws MalformedURLException, NotBoundException, RemoteException{
+    public void createFood() throws MalformedURLException, NotBoundException, RemoteException {
         try {
             Scanner scanner = new Scanner(System.in);
             FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
