@@ -1,5 +1,7 @@
 package models;
 
+import utils.MenuTableUtils;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,13 +21,14 @@ public class Menu {
     }
 
     public int display() {
+        MenuTableUtils menuTableUtils = new MenuTableUtils();
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
-            line(width);
-            printHeader(width, header);
-            line(width);
+            menuTableUtils.line(width);
+            menuTableUtils.printHeader(width, header);
+            menuTableUtils.line(width);
             for (int i = 0; i < options.size(); i++) {
                 System.out.println((i + 1) + ". " + options.get(i));
             }
@@ -34,11 +37,16 @@ public class Menu {
                 System.out.println("0. " + exitOption);
             }
 
-            line(width);
+            menuTableUtils.line(width);
             System.out.print(prompt + " ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
+
+            // avoid the exit or back error
+            if (exitOption.equals("") && choice == 0) {
+                return choice;
+            }
 
             if (choice == 0) {
                 exit = true;
@@ -47,7 +55,7 @@ public class Menu {
                 return choice;
                 // Add logic to handle the chosen option here
             } else {
-                System.out.println("Invalid choice, please try again.");
+                System.out.println("\nInvalid choice, please try again.");
             }
         }
 
@@ -56,16 +64,4 @@ public class Menu {
         return 0;
     }
 
-    private void line(int width) {
-        for (int i = 0; i < width; i++) {
-            System.out.print("-");
-        }
-        System.out.println(); // Move to the next line after printing the dashes
-    }
-
-    private void printHeader(int width, String header) {
-        int paddingSize = (width - header.length()) / 2;
-        String padding = " ".repeat((Math.max(0, paddingSize)));
-        System.out.println(padding + header + padding);
-    }
 }
