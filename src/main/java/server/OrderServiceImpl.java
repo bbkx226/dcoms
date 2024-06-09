@@ -23,12 +23,12 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
 
     // Adds a new order for a food item if the food item exists and there is enough quantity.
     @Override
-    public boolean addOrder(int foodId, int qty) throws RemoteException {
+    public boolean addOrder(int userId, int foodId, int qty) throws RemoteException {
         Food food = foodRepository.getFoodById(foodId);
         if (food != null && food.getQty() > 0) {
             boolean foodOrderExists = false;
             for (Order order : orders) {
-                if (order.getFoodId() == food.getId()) {
+                if (order.getFoodId() == food.getId() && order.getUserId() == userId) { // Check userId as well
                     foodOrderExists = true;
                     int newQty = order.getQuantity() + qty;
                     if (newQty > food.getQty()) { return false; }
@@ -41,7 +41,7 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
             if (!foodOrderExists) {
                 if (qty > food.getQty()) { return false; }
                 double newPrice = qty * food.getPrice();
-                Order newOrder = new Order(foodId, food.getName(), qty, newPrice);
+                Order newOrder = new Order(orders.size() + 1, foodId, food.getName(), userId, qty, newPrice); // Ensure unique ID
                 orders.add(newOrder);
             }
             return true;

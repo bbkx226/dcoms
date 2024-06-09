@@ -1,9 +1,8 @@
 package client;
 
-import models.Food;
-import models.Menu;
-import models.Table;
+import models.*;
 import remote.FoodServiceRemote;
+import remote.OrderServiceRemote;
 import remote.UserServiceRemote;
 import utils.ClearScreen;
 
@@ -15,8 +14,6 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-
-import models.User;
 
 public class AdminInterface {
     private User user;
@@ -41,7 +38,7 @@ public class AdminInterface {
                         viewFoodMenu();
                         break;
                     case 3:
-                        // Implement checkOrder() method
+                        viewOrderMenu();
                         break;
                     case 4:
                         // Implement order() method
@@ -98,7 +95,6 @@ public class AdminInterface {
                     break;
                 case 3:
                     userFunction.deleteUserInterface();
-//                    register.register();
                     break;
                 case 4:
                     return;
@@ -111,8 +107,6 @@ public class AdminInterface {
             System.out.println("\nPress any key to continue...");
             scanner.nextLine();
         }
-
-
     }
 
     private void viewFoodMenu() throws MalformedURLException, NotBoundException, RemoteException {
@@ -167,10 +161,64 @@ public class AdminInterface {
                 System.out.println("Error occurred while updating user details: " + e.getMessage());
                 System.out.println("Please try again later.");
             }
-
         }
+    }
+
+    private void viewOrderMenu() throws MalformedURLException, NotBoundException, RemoteException {
+        OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
+        OrderFunction orderFunction = new OrderFunction();
+        Scanner scanner = new Scanner(System.in);
+
+        List<String> options = List.of("Create Order", "Update Order", "Delete Order", "Back");
+        String[] titles = {"Order ID", "Customer ID", "Food ID", "Food Name","Price", "Quantity", "Total Price"};
+        String prompt = "Enter an action: ";
 
 
+        while (true) {
+            try {
+            List<Order> orderList = orderService.getOrders();
+            List<String[]> rows = new ArrayList<>();
+            List<Integer> optionsID = new ArrayList<>();
+            for (Order order : orderList) {
+                rows.add(new String[] {
+                String.valueOf(order.getId()),
+                String.valueOf(order.getUserId()),
+                String.valueOf(order.getFoodId()),
+                order.getFoodName(),
+                String.valueOf(order.getPrice()),
+                String.valueOf(order.getQuantity()),
+                String.valueOf(order.getTotalPrice()),
+            });
+                optionsID.add(order.getId());
+                }
+                Table table = new Table("McGee's Order List", options, optionsID, prompt, "");
+                // ClearScreen.clrscr();
+                int choice = table.displayTable(rows, titles);
 
+                switch (choice) {
+                    case 1:
+                        orderFunction.createOrder();
+                        break;
+                    case 2:
+//                        foodFunction.updateFood();
+                        break;
+                    case 3:
+//                        foodFunction.deleteFood();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        System.out.println("\nInvalid input. Please try again.");
+                        scanner.nextLine();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter a number between 1 and 4.");
+                System.out.println("\nPress any key to continue...");
+                scanner.nextLine();
+            } catch (RemoteException e) {
+                System.out.println("Error occurred while updating user details: " + e.getMessage());
+                System.out.println("Please try again later.");
+            }
+        }
     }
 }
