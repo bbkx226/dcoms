@@ -62,4 +62,12 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
         FileUtils.deleteFromFile(FileUtils.FileType.USER, userToRemove.getId());
         return true;
     }
+
+    // Check a new user if the username is not exist or not
+    @Override
+    public boolean checkUserName(String newUsername) throws RemoteException {
+        List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
+        return users.stream().anyMatch(user -> newUsername.equals(user.getUsername()));
+    }
+
 }

@@ -39,12 +39,12 @@ public class User implements Serializable {
     // Converts the user to a string
     @Override
     public String toString() {
-        return  id + " " +
-                userType.getStringValue() + " " +
-                firstName + " " +
-                lastName + " " +
-                ICNum + " " +
-                username + " " +
+        return  id + "," +
+                userType.getStringValue() + "," +
+                firstName + "," +
+                lastName + "," +
+                ICNum + "," +
+                username + "," +
                 password;
     }
 

@@ -29,7 +29,11 @@ public class Menu {
             for (int i = 0; i < options.size(); i++) {
                 System.out.println((i + 1) + ". " + options.get(i));
             }
-            System.out.println("0. " + exitOption);
+            // TODO: Solve this minor error while user input 0 to exit
+            if (!exitOption.equals("")) {
+                System.out.println("0. " + exitOption);
+            }
+
             line(width);
             System.out.print(prompt + " ");
 
