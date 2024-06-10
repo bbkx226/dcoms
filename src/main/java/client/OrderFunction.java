@@ -1,7 +1,7 @@
 package client;
 
 import models.Food;
-import models.Table;
+import client.components.Table;
 import models.User;
 import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
@@ -93,7 +93,7 @@ public class OrderFunction  {
     private int selectUserForOrder() throws MalformedURLException, NotBoundException, RemoteException {
         UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
         List<User> userList = userService.getAllUsers();
-        UserFunction userFunction = new UserFunction();
+        UserActions userActions = new UserActions();
         Scanner scanner = new Scanner(System.in);
 
         String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
@@ -115,7 +115,7 @@ public class OrderFunction  {
 
         while (true) {
             try {
-                table.displayTable(rows, titles);
+                table.display(rows, titles);
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedUserId = scanner.nextInt();
                     boolean isUserExist = userService.checkUserId(selectedUserId);
@@ -173,7 +173,7 @@ public class OrderFunction  {
 
         while (true) {
             try {
-                table.displayTable(rows, titles);
+                table.display(rows, titles);
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);

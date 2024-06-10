@@ -1,11 +1,9 @@
 package client;
 
 import models.Food;
-import models.Menu;
-import models.Table;
-import models.User;
+import client.components.Menu;
+import client.components.Table;
 import remote.FoodServiceRemote;
-import remote.UserServiceRemote;
 
 
 import java.net.MalformedURLException;
@@ -17,7 +15,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class FoodFunction {
+public class FoodActions {
 
     public void createFood() throws MalformedURLException, NotBoundException, RemoteException {
         try {
@@ -103,7 +101,7 @@ public class FoodFunction {
 
         while (true) {
             try {
-                table.displayTable(rows, titles);
+                table.display(rows, titles);
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);
@@ -160,7 +158,7 @@ public class FoodFunction {
 
         while (true) {
             try {
-                table.displayTable(rows, titles);
+                table.display(rows, titles);
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);
@@ -265,10 +263,10 @@ public class FoodFunction {
                 System.out.println("------------------------------------------------------------");
 
                 List<String> options = List.of("Product Name", "Quantity", "Price", "Back");
-                Menu menu = new Menu("", options, "Select a product detail to update: ", "", 60);
-                int choice = menu.display();
+                Menu menu = new Menu("", options, "Select a product detail to update: ",  60);
+                menu.display();
 
-                switch (choice) {
+                switch (menu.getInput()) {
                     case 1:
                         while (true) {
                             System.out.print("Enter New Product Name: ");

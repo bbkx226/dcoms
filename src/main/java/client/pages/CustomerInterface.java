@@ -1,8 +1,8 @@
-package client;
+package client.pages;
 
-import models.Menu;
+import client.components.Menu;
 import models.User;
-import utils.ClearScreen;
+import utils.CLIUtils;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -18,12 +18,12 @@ public class CustomerInterface {
         while (true) {
             String fullName = user.getFirstName() + " " + user.getLastName();
             List<String> options = List.of("View Menu", "Order", "Check Order", "Back");
-            Menu menu = new Menu(" Welcome to McGee, " + fullName + "!!!", options, "Enter your choice:", "", 60);
+            Menu menu = new Menu(" Welcome to McGee, " + fullName + "!!!", options, "Enter your choice:", 60);
             try {
-//                ClearScreen.clrscr();
-                int choice = menu.display();
+                CLIUtils.clrscr();
+                menu.display();
 
-                switch (choice) {
+                switch (menu.getInput()) {
                     case 1:
 //                        viewMenu(scanner);
                         break;

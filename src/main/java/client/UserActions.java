@@ -1,7 +1,8 @@
 package client;
 
-import models.Menu;
-import models.Table;
+import client.pages.RegisterInterface;
+import client.components.Menu;
+import client.components.Table;
 import models.User;
 import remote.UserServiceRemote;
 
@@ -14,17 +15,19 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserFunction {
+public class UserActions {
+    private UserServiceRemote userService;
 
     public void createUser() throws MalformedURLException, NotBoundException, RemoteException {
         RegisterInterface register = new RegisterInterface();
-        register.register();
+        register.start();
+        userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
     }
 
     public void updateUserInterface() throws MalformedURLException, NotBoundException, RemoteException {
         UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
         List<User> userList = userService.getAllUsers();
-        UserFunction userFunction = new UserFunction();
+        UserActions userActions = new UserActions();
         Scanner scanner = new Scanner(System.in);
 
         String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
@@ -44,10 +47,9 @@ public class UserFunction {
 
         Table table = new Table("A List of User", new ArrayList<>(), optionsID, prompt, "");
 
-
         while (true) {
             try {
-                table.displayTable(rows, titles);
+                table.display(rows, titles);
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedUserId = scanner.nextInt();
                     boolean isUserExist = userService.checkUserId(selectedUserId);
@@ -76,13 +78,12 @@ public class UserFunction {
 //                System.out.println("Press any key here to continue...");
             }
         }
-
     }
 
     public void deleteUserInterface() throws MalformedURLException, NotBoundException, RemoteException {
         UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
         List<User> userList = userService.getAllUsers();
-        UserFunction userFunction = new UserFunction();
+        UserActions userActions = new UserActions();
         Scanner scanner = new Scanner(System.in);
 
         String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
@@ -104,7 +105,7 @@ public class UserFunction {
 
         while (true) {
             try {
-                table.displayTable(rows, titles);
+                table.display(rows, titles);
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedUserId = scanner.nextInt();
                     boolean isUserExist = userService.checkUserId(selectedUserId);
@@ -228,10 +229,10 @@ public class UserFunction {
                 System.out.println("------------------------------------------------------------");
 
                 List<String> options = List.of("First Name", "Last Name", "IC/Passport", "Back");
-                Menu menu = new Menu("", options, "Select a detail to update: ", "", 60);
-                int choice = menu.display();
+                Menu menu = new Menu("", options, "Select a detail to update: ", 60);
+                menu.display();
 
-                switch (choice) {
+                switch (menu.getInput()) {
                     case 1:
                         System.out.println("Enter New First Name: ");
                         String newFirstName = scanner.nextLine();

@@ -1,4 +1,4 @@
-package client;
+package client.pages;
 
 
 import remote.UserServiceRemote;
@@ -10,10 +10,16 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class RegisterInterface {
-    public void register() throws MalformedURLException, NotBoundException, RemoteException, MalformedURLException {
+    private final UserServiceRemote userService;
+    private final Scanner scanner;
+
+    public RegisterInterface() throws MalformedURLException, NotBoundException, RemoteException {
+        userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
+        scanner = new Scanner(System.in);
+    }
+
+    public void start() throws MalformedURLException, NotBoundException, RemoteException {
         try {
-            Scanner scanner = new Scanner(System.in);
-            UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
             System.out.println("--------------------------------------------------");
             System.out.println("                   McGee Register                 ");
             System.out.println("--------------------------------------------------");

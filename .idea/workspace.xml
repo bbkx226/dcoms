@@ -4,28 +4,55 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bb74b06-0f44-479d-9b5d-bd6de972a1da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/ClearScreen.java" afterDir="false" />
+    <list default="true" id="6bb74b06-0f44-479d-9b5d-bd6de972a1da" name="Changes" comment="merge with XT">
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/components/Form.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/components/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/components/Table.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/AdminInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/FoodManagementInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/LoginInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/MainMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/OrderManagementInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/UserManagementInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/InputUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/AdminInterface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/FileUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.netbeans_automatic_build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/CustomerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/CustomerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/FoodFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/FoodActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/LoginMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/OrderFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/OrderFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/RegisterInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/RegisterInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/UserFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/UserActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Menu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Table.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ClearScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ClearScreen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/MenuTableUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/CLIUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/AdminInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/AdminInterface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/CustomerInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/CustomerInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/FoodFunction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/FoodFunction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/LoginMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/RegisterInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/RegisterInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/Test.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/Test.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/UserFunction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/UserFunction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/databases/foods.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/databases/users.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/models/Food.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/Food.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/models/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/Order.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/models/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/Menu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/models/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/Table.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/User.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/models/UserType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/UserType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/remote/AuthServiceRemote.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/remote/AuthServiceRemote.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/remote/FoodServiceRemote.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/remote/FoodServiceRemote.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/remote/OrderServiceRemote.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/remote/OrderServiceRemote.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/remote/UserServiceRemote.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/remote/UserServiceRemote.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/AuthServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/AuthServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/FoodServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/FoodServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/OrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/OrderServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/ClearScreen.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/utils/FileUtils$FileType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/FileUtils$FileType.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/utils/FileUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/FileUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/.netbeans_automatic_build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/MenuTableUtils.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,11 +62,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="test" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -58,24 +91,25 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2haY9feU797xu0n5kF7gYfqSW1T" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;test&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/KZ/Desktop/dcoms_test/dcomsTest&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.runner&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Client.executor": "Run",
+    "Application.Server.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "kz",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/KZ/Desktop/dcoms_test/dcomsTest",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.runner"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="dcomsTest" />
@@ -202,6 +236,37 @@
       <option name="presentableId" value="Default" />
       <updated>1717833505833</updated>
     </task>
+    <task id="LOCAL-00001" summary="test commit">
+      <option name="closed" value="true" />
+      <created>1717980966800</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1717980966800</updated>
+    </task>
+    <task id="LOCAL-00002" summary="pushing classes">
+      <option name="closed" value="true" />
+      <created>1717981227914</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1717981227914</updated>
+    </task>
+    <task id="LOCAL-00003" summary="merge with XT">
+      <option name="closed" value="true" />
+      <created>1717981438294</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1717981438294</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="test commit" />
+    <MESSAGE value="pushing classes" />
+    <MESSAGE value="merge with XT" />
+    <option name="LAST_COMMIT_MESSAGE" value="merge with XT" />
   </component>
 </project>
