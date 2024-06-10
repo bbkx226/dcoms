@@ -30,7 +30,7 @@ public class UserActions {
         UserActions userActions = new UserActions();
         Scanner scanner = new Scanner(System.in);
 
-        String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
+        String[] headers = {"ID", "First Name", "Last Name", "IC/Passport"};
         String prompt = "Enter the ID of the user to update ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
         List<Integer> optionsID = new ArrayList<>();
@@ -45,11 +45,11 @@ public class UserActions {
             optionsID.add(user.getId());
         }
 
-        Table table = new Table("A List of User", new ArrayList<>(), optionsID, prompt, "");
+        Table table = new Table("A List of User", headers, rows);
 
         while (true) {
             try {
-                table.display(rows, titles);
+                table.display();
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedUserId = scanner.nextInt();
                     boolean isUserExist = userService.checkUserId(selectedUserId);
@@ -86,7 +86,7 @@ public class UserActions {
         UserActions userActions = new UserActions();
         Scanner scanner = new Scanner(System.in);
 
-        String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
+        String[] headers = {"ID", "First Name", "Last Name", "IC/Passport"};
         String prompt = "Enter the ID of the user to delete ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
         List<Integer> optionsID = new ArrayList<>();
@@ -101,11 +101,11 @@ public class UserActions {
             optionsID.add(user.getId());
         }
 
-        Table table = new Table("A List of User", new ArrayList<>(), optionsID, prompt, "");
+        Table table = new Table("A List of User", headers, rows);
 
         while (true) {
             try {
-                table.display(rows, titles);
+                table.display();
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedUserId = scanner.nextInt();
                     boolean isUserExist = userService.checkUserId(selectedUserId);

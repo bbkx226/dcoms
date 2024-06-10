@@ -43,15 +43,10 @@ public class Menu {
     }
 
     public int getInput() {
-        Integer choice = 0;
+        int choice = 0;
 
         while (true) {
-            System.out.print(prompt + " ");
-
-            choice = InputUtils.intInput();
-            if (choice == null) {
-                System.out.println("Please enter");
-            }
+            choice = InputUtils.intInput(prompt);
             if (choice < 1 || choice > options.toArray().length) {
                 System.out.println("\nInvalid input. Please enter a number between 1 and " + options.toArray().length + ".");
             } else break;

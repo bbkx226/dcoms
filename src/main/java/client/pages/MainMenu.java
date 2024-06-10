@@ -1,9 +1,11 @@
 package client.pages;
 
+import client.FoodActions;
 import client.components.Menu;
 import client.components.Table;
 import models.*;
 import remote.FoodServiceRemote;
+import utils.InputUtils;
 import utils.UIUtils;
 
 import java.net.MalformedURLException;
@@ -16,66 +18,31 @@ import java.util.Scanner;
 
 public class MainMenu {
     private final Menu menu;
-    private final Scanner scanner;
 
     public MainMenu() {
-        List<String> options = List.of("Login", "View Menu", "Register");
-        this.menu = new Menu("Welcome to McGee!", options, "Enter your choice:", 60);
-        this.scanner = new Scanner(System.in);
+        List<String> options = List.of("Login", "View Menu", "Register", "Exit");
+        this.menu = new Menu("Welcome to McGee!", options, "Enter your choice: ");
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
-        boolean exit = false;
-        while (!exit) {
+        while (true) {
             UIUtils.clrscr();
             menu.display();
 
             switch (menu.getInput()) {
                 case 1:
-                    LoginInterface loginInterface = new LoginInterface();
-                    loginInterface.start();
+                    new LoginInterface().start();
                     break;
                 case 2:
-                    viewFoodMenu();
+                    FoodActions.viewMenu();
                     break;
                 case 3:
-                    RegisterInterface registerInterface = new RegisterInterface();
-                    registerInterface.start();
+                    new RegisterInterface().start();
                     break;
                 case 4:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("\nInvalid input. Please try again.");
-                    scanner.nextLine();
+                    exitApp();
             }
         }
-        exitApp();
-    }
-
-    private void viewFoodMenu() throws MalformedURLException, NotBoundException, RemoteException {
-        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
-        List<Food> foodList = foodService.getAllFoods();
-
-        String[] headers = {"ID", "Product", "Quantity", "Price"};
-        List<String[]> rows = new ArrayList<>();
-        List<Integer> optionsID = new ArrayList<>();
-
-        for (Food food : foodList) {
-            rows.add(new String[]{
-                    String.valueOf(food.getId()),
-                    food.getName(),
-                    String.valueOf(food.getQty()),
-                    String.format("$%.2f", food.getPrice())
-            });
-            optionsID.add(food.getId());
-        }
-
-        Table table = new Table("McGee Food Menu", headers, rows);
-        table.display();
-
-        System.out.println("Press any key to continue...");
-        scanner.nextLine();
     }
 
     private static void exitApp() {

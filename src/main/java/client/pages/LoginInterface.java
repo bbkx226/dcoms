@@ -13,17 +13,15 @@ import java.util.Scanner;
 
 public class LoginInterface {
     private final AuthServiceRemote authService;
-    private final Scanner scanner;
 
     public LoginInterface() throws MalformedURLException, NotBoundException, RemoteException {
         this.authService = (AuthServiceRemote) Naming.lookup("rmi://localhost:7777/authService");
-        this.scanner = new Scanner(System.in);
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
         Form form = new Form();
-        form.addField("username", "Enter your username:");
-        form.addField("password", "Enter your password:");
+        form.addField("username", "Enter your username: ");
+        form.addField("password", "Enter your password: ");
 
         String username = form.getField("username");
         String password = form.getField("password");
@@ -38,9 +36,6 @@ public class LoginInterface {
         if (currentUser.getUserType().equals(UserType.CUSTOMER)) {
             CustomerInterface customerInterface = new CustomerInterface();
             customerInterface.customerMenu(currentUser);
-        } else { // admin
-            AdminInterface adminInterface = new AdminInterface(currentUser);
-            adminInterface.start();
-        }
+        } else new AdminInterface(currentUser).start();
     }
 }

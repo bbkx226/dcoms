@@ -20,25 +20,22 @@ import java.util.Scanner;
 public class OrderActions {
 
     public void createOrder() throws MalformedURLException, NotBoundException, RemoteException {
-         UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
-         FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
-         OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
+        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
+        OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
 
-         Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-         int selectedUserId = selectUserForOrder(); // step 1 choose a user
+        // Step 1: Select a user to place the order
+        int selectedUserId = selectUserForOrder();
 
-        if (selectedUserId == 0) {
-            return;
-        }
+        if (selectedUserId == 0) { return; }
 
-         int selectedFoodId = selectFoodForOrder(); // step 2 choose a food
+        // Step 2: Select the food to order
+        int selectedFoodId = selectFoodForOrder();
 
-        if (selectedFoodId == 0) {
-            return;
-        }
+        if (selectedFoodId == 0) { return; }
 
-        // step 3 enter quantity and create order
+        // Step 3: Enter quantity of food to order and place the order
         Food selectedFood = foodService.getFoodById(selectedFoodId);
 
         while (true) {
@@ -178,7 +175,7 @@ public class OrderActions {
         UserActions userActions = new UserActions();
         Scanner scanner = new Scanner(System.in);
 
-        String[] titles = {"ID", "First Name", "Last Name", "IC/Passport"};
+        String[] headers = {"ID", "First Name", "Last Name", "IC/Passport"};
         String prompt = "Enter the ID of the user before order ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
         List<Integer> optionsID = new ArrayList<>();
@@ -193,11 +190,11 @@ public class OrderActions {
             optionsID.add(user.getId());
         }
 
-        Table table = new Table("A List of User", new ArrayList<>(), optionsID, prompt, "");
+        Table table = new Table("A List of User", headers, rows);
 
         while (true) {
             try {
-                table.display(rows, titles);
+                table.display();
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedUserId = scanner.nextInt();
                     boolean isUserExist = userService.checkUserId(selectedUserId);
@@ -235,7 +232,7 @@ public class OrderActions {
         List<Food> foodList = foodService.getAllFoods();
         Scanner scanner = new Scanner(System.in);
 
-        String[] titles = {"ID", "Product", "Quantity", "Price"};
+        String[] headers = {"ID", "Product", "Quantity", "Price"};
         String prompt = "Enter the ID of the food to order ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
         List<Integer> optionsID = new ArrayList<>();
@@ -251,11 +248,11 @@ public class OrderActions {
             optionsID.add(food.getId());
         }
 
-        Table table = new Table("A List of Food", new ArrayList<>(), optionsID, prompt, "");
+        Table table = new Table("A List of Food", headers, rows);
 
         while (true) {
             try {
-                table.display(rows, titles);
+                table.display();
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);

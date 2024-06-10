@@ -4,6 +4,7 @@ import models.Food;
 import client.components.Menu;
 import client.components.Table;
 import remote.FoodServiceRemote;
+import utils.InputUtils;
 
 
 import java.net.MalformedURLException;
@@ -16,6 +17,27 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FoodActions {
+    public static void viewMenu() throws MalformedURLException, NotBoundException, RemoteException {
+        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
+        List<Food> foodList = foodService.getAllFoods();
+
+        String[] headers = {"ID", "Product", "Quantity", "Price"};
+        List<String[]> rows = new ArrayList<>();
+
+        for (Food food : foodList) {
+            rows.add(new String[]{
+                    String.valueOf(food.getId()),
+                    food.getName(),
+                    String.valueOf(food.getQty()),
+                    String.format("$%.2f", food.getPrice())
+            });
+        }
+
+        Table table = new Table("McGee Food Menu", headers, rows);
+        table.display();
+
+        InputUtils.waitForAnyKey();
+    }
 
     public void createFood() throws MalformedURLException, NotBoundException, RemoteException {
         try {
@@ -80,7 +102,7 @@ public class FoodActions {
         List<Food> foodList = foodService.getAllFoods();
         Scanner scanner = new Scanner(System.in);
 
-        String[] titles = {"ID", "Product", "Quantity", "Price"};
+        String[] headers = {"ID", "Product", "Quantity", "Price"};
         String prompt = "Enter the ID of the food to update ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
         List<Integer> optionsID = new ArrayList<>();
@@ -96,12 +118,12 @@ public class FoodActions {
             optionsID.add(food.getId());
         }
 
-        Table table = new Table("A List of Food", new ArrayList<>(), optionsID, prompt, "");
+        Table table = new Table("A List of Food", headers, rows);
 
 
         while (true) {
             try {
-                table.display(rows, titles);
+                table.display();
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);
@@ -138,7 +160,7 @@ public class FoodActions {
         List<Food> foodList = foodService.getAllFoods();
         Scanner scanner = new Scanner(System.in);
 
-        String[] titles = {"ID", "Product", "Quantity", "Price"};
+        String[] headers = {"ID", "Product", "Quantity", "Price"};
         String prompt = "Enter the ID of the food to update ('b' for back): ";
         List<String[]> rows = new ArrayList<>();
         List<Integer> optionsID = new ArrayList<>();
@@ -154,11 +176,11 @@ public class FoodActions {
             optionsID.add(food.getId());
         }
 
-        Table table = new Table("A List of Food", new ArrayList<>(), optionsID, prompt, "");
+        Table table = new Table("A List of Food", headers, rows);
 
         while (true) {
             try {
-                table.display(rows, titles);
+                table.display();
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);

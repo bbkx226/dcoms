@@ -3,22 +3,38 @@ package client.components;
 import utils.InputUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Form {
+
     private final Map<String, String> fields;
-    private final Scanner scanner;
 
     public Form() {
         fields = new HashMap<>();
-        scanner = new Scanner(System.in);
     }
 
-    // Add a field to the form
+    // Add a field to the form without checking for duplicates
     public void addField(String fieldName, String prompt) {
-        System.out.print(prompt + " ");
-        String input = InputUtils.stringInput();
+        String input = InputUtils.stringInput(prompt);
+        fields.put(fieldName, input);
+    }
+
+    // Overloaded method, add a field to the form with duplicate checking
+    public void addField(String fieldName, String prompt, List<String> existingValues, String duplicateMsg) {
+        boolean isDuplicate;
+        String input;
+
+        do {
+            input = InputUtils.stringInput(prompt);
+            isDuplicate = existingValues.contains(input);
+
+            if (isDuplicate) {
+                System.out.println(duplicateMsg);
+            }
+        } while (isDuplicate);
+
         fields.put(fieldName, input);
     }
 
@@ -34,5 +50,4 @@ public class Form {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
-
 }

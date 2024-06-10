@@ -7,26 +7,35 @@ import java.util.Scanner;
 
 public class Table {
     private final String header;
-    private String[] headers;
-    private List<String[]> rows;
+    private final String[] headers;
+    private final List<String[]> rows;
+    private final int width;
 
     public Table(String header, String[] headers, List<String[]> rows) {
         this.header = header;
         this.headers = headers;
         this.rows = rows;
+        this.width = UIUtils.defaultWidth;
     }
 
+    public Table(String header, String[] headers, List<String[]> rows, int width) {
+        this.header = header;
+        this.headers = headers;
+        this.rows = rows;
+        this.width = width;
+    }
+
+    // display table's headers and data
     public void display() {
         int[] columnWidths = getColumnWidths(rows, headers);
         int totalWidth = getTotalWidth(columnWidths);
         Scanner scanner = new Scanner(System.in);
-        UIUtils UIUtils = new UIUtils(totalWidth);
 
-        UIUtils.line();
-        UIUtils.printHeader(header);
-        UIUtils.line();
+        UIUtils.line(width);
+        UIUtils.printHeader(header, width);
+        UIUtils.line(width);
         printRow(headers, columnWidths);
-        UIUtils.line();
+        UIUtils.line(width);
         // Check if there are no rows to display (data)
         if (rows.isEmpty()) {
             printCenteredMessage(totalWidth, "No data available");
@@ -35,7 +44,7 @@ public class Table {
                 printRow(row, columnWidths);
             }
         }
-        UIUtils.line();
+        UIUtils.line(width);
     }
 
     private int[] getColumnWidths(List<String[]> rows, String[] titles) {

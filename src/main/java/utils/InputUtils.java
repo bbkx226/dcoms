@@ -5,40 +5,62 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class InputUtils {
-    public static String stringInput() {
+    public static String stringInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
-        try {
-            return scanner.nextLine();
-        } catch (NoSuchElementException e) {
-            System.out.println("Please enter a value!");
-            scanner.next();
+        String input = "";
+
+        while (true) {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+
+            if (input.trim().isEmpty()) {
+                System.out.println("Input cannot be empty. Please try again.");
+                System.out.flush();
+            } else break;
         }
-        return null;
+
+        return input;
     }
 
-    public static Integer intInput() {
+    public static int intInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
-        try {
-            return scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Please enter a number!");
-        } catch (NoSuchElementException e) {
-            System.out.println("Please enter a value!");
+        int input = 0;
+
+        while (true) {
+            System.out.print(prompt);
+
+            try {
+                input = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid value.");
+            }
         }
-        scanner.next();
-        return null;
+
+        return input;
     }
 
-    public static Double doubleInput() {
+    public static double doubleInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
-        try {
-            return scanner.nextDouble();
-        } catch (InputMismatchException e) {
-            System.out.println("Please enter a number!");
-        } catch (NoSuchElementException e) {
-            System.out.println("Please enter a value!");
+        double input = 0.0;
+
+        while (true) {
+            System.out.print(prompt);
+
+            try {
+                input = Double.parseDouble(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid value.");
+            }
         }
+
+        return input;
+    }
+
+    public static void waitForAnyKey() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Press any key to continue...");
         scanner.next();
-        return null;
     }
 }
