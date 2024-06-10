@@ -41,7 +41,8 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
             if (!foodOrderExists) {
                 if (qty > food.getQty()) { return false; }
                 double newPrice = qty * food.getPrice();
-                Order newOrder = new Order(orders.size() + 1, foodId, food.getName(), userId, qty, newPrice); // Ensure unique ID
+                int maxId = orders.stream().mapToInt(Order::getId).max().orElse(0);
+                Order newOrder = new Order(maxId + 1, foodId, food.getName(), userId, qty, newPrice); // Ensure unique ID
                 orders.add(newOrder);
             }
             return true;
@@ -90,7 +91,7 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
     public boolean deleteOrder(Order orderToRemove) throws RemoteException {
         if (getOrderByOrderId(orderToRemove.getId()) == null) { return false; }
         for (Order order : orders) {
-            if (order.getFoodId() == orderToRemove.getFoodId()) {
+            if (order.getId() == orderToRemove.getId()) {
                 return orders.remove(order);
             }
         }

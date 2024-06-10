@@ -104,26 +104,26 @@ public class FoodActions {
 
         String[] headers = {"ID", "Product", "Quantity", "Price"};
         String prompt = "Enter the ID of the food to update ('b' for back): ";
-        List<String[]> rows = new ArrayList<>();
-        List<Integer> optionsID = new ArrayList<>();
-
-
-        for (Food food : foodList) {
-            rows.add(new String[] {
-                    String.valueOf(food.getId()),
-                    food.getName(),
-                    String.valueOf(food.getQty()),
-                    String.valueOf(food.getPrice()),
-            });
-            optionsID.add(food.getId());
-        }
-
-        Table table = new Table("A List of Food", headers, rows);
 
 
         while (true) {
             try {
+                List<String[]> rows = new ArrayList<>();
+                List<Integer> optionsID = new ArrayList<>();
+
+                for (Food food : foodList) {
+                    rows.add(new String[] {
+                            String.valueOf(food.getId()),
+                            food.getName(),
+                            String.valueOf(food.getQty()),
+                            String.valueOf(food.getPrice()),
+                    });
+                    optionsID.add(food.getId());
+                }
+
+                Table table = new Table("A List of Food", headers, rows);
                 table.display();
+                System.out.print("Enter the ID of the food to update ('b' for back): ");
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);
@@ -161,26 +161,26 @@ public class FoodActions {
         Scanner scanner = new Scanner(System.in);
 
         String[] headers = {"ID", "Product", "Quantity", "Price"};
-        String prompt = "Enter the ID of the food to update ('b' for back): ";
-        List<String[]> rows = new ArrayList<>();
-        List<Integer> optionsID = new ArrayList<>();
-        Integer[] menuOptions = {1,2,3,4};
-
-        for (Food food : foodList) {
-            rows.add(new String[] {
-                    String.valueOf(food.getId()),
-                    food.getName(),
-                    String.valueOf(food.getQty()),
-                    String.valueOf(food.getPrice()),
-            });
-            optionsID.add(food.getId());
-        }
-
-        Table table = new Table("A List of Food", headers, rows);
 
         while (true) {
             try {
+                List<String[]> rows = new ArrayList<>();
+                List<Integer> optionsID = new ArrayList<>();
+                Integer[] menuOptions = {1,2,3,4};
+
+                for (Food food : foodList) {
+                    rows.add(new String[] {
+                            String.valueOf(food.getId()),
+                            food.getName(),
+                            String.valueOf(food.getQty()),
+                            String.valueOf(food.getPrice()),
+                    });
+                    optionsID.add(food.getId());
+                }
+
+                Table table = new Table("A List of Food", headers, rows);
                 table.display();
+                System.out.print("Enter the ID of the food to delete ('b' for back): ");
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedFoodId = scanner.nextInt();
                     boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);
@@ -228,7 +228,7 @@ public class FoodActions {
                 System.out.println("Quantity: " + foodToDelete.getQty());
                 System.out.println("Pice: " + foodToDelete.getPrice());
                 System.out.println("------------------------------------------------------------");
-                System.out.println("Type 'y' to confirm deletion, 'n' to cancel, or 'b' to go back.");
+                System.out.print("Type 'y' to confirm deletion, 'n' to cancel, or 'b' to go back: ");
                 String confirmation = scanner.next();
                 if (confirmation.equalsIgnoreCase("y")) {
                     boolean deleted = foodService.removeFood(selectedFoodId);
@@ -249,11 +249,10 @@ public class FoodActions {
                 }
             } catch (RemoteException e) {
                 System.out.println("Error occurred while deleting user details: " + e.getMessage());
-                System.out.println("Please try again later.");
+                InputUtils.waitForAnyKey();
             } catch (InputMismatchException e) {
                 System.out.println("\nInvalid input. Please enter a valid options.");
-                System.out.println("Press any key here to continue...");
-                scanner.nextLine();
+                InputUtils.waitForAnyKey();
             }
         }
 

@@ -23,26 +23,26 @@ public class FoodManagementInterface {
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
-        List<Food> foodList = foodService.getAllFoods();
-        FoodActions foodActions = new FoodActions();
-        Scanner scanner = new Scanner(System.in);
-
-        String[] headers = {"ID", "Product", "Quantity", "Price"};
-        List<String[]> rows = new ArrayList<>();
-        for (Food food : foodList) {
-            rows.add(new String[] {
-                    String.valueOf(food.getId()),
-                    food.getName(),
-                    String.valueOf(food.getQty()),
-                    String.valueOf(food.getPrice()),
-            });
-        }
-        Table table = new Table("McGee's Food List", headers, rows);
-
-        List<String> options = List.of("Create Product", "Update Product", "Delete Product", "Back");
-        Menu menu = new Menu("Manage Food", options, "Enter your choice:");
 
         while (true) {
+            List<Food> foodList = foodService.getAllFoods();
+            FoodActions foodActions = new FoodActions();
+            Scanner scanner = new Scanner(System.in);
+
+            String[] headers = {"ID", "Product", "Quantity", "Price"};
+            List<String[]> rows = new ArrayList<>();
+            for (Food food : foodList) {
+                rows.add(new String[] {
+                        String.valueOf(food.getId()),
+                        food.getName(),
+                        String.valueOf(food.getQty()),
+                        String.valueOf(food.getPrice()),
+                });
+            }
+            Table table = new Table("McGee's Food List", headers, rows);
+
+            List<String> options = List.of("Create Product", "Update Product", "Delete Product", "Back");
+            Menu menu = new Menu("Manage Food", options, "Enter your choice: ");
             UIUtils.clrscr();
             table.display();
             menu.display();

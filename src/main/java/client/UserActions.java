@@ -50,6 +50,7 @@ public class UserActions {
         while (true) {
             try {
                 table.display();
+                System.out.print("Enter the ID of the user to update ('b' for back): ");
                 if (scanner.hasNextInt()) { // Check the user input is int
                     int selectedUserId = scanner.nextInt();
                     boolean isUserExist = userService.checkUserId(selectedUserId);

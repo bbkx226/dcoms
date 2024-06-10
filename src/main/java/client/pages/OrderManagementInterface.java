@@ -54,10 +54,10 @@ public class OrderManagementInterface {
                 orderActions.createOrder();
                 break;
             case 2:
-//                        foodFunction.updateFood();
+                orderActions.updateOrder();
                 break;
             case 3:
-//                        foodFunction.deleteFood();
+                orderActions.deleteOrder();
                 break;
             case 4:
                 return;

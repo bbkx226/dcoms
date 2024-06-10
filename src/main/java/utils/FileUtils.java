@@ -61,19 +61,24 @@ public class FileUtils {
     }
 
     // Deletes a line from a file at a given index
-    public static void deleteFromFile(FileType fileType, int index) {
+    public static void deleteFromFile(FileType fileType, int id) {
         List<String> lines;
         try {
             lines = Files.readAllLines(fileType.getFilePath());
-            if (index >= 0 && index < lines.size()) {
-                lines.remove(index);
+            boolean removed = lines.removeIf(line -> matchId(line, id));
+            if (removed) {
                 Files.write(fileType.getFilePath(), lines);
-                LOGGER.log(Level.INFO, "File deleted successfully.");
+                LOGGER.log(Level.INFO, "Item with ID " + id + " deleted successfully.");
             } else {
-                LOGGER.log(Level.WARNING, "Failed to delete file");
+                LOGGER.log(Level.WARNING, "Item with ID " + id + " not found.");
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error deleting from file", e);
         }
+    }
+
+    private static boolean matchId(String line, int id) {
+        String[] parts = line.split(",");
+        return parts.length > 0 && parts[0].trim().equals(String.valueOf(id));
     }
 }

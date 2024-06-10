@@ -57,7 +57,12 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
     @Override
     public User getUserById(int userId) throws RemoteException {
         List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
-        return users.size() >= userId ? users.get(userId - 1) : null;
+        for (User user : users) {
+            if (user.getId() == userId) {
+                return user;
+            }
+        }
+        return null;
     }
 
     // Updates an existing user if they exist
@@ -92,7 +97,7 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
     @Override
     public boolean checkUserId(int userId) throws RemoteException {
         List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
-        return users.stream().anyMatch(user -> Integer.valueOf(userId).equals(user.getId()));
+        return users.stream().anyMatch(user -> user.getId() == userId);
     }
 
 }
