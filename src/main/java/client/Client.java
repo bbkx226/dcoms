@@ -7,6 +7,7 @@ import remote.AuthServiceRemote;
 import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
 import remote.UserServiceRemote;
+import utils.ClearScreen;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
