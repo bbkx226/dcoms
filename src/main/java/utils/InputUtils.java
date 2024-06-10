@@ -5,53 +5,89 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class InputUtils {
-    public static String stringInput(String prompt) {
+    public static String stringInput(String prompt, String cancelString) {
         Scanner scanner = new Scanner(System.in);
         String input = "";
 
         while (true) {
             System.out.print(prompt);
-            input = scanner.nextLine();
 
-            if (input.trim().isEmpty()) {
-                System.out.println("Input cannot be empty. Please try again.");
-                System.out.flush();
-            } else break;
+            String userInput = scanner.nextLine();
+            if (userInput.equalsIgnoreCase(cancelString)) {
+                return null; // Return null to indicate cancellation
+            }
+
+            input = userInput;
+            break;
         }
 
         return input;
     }
 
-    public static int intInput(String prompt) {
+    public static int intInput(String prompt, String cancelString) {
         Scanner scanner = new Scanner(System.in);
         int input = 0;
 
         while (true) {
             System.out.print(prompt);
 
+            String userInput = scanner.nextLine();
+            if (userInput.equalsIgnoreCase(cancelString)) {
+                return Integer.MIN_VALUE; // Return a special value to indicate cancellation
+            }
+
             try {
-                input = Integer.parseInt(scanner.nextLine());
+                input = Integer.parseInt(userInput);
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid value.");
+                System.out.println("Invalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
             }
         }
 
         return input;
     }
 
-    public static double doubleInput(String prompt) {
+    public static char charInput(String prompt, char cancelChar) {
         Scanner scanner = new Scanner(System.in);
-        double input = 0.0;
+        char input = '\0';
 
         while (true) {
             System.out.print(prompt);
 
+            String userInput = scanner.nextLine();
+            if (userInput.length() == 1 && userInput.charAt(0) == cancelChar) {
+                return '\0'; // Return null character to indicate cancellation
+            }
+
+            if (userInput.length() != 1) {
+                System.out.println("Invalid input. Please enter a single character or '" + cancelChar + "' to cancel.");
+                continue;
+            }
+
+            input = userInput.charAt(0);
+            break;
+        }
+
+        return input;
+    }
+
+    public static double doubleInput(String prompt, String cancelString) {
+        Scanner scanner = new Scanner(System.in);
+        double input = 0;
+
+        while (true) {
+            System.out.print(prompt);
+
+            String userInput = scanner.nextLine();
+            if (userInput.equalsIgnoreCase(cancelString)) {
+                return Double.NaN; // Return a special value to indicate cancellation
+            }
+
             try {
-                input = Double.parseDouble(scanner.nextLine());
+                input = Double.parseDouble(userInput);
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid value.");
+                System.out.println("Invalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
             }
         }
 

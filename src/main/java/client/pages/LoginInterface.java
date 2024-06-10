@@ -19,11 +19,11 @@ public class LoginInterface {
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
         Form form = new Form();
-        form.addField("username", "Enter your username: ");
-        form.addField("password", "Enter your password: ");
+        form.addStringField("username", "Enter your username: ");
+        form.addStringField("password", "Enter your password: ");
 
-        String username = form.getField("username");
-        String password = form.getField("password");
+        String username = (String) form.getField("username");
+        String password = (String) form.getField("password");
 
         User currentUser = authService.authenticate(username, password);
 

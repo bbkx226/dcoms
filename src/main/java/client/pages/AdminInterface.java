@@ -14,8 +14,8 @@ public class AdminInterface {
     private final Menu menu;
 
     public AdminInterface(User user) {
-        List<String> options = List.of("View User Details", "View Menu", "Check Order", "Order", "Back");
-        this.menu = new Menu("Welcome to McGee, " + user.getLastName() + "!!!", options, "Enter your choice:");
+        List<String> options = List.of("View User Details", "View Menu", "Check Order", "Order", "Logout");
+        this.menu = new Menu("Welcome to McGee, " + user.getLastName() + "!!!", options, "Enter your choice: ");
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {

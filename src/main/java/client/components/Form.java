@@ -3,50 +3,77 @@ package client.components;
 import utils.InputUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class Form {
-
-    private final Map<String, String> fields;
+    private final Map<String, Object> fields;
+    private final String cancelString;
 
     public Form() {
-        fields = new HashMap<>();
+        this.fields = new HashMap<>();
+        this.cancelString = "b";
     }
 
-    // Add a field to the form without checking for duplicates
-    public void addField(String fieldName, String prompt) {
-        String input = InputUtils.stringInput(prompt);
+    // Add a string field, returns false if cancel string is entered
+    public boolean addStringField(String fieldName, String prompt) {
+        String input = InputUtils.stringInput(prompt, cancelString);
+        if (input == null) { return false; }
         fields.put(fieldName, input);
+        return true;
     }
 
-    // Overloaded method, add a field to the form with duplicate checking
-    public void addField(String fieldName, String prompt, List<String> existingValues, String duplicateMsg) {
-        boolean isDuplicate;
+    // Add a string field to the form with custom condition
+    public boolean addStringField(String fieldName, String prompt, Predicate<String> condition, String errorMsg) {
+        boolean isValid;
         String input;
 
         do {
-            input = InputUtils.stringInput(prompt);
-            isDuplicate = existingValues.contains(input);
+            input = InputUtils.stringInput(prompt, cancelString);
+            isValid = condition.test(input);
 
-            if (isDuplicate) {
-                System.out.println(duplicateMsg);
-            }
-        } while (isDuplicate);
+            if (!isValid) { System.out.println(errorMsg); }
+            if (input == null) { return false; }
+        } while (!isValid);
 
         fields.put(fieldName, input);
+        return true;
+    }
+
+    // Add an int field, returns false if cancel string is entered
+    public boolean addIntField(String fieldName, String prompt) {
+        int input = InputUtils.intInput(prompt, cancelString);
+        if (input == Integer.MIN_VALUE) { return false; }
+        fields.put(fieldName, input);
+        return true;
+    }
+
+    // Add an int field to the form with custom condition
+    public boolean addIntField(String fieldName, String prompt, Predicate<Integer> condition, String errorMsg) {
+        boolean isValid;
+        int input;
+
+        do {
+            input = InputUtils.intInput(prompt, cancelString);
+            isValid = condition.test(input);
+
+            if (!isValid) { System.out.println(errorMsg); }
+            if (input == Integer.MIN_VALUE) { return false; }
+        } while (!isValid);
+
+        fields.put(fieldName, input);
+        return true;
     }
 
     // Get the value of a field
-    public String getField(String fieldName) {
+    public Object getField(String fieldName) {
         return fields.get(fieldName);
     }
 
     // Display all fields and their values
     public void displayFields() {
         System.out.println("Form Data:");
-        for (Map.Entry<String, String> entry : fields.entrySet()) {
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }

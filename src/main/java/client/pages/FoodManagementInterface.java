@@ -40,7 +40,7 @@ public class FoodManagementInterface {
         Table table = new Table("McGee's Food List", headers, rows);
 
         List<String> options = List.of("Create Product", "Update Product", "Delete Product", "Back");
-        Menu menu = new Menu("Manage Food", options, "Enter your choice:");
+        Menu menu = new Menu("Manage Food", options, "Enter your choice: ");
 
         while (true) {
             UIUtils.clrscr();
