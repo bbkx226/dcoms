@@ -65,6 +65,8 @@ public class LoginMenu {
             System.out.println("Invalid credentials. Please try again.");
         } else { // Success login
             System.out.println(currentUser.getUserTypeString());
+            Customer customer = new Customer();
+            customer.loginSuccessful();
         }
 
 
