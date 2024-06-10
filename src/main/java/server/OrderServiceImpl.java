@@ -54,9 +54,9 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
 
     // Returns an order for a specific food item by its ID, or null if no such order exists.
     @Override
-    public Order getOrderByFoodId(int foodId) throws RemoteException {
+    public Order getOrderByOrderId(int orderId) throws RemoteException {
         for (Order order : orders) {
-            if (order.getFoodId() == foodId) {
+            if (order.getId() == orderId) {
                 return order;
             }
         }
@@ -66,20 +66,20 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
     // Updates an existing order if it exists and there is enough quantity of the food item.
     @Override
     public boolean updateOrder(Order updatedOrder) throws RemoteException {
-        Order orderToUpdate = getOrderByFoodId(updatedOrder.getFoodId());
+        Order orderToUpdate = getOrderByOrderId(updatedOrder.getId());
         if (orderToUpdate == null) { return false; }
-        if (updatedOrder.getQuantity() > foodRepository.getFoodById(updatedOrder.getFoodId()).getQty()) { return false; }
         Food food = foodRepository.getFoodById(updatedOrder.getFoodId());
-        if (food != null) {
-            for (Order order : orders) {
-                if (order.getFoodId() == food.getId()) {
-                    if (updatedOrder.getQuantity() == 0) {
-                        return deleteOrder(updatedOrder);
-                    } else {
-                        orders.set(orders.indexOf(order), updatedOrder);
-                    }
-                    return true;
-                }
+        if (food == null) { return false; }
+
+        if (updatedOrder.getQuantity() > food.getQty()) { return false; }
+        // Find and update the order in the list
+        for (Order order : orders) {
+            if (order.getId() != updatedOrder.getId()) { continue; }
+            if (updatedOrder.getQuantity() == 0) {
+                return deleteOrder(updatedOrder);
+            } else {
+                orders.set(orders.indexOf(order), updatedOrder);
+                return true;
             }
         }
         return false;
@@ -88,7 +88,7 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
     // Deletes an existing order by its food ID if it exists.
     @Override
     public boolean deleteOrder(Order orderToRemove) throws RemoteException {
-        if (getOrderByFoodId(orderToRemove.getFoodId()) == null) { return false; }
+        if (getOrderByOrderId(orderToRemove.getId()) == null) { return false; }
         for (Order order : orders) {
             if (order.getFoodId() == orderToRemove.getFoodId()) {
                 return orders.remove(order);

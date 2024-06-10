@@ -2,13 +2,9 @@ package client.pages;
 
 import client.components.Menu;
 import models.*;
-import remote.FoodServiceRemote;
-import remote.OrderServiceRemote;
-import remote.UserServiceRemote;
-import utils.CLIUtils;
+import utils.UIUtils;
 
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -26,7 +22,7 @@ public class AdminInterface {
         Scanner scanner = new Scanner(System.in); // Fix typo: System.io should be System.in
 
         while (true) {
-            CLIUtils.clrscr();
+            UIUtils.clrscr();
             menu.display();
 
             switch (menu.getInput()) {

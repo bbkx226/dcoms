@@ -5,7 +5,7 @@ import client.components.Menu;
 import client.components.Table;
 import models.User;
 import remote.UserServiceRemote;
-import utils.CLIUtils;
+import utils.UIUtils;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -42,7 +42,7 @@ public class UserManagementInterface {
         List<String> options = List.of("Create User", "Update User", "Delete User", "Back");
         Menu menu = new Menu("Manage Users", options, "Enter your choice:", 60);
 
-        CLIUtils.clrscr();
+        UIUtils.clrscr();
         table.display();
         menu.display();
 

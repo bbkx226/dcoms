@@ -1,6 +1,6 @@
 package client.components;
 
-import utils.CLIUtils;
+import utils.UIUtils;
 
 import java.util.List;
 import java.util.Scanner;
@@ -20,13 +20,13 @@ public class Table {
         int[] columnWidths = getColumnWidths(rows, headers);
         int totalWidth = getTotalWidth(columnWidths);
         Scanner scanner = new Scanner(System.in);
-        CLIUtils CLIUtils = new CLIUtils(totalWidth);
+        UIUtils UIUtils = new UIUtils(totalWidth);
 
-        CLIUtils.line();
-        CLIUtils.printHeader(header);
-        CLIUtils.line();
+        UIUtils.line();
+        UIUtils.printHeader(header);
+        UIUtils.line();
         printRow(headers, columnWidths);
-        CLIUtils.line();
+        UIUtils.line();
         // Check if there are no rows to display (data)
         if (rows.isEmpty()) {
             printCenteredMessage(totalWidth, "No data available");
@@ -35,7 +35,7 @@ public class Table {
                 printRow(row, columnWidths);
             }
         }
-        CLIUtils.line();
+        UIUtils.line();
     }
 
     private int[] getColumnWidths(List<String[]> rows, String[] titles) {

@@ -1,11 +1,11 @@
 package client.pages;
 
-import client.OrderFunction;
+import client.OrderActions;
 import client.components.Menu;
 import models.Order;
 import client.components.Table;
 import remote.OrderServiceRemote;
-import utils.CLIUtils;
+import utils.UIUtils;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -23,7 +23,7 @@ public class OrderManagementInterface {
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
-        OrderFunction orderFunction = new OrderFunction();
+        OrderActions orderActions = new OrderActions();
         Scanner scanner = new Scanner(System.in);
 
         String[] headers = {"Order ID", "Customer ID", "Food ID", "Food Name","Price", "Quantity", "Total Price"};
@@ -45,13 +45,13 @@ public class OrderManagementInterface {
         List<String> options = List.of("Create Order", "Update Order", "Delete Order", "Back");
         Menu menu = new Menu("Manage Orders", options, "Enter your choice:", 60);
 
-        CLIUtils.clrscr();
+        UIUtils.clrscr();
         table.display();
         menu.display();
 
         switch (menu.getInput()) {
             case 1:
-                orderFunction.createOrder();
+                orderActions.createOrder();
                 break;
             case 2:
 //                        foodFunction.updateFood();

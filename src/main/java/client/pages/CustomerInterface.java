@@ -2,7 +2,7 @@ package client.pages;
 
 import client.components.Menu;
 import models.User;
-import utils.CLIUtils;
+import utils.UIUtils;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -20,7 +20,7 @@ public class CustomerInterface {
             List<String> options = List.of("View Menu", "Order", "Check Order", "Back");
             Menu menu = new Menu(" Welcome to McGee, " + fullName + "!!!", options, "Enter your choice:", 60);
             try {
-                CLIUtils.clrscr();
+                UIUtils.clrscr();
                 menu.display();
 
                 switch (menu.getInput()) {

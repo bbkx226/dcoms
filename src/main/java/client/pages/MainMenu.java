@@ -4,7 +4,7 @@ import client.components.Menu;
 import client.components.Table;
 import models.*;
 import remote.FoodServiceRemote;
-import utils.CLIUtils;
+import utils.UIUtils;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -27,7 +27,7 @@ public class MainMenu {
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
         boolean exit = false;
         while (!exit) {
-            CLIUtils.clrscr();
+            UIUtils.clrscr();
             menu.display();
 
             switch (menu.getInput()) {

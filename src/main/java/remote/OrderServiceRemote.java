@@ -15,7 +15,7 @@ public interface OrderServiceRemote extends Remote {
     List<Order> getOrders() throws RemoteException;
 
     // Returns an order by its associated food ID
-    Order getOrderByFoodId(int foodId) throws RemoteException;
+    Order getOrderByOrderId(int orderId) throws RemoteException;
 
     // Updates an existing order
     boolean updateOrder(Order updatedOrder) throws RemoteException;

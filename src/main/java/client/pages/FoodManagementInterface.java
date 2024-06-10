@@ -5,7 +5,7 @@ import models.Food;
 import client.components.Menu;
 import client.components.Table;
 import remote.FoodServiceRemote;
-import utils.CLIUtils;
+import utils.UIUtils;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -40,10 +40,10 @@ public class FoodManagementInterface {
         Table table = new Table("McGee's Food List", headers, rows);
 
         List<String> options = List.of("Create Product", "Update Product", "Delete Product", "Back");
-        Menu menu = new Menu("Manage Food", options, "Enter your choice:", 60);
+        Menu menu = new Menu("Manage Food", options, "Enter your choice:");
 
         while (true) {
-            CLIUtils.clrscr();
+            UIUtils.clrscr();
             table.display();
             menu.display();
 
