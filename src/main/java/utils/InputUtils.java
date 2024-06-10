@@ -61,6 +61,6 @@ public class InputUtils {
     public static void waitForAnyKey() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Press any key to continue...");
-        scanner.next();
+        scanner.nextLine();
     }
 }

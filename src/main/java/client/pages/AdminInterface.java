@@ -15,11 +15,10 @@ public class AdminInterface {
 
     public AdminInterface(User user) {
         List<String> options = List.of("View User Details", "View Menu", "Check Order", "Order", "Back");
-        this.menu = new Menu("Welcome to McGee, " + user.getLastName() + "!!!", options, "Enter your choice:", 60);
+        this.menu = new Menu("Welcome to McGee, " + user.getLastName() + "!!!", options, "Enter your choice:");
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
-        Scanner scanner = new Scanner(System.in); // Fix typo: System.io should be System.in
 
         while (true) {
             UIUtils.clrscr();
@@ -40,8 +39,6 @@ public class AdminInterface {
                     break;
                 case 5: // Back option
                     return; // Return to the previous menu or perform any desired action
-                default:
-                    System.out.println("\nInvalid input. Please try again.");
             }
         }
     }
