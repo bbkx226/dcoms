@@ -1,8 +1,9 @@
-package client;
+package client.pages;
 
-import models.Menu;
+import client.components.Menu;
 import models.User;
-import utils.ClearScreen;
+import utils.InputUtils;
+import utils.UIUtils;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -17,13 +18,13 @@ public class CustomerInterface {
 
         while (true) {
             String fullName = user.getFirstName() + " " + user.getLastName();
-            List<String> options = List.of("View Menu", "Order", "Check Order", "Back");
-            Menu menu = new Menu(" Welcome to McGee, " + fullName + "!!!", options, "Enter your choice:", "", 60);
+            List<String> options = List.of("View Menu", "Order", "Back");
+            Menu menu = new Menu(" Welcome to McGee, " + fullName + "!!!", options, "Enter your choice:", 60);
             try {
-//                ClearScreen.clrscr();
-                int choice = menu.display();
+                UIUtils.clrscr();
+                menu.display();
 
-                switch (choice) {
+                switch (menu.getInput()) {
                     case 1:
 //                        viewMenu(scanner);
                         break;
@@ -37,13 +38,11 @@ public class CustomerInterface {
                         return; // Return to the previous menu
                     default:
                         System.out.println("\nInvalid input. Please try again.");
-                        System.out.println("Press any key to continue...");
-                        scanner.nextLine();
+                        InputUtils.waitForAnyKey();
                 }
             } catch (InputMismatchException e) {
                 System.out.println("\nInvalid input. Please enter a number between 1 and 4.");
-                System.out.println("\nPress any key to continue...");
-                scanner.nextLine();
+                InputUtils.waitForAnyKey();
             }
         }
     }

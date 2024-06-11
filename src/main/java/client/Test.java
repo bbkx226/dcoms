@@ -51,20 +51,20 @@ public class Test {
         List<Order> orders = orderService.getOrders(); // should be empty
         System.out.println("\nOrderService testing");
         System.out.println("Initial orders is empty: " + orders.isEmpty());
-        orderService.addOrder(1, 10);
+//        orderService.addOrder(1, 10);
         List<Order> orders1 = orderService.getOrders(); // should have one order
         System.out.println("Orders list after adding one order: ");
         for (Order order : orders1) {
             System.out.println(order.toString());
         }
-        boolean result = orderService.addOrder(1, 45);
-        System.out.println("Trying to add an order with quantity higher than current food quantity (same food item): " + result);
-        boolean result1 = orderService.addOrder(2, 101);
-        System.out.println("Trying to add an order with quantity higher than current food quantity (new food item): " + result1);
-        List<Order> orders2 = orderService.getOrders(); // should still have one order
-        for (Order order : orders2) {
-            System.out.println(order.toString());
-        }
+//        boolean result = orderService.addOrder(1, 45);
+//        System.out.println("Trying to add an order with quantity higher than current food quantity (same food item): " + result);
+//        boolean result1 = orderService.addOrder(2, 101);
+//        System.out.println("Trying to add an order with quantity higher than current food quantity (new food item): " + result1);
+//        List<Order> orders2 = orderService.getOrders(); // should still have one order
+//        for (Order order : orders2) {
+//            System.out.println(order.toString());
+//        }
         //TODO: test checkout function
         System.out.println("\n-------------------------------------------- End of testing section --------------------------------------------\n\n");
         // end of remote testing section

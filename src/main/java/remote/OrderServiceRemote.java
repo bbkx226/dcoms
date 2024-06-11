@@ -9,13 +9,13 @@ import models.Order;
 // Provides remote order service
 public interface OrderServiceRemote extends Remote {
     // Adds a new order for a food item
-    boolean addOrder(int foodId, int qty) throws RemoteException;
+    boolean addOrder(int userId, int foodId, int qty) throws RemoteException;
 
     // Returns a list of all orders
     List<Order> getOrders() throws RemoteException;
 
     // Returns an order by its associated food ID
-    Order getOrderByFoodId(int foodId) throws RemoteException;
+    Order getOrderByOrderId(int orderId) throws RemoteException;
 
     // Updates an existing order
     boolean updateOrder(Order updatedOrder) throws RemoteException;

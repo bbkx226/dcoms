@@ -5,6 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import models.Food;
+import models.User;
 import remote.FoodServiceRemote;
 import utils.FileUtils;
 
@@ -18,12 +19,12 @@ public class FoodServiceImpl extends UnicastRemoteObject implements FoodServiceR
     @Override
     public boolean addFood(String newName, int newQty, double newPrice) throws RemoteException {
         List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
-        for (Food food : foods) {
-            if (newName.equals(food.getName())) {
-                return false;
-            }
+        int maxId = foods.isEmpty() ? 0 : foods.stream().mapToInt(Food::getId).max().orElse(0);
+        int newId = maxId + 1;
+        if (foods.stream().anyMatch(food -> newName.equals((food.getName())))) {
+            return false;
         }
-        int newId = foods.size() + 1;
+
         Food newFood = new Food(newId, newName, newQty, newPrice);
         FileUtils.appendToFile(FileUtils.FileType.FOOD, newFood, Food::toString);
         return true;
@@ -39,7 +40,12 @@ public class FoodServiceImpl extends UnicastRemoteObject implements FoodServiceR
     @Override
     public Food getFoodById(int foodId) throws RemoteException {
         List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
-        return foods.size() >= foodId ? foods.get(foodId - 1) : null;
+        for (Food food : foods) {
+            if (food.getId() == foodId) {
+                return food;
+            }
+        }
+        return null;
     }
 
     // Method that updates a specific food item in the list if it exists.
