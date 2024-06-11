@@ -12,7 +12,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class RegisterInterface {
     private UserServiceRemote userService;
@@ -27,26 +26,27 @@ public class RegisterInterface {
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
-        UIUtils.line(50);
-        UIUtils.printHeader("McGee Register", 50);
-        UIUtils.line(50);
-
-        Form form = new Form();
-        form.addField("firstName", "First Name: ");
-        form.addField("lastName", "Last Name: ");
-        form.addField("ICNum", "IC/Passport Number: ");
         List<String> usernames = new ArrayList<>();
         for (User user : userService.getAllUsers()) {
             usernames.add(user.getUsername());
         }
-        form.addField("username", "Username: ", usernames, "Username already exists. Please try again.");
-        form.addField("password", "Password: ");
 
-        String firstName = form.getField("firstName");
-        String lastName = form.getField("lastName");
-        String ICNum = form.getField("ICNum");
-        String username = form.getField("username");
-        String password = form.getField("password");
+        UIUtils.line(50);
+        UIUtils.printHeader("Register for a McGee account (Press 'b' to cancel)", 50);
+        UIUtils.line(50);
+
+        Form form = new Form();
+        if (!form.addStringField("firstName", "First Name: ")) { return; }
+        if (!form.addStringField("lastName", "Last Name: ")) { return; }
+        if (!form.addStringField("ICNum", "IC/Passport Number: ")) { return; }
+        if (!form.addStringField("username", "Username: ", usernames::contains, "Username already exists. Please try again.")) { return; }
+        if (!form.addStringField("password", "Password: ")) { return; }
+
+        String firstName = (String) form.getField("firstName");
+        String lastName = (String) form.getField("lastName");
+        String ICNum = (String) form.getField("ICNum");
+        String username = (String) form.getField("username");
+        String password = (String) form.getField("password");
 
         boolean isUserAdded = userService.addUser(firstName, lastName, ICNum, username, password);
         if (isUserAdded) {

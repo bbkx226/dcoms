@@ -13,7 +13,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class UserManagementInterface {
     private final UserServiceRemote userService;
@@ -25,7 +24,6 @@ public class UserManagementInterface {
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
         List<User> userList = userService.getAllUsers();
         UserActions userActions = new UserActions();
-        Scanner scanner = new Scanner(System.in);
 
         String[] headers = {"ID", "First Name", "Last Name", "IC/Passport"};
         List<String[]> rows = new ArrayList<>();
@@ -40,26 +38,26 @@ public class UserManagementInterface {
         Table table = new Table("List of Users", headers, rows);
 
         List<String> options = List.of("Create User", "Update User", "Delete User", "Back");
-        Menu menu = new Menu("Manage Users", options, "Enter your choice:", 60);
+        Menu menu = new Menu("Manage Users", options, "Enter your choice: ", table.getTotalWidth());
 
-        UIUtils.clrscr();
-        table.display();
-        menu.display();
+        while (true) {
+            UIUtils.clrscr();
+            table.display();
+            menu.display();
 
-        switch (menu.getInput()) {
-            case 1:
-                userActions.createUser();
-                break;
-            case 2:
-                userActions.updateUserInterface();
-                break;
-            case 3:
-                userActions.deleteUserInterface();
-                break;
-            case 4:
-                return;
-            default:
-                System.out.println("\nInvalid input. Please try again.");
+            switch (menu.getInput()) {
+                case 1:
+                    new RegisterInterface().start();
+                    break;
+                case 2:
+                    userActions.updateUserInterface();
+                    break;
+                case 3:
+                    userActions.deleteUserInterface();
+                    break;
+                case 4:
+                    return;
+            }
         }
     }
 

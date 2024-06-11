@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Menu {
     private final String header;
-    private List<String> options;
+    private final List<String> options;
     private final String prompt;
-    private int width;
+    private final int width;
     private UIUtils uiUtils;
 
     public Menu(String header, List<String> options, String prompt, int width) {
@@ -46,7 +46,7 @@ public class Menu {
         int choice = 0;
 
         while (true) {
-            choice = InputUtils.intInput(prompt);
+            choice = InputUtils.intInput(prompt, "b");
             if (choice < 1 || choice > options.toArray().length) {
                 System.out.println("\nInvalid input. Please enter a number between 1 and " + options.toArray().length + ".");
             } else break;
