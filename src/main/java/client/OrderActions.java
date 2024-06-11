@@ -8,6 +8,7 @@ import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
 import remote.UserServiceRemote;
 import utils.InputUtils;
+import utils.UIUtils;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -224,7 +225,13 @@ public class OrderActions {
                         return;
                     }
 
-                    // step 2 delete the order
+                    // step 2 confirmation
+                    boolean isConfirmation = deleteConfirmation(orderId);
+                    if (!isConfirmation) { // User want to cancel delete
+                        return;
+                    }
+
+                    // step 3 delete the order
                     boolean isDeleted = orderService.deleteOrder(SelectedOrder);
                     String checkUpdatedMessage = isDeleted ? "Order deleted successfully." : "Failed to delete order.";
                     System.out.println(checkUpdatedMessage);
@@ -411,5 +418,46 @@ public class OrderActions {
             }
         }
 
+    }
+
+    public boolean deleteConfirmation(int selectedOrderId) throws MalformedURLException, NotBoundException, RemoteException {
+        OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
+        
+        while (true) {
+            // retrieve the user details
+            Order orderToDelete = orderService.getOrderByOrderId(selectedOrderId);
+
+            // handle null usertodelete object
+            if (orderToDelete == null) {
+                System.out.println("Order not found in database.");
+                return false;
+            }
+
+            // display user details and confirmation prompt
+            System.out.println();
+            UIUtils.line(60);
+            System.out.println("Are you sure you want to delete the following order?");
+            UIUtils.line(60);
+            System.out.println("ID: " + orderToDelete.getId());
+            System.out.println("User ID: " + orderToDelete.getUserId());
+            System.out.println("Food ID: " + orderToDelete.getFoodId());
+            System.out.println("Food Name: " + orderToDelete.getFoodName());
+            System.out.println("Quantity: " + orderToDelete.getQuantity());
+            System.out.println("Price: " + orderToDelete.getPrice());
+            System.out.println("Total Price: " + orderToDelete.getTotalPrice());
+            UIUtils.line(60);
+
+            // prompt for confirmation
+            char confirmation = InputUtils.charInput("type 'y' to confirm deletion, 'n' to cancel, or 'b' to go back: ", 'b');
+            if (confirmation == 'y') {
+                return true;
+            } else if (confirmation == 'n') {
+                return false;
+            } else if (confirmation == 'b') {
+                return false;
+            } else {
+                System.out.println("Invalid input. Please enter 'y', 'n', or 'b'.");
+            }
+        }
     }
 }
