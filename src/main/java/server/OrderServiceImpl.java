@@ -4,15 +4,18 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import models.Food;
 import models.Order;
+import models.User;
 import remote.OrderServiceRemote;
 
 // CRUD functions for orders
 public class OrderServiceImpl extends UnicastRemoteObject implements OrderServiceRemote {
     private final List<Order> orders;
     private final FoodServiceImpl foodRepository;
+
 
     // Constructor that initializes an empty list of orders and a new FoodServiceImpl object.
     public OrderServiceImpl() throws RemoteException {
@@ -99,9 +102,28 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
     }
 
     // Processes all orders, updating the quantity of each food item and clearing the list of orders.
-    @Override
-    public boolean checkout() throws RemoteException {
-        for (Order order : orders) {
+//    @Override
+//    public boolean checkout(User user) throws RemoteException {
+//        for (Order order : orders) {
+//            Food currentFood = foodRepository.getFoodById(order.getFoodId());
+//            if (currentFood == null || order.getQuantity() > currentFood.getQty()) {
+//                return false;
+//            }
+//            int newFoodQty = currentFood.getQty() - order.getQuantity();
+//            currentFood.setQty(newFoodQty);
+//            foodRepository.updateFood(currentFood);
+//        }
+//        orders.clear();
+//        return true;
+//    }
+
+    public boolean checkout(User user) throws RemoteException {
+        // Filter orders for the current user
+        List<Order> userOrders = orders.stream()
+                .filter(order -> order.getUserId() == user.getId())
+                .collect(Collectors.toList());
+
+        for (Order order : userOrders) {
             Food currentFood = foodRepository.getFoodById(order.getFoodId());
             if (currentFood == null || order.getQuantity() > currentFood.getQty()) {
                 return false;
@@ -110,7 +132,14 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
             currentFood.setQty(newFoodQty);
             foodRepository.updateFood(currentFood);
         }
-        orders.clear();
+
+        // Remove the processed orders from the original list
+        orders.removeAll(userOrders);
+
         return true;
     }
+
+
+
+
 }

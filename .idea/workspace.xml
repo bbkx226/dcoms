@@ -5,31 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1ef8d6d-4158-4399-8702-8b90565ffc41" name="Changes" comment="updated with missing code from XT">
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/CustomerActions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/OrderInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/client/OrderActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/OrderActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/CustomerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/CustomerInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/databases/foods.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/databases/foods.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/remote/OrderServiceRemote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/remote/OrderServiceRemote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/OrderServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/OrderActions.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/OrderActions.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/UserActions.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/UserActions.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/components/Form.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/components/Form.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/components/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/components/Menu.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/components/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/components/Table.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/pages/AdminInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/AdminInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/CustomerInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/CustomerInterface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/pages/FoodManagementInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/FoodManagementInterface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/pages/LoginInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/LoginInterface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/pages/MainMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/MainMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/OrderManagementInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/OrderManagementInterface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/pages/RegisterInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/RegisterInterface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/pages/UserManagementInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/UserManagementInterface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/java/databases/foods.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/java/databases/users.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/server/AuthServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/AuthServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/OrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/OrderServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/utils/InputUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/InputUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,7 +74,7 @@
     &quot;Application.Client.executor&quot;: &quot;Run&quot;,
     &quot;Application.Server.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;HelloXT&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;qj&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
 }</component>
