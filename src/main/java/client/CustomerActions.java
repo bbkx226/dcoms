@@ -1,7 +1,6 @@
 package client;
 
 import models.Food;
-import client.components.Table;
 import models.Order;
 import models.User;
 import remote.OrderServiceRemote;
@@ -11,88 +10,38 @@ import utils.UIUtils;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public class OrderActions {
-    public static void displayOrderDetails(Order order) {
-        System.out.println("ID: " + order.getId());
-        System.out.println("User ID: " + order.getUserId());
-        System.out.println("Food ID: " + order.getFoodId());
-        System.out.println("Food Name: " + order.getFoodName());
-        System.out.println("Quantity: " + order.getQuantity());
-        System.out.println("Price/Unit: " + order.getPrice());
-        System.out.println("Total Price: " + order.getTotalPrice());
+public class CustomerActions {
+    private final User user;
+
+    public CustomerActions(User user) {
+        this.user = user;
     }
 
-    public static void displayAllOrders() throws RemoteException {
-        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
-        if (orderService == null) { return; }
-
-        List<Order> orderList = orderService.getOrders();
-
-        String[] headers = {"Order ID", "Customer ID", "Food ID", "Food Name", "Price/Unit", "Quantity", "Total Price"};
-        List<String[]> rows = orderList.stream()
-                .map(order -> new String[] {
-                    String.valueOf(order.getId()),
-                    String.valueOf(order.getUserId()),
-                    String.valueOf(order.getFoodId()),
-                    order.getFoodName(),
-                    String.valueOf(order.getPrice()),
-                    String.valueOf(order.getQuantity()),
-                    String.valueOf(order.getTotalPrice()),
-                }).toList();
-
-        Table table = new Table("McGee's Order List", headers, rows);
-        table.display();
-    }
-
-    public static void displayUserOrders(User user) throws RemoteException {
-        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
-        if (orderService == null) { return; }
-
-        List<Order> orderList = orderService.getOrders();
-
-        String[] headers = {"Order ID", "Food ID", "Food Name", "Price/Unit", "Quantity", "Total Price"};
-        List<String[]> rows = orderList.stream()
-                .filter(order -> order.getUserId() == user.getId())
-                .map(order -> new String[] {
-                        String.valueOf(order.getId()),
-                        String.valueOf(order.getFoodId()),
-                        order.getFoodName(),
-                        String.valueOf(order.getPrice()),
-                        String.valueOf(order.getQuantity()),
-                        String.valueOf(order.getTotalPrice()),
-                }).toList();
-        Table table = new Table ("Your Orders", headers, rows);
-        table.display();
-    }
-
-    public static Order selectOrderById() throws RemoteException {
+    private Order selectOrderById() throws RemoteException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
         if (orderService == null) { return null; }
 
         int selectedId = InputUtils.intInput("Enter the ID of the order ('b' for back): ", "b");
         if (selectedId == Integer.MIN_VALUE) { return null; }
-        Order selectedOrder = orderService.getOrderByOrderId(selectedId);
-        if (selectedOrder == null) {
-            System.out.println("Order not found in database.");
+
+        List<Order> userOrderList = orderService.getOrders()
+                .stream()
+                .filter(order -> order.getUserId() == this.user.getId() && order.getId() == selectedId)
+                .toList();
+
+        if (userOrderList.isEmpty()) {
+            System.out.println("Your selected order ID was not found in the database.");
             InputUtils.waitForAnyKey();
             return null;
-        }
-        return selectedOrder;
+        } else return userOrderList.getFirst();
     }
 
-    // Add order function for admin
-    public static void addOrder() throws RemoteException {
-        // Display users
-        UserActions.displayUsers();
-
-        // Step 1: Select a user to place the order
-        User selectedUser = UserActions.selectUserById();
-        if (selectedUser == null) { return; }
-
-        // Display foods menu
+    // Customer Add Order
+    public void addOrder() throws RemoteException {
+        // display menu
         FoodActions.displayFoods();
 
-        // Step 2: Select the food to order
+        // Step 1: Select the food to order
         Food selectedFood = FoodActions.selectFoodById();
         if (selectedFood == null) { return; }
 
@@ -105,7 +54,7 @@ public class OrderActions {
             FoodActions.displayFoodDetails(selectedFood);
             UIUtils.line(60);
 
-            // select quantity
+            // Step 2: Select quantity
             int qty = InputUtils.intInput("Quantity: ", "b");
             if (qty == Integer.MIN_VALUE) { return; }
             if (qty < 0) {
@@ -113,11 +62,11 @@ public class OrderActions {
                 continue;
             }
 
-            // add order in server
+            // Step 3: Add order in server
             OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
             if (orderService == null) { return; }
 
-            if (orderService.addOrder(selectedUser.getId(), selectedFood.getId(), qty)) {
+            if (orderService.addOrder(this.user.getId(), selectedFood.getId(), qty)) {
                 System.out.println("Order added successfully!");
                 break;
             } else {
@@ -126,15 +75,15 @@ public class OrderActions {
         }
     }
 
-    public static void updateOrder() throws RemoteException {
+    public void updateOrder() throws RemoteException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
         if (orderService == null) { return; }
 
         while (true) {
-            // display orders
-            displayAllOrders();
+            // display customer's orders
+            OrderActions.displayUserOrders(this.user);
 
-            // check if orders are empty
+            // check if customer's orders are empty
             if (orderService.getOrders().isEmpty()) {
                 System.out.println("No data available.");
                 InputUtils.waitForAnyKey();
@@ -142,7 +91,7 @@ public class OrderActions {
             }
 
             // Step 1: select an order
-            Order selectedOrder = selectOrderById();
+            Order selectedOrder = this.selectOrderById();
             if (selectedOrder == null) { return; }
 
             // Step 2: select new food to order (can be the same)
@@ -184,22 +133,29 @@ public class OrderActions {
         }
     }
 
-    public static void deleteOrder() throws RemoteException {
+    //Customer Delete Order from the Cart
+    public void deleteOrder() throws RemoteException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
         if (orderService == null) { return; }
 
         while (true) {
-            displayAllOrders();
+            // Display user's orders
+            OrderActions.displayUserOrders(this.user);
 
-            // Check if there are no orders and return
-            if (orderService.getOrders().isEmpty()) {
+            // Check if user has no orders and return if so
+            List<Order> userOrderList = orderService.getOrders()
+                    .stream()
+                    .filter(order -> order.getUserId() == this.user.getId())
+                    .toList();
+
+            if (userOrderList.isEmpty()) {
                 System.out.println("No data available.");
                 InputUtils.waitForAnyKey();
                 return;
             }
 
             // Step 1: Select an order
-            Order selectedOrder = selectOrderById();
+            Order selectedOrder = this.selectOrderById();
             if (selectedOrder == null) { return; }
 
             // Display order details
@@ -207,13 +163,13 @@ public class OrderActions {
             UIUtils.line(60);
             System.out.println("Are you sure you want to delete the following order?");
             UIUtils.line(60);
-            displayOrderDetails(selectedOrder);
+            OrderActions.displayOrderDetails(selectedOrder);
             UIUtils.line(60);
 
             // Step 2: Confirmation
             char confirmation = InputUtils.charInput("type 'y' to confirm deletion, 'b' to cancel: ", 'b');
             if (confirmation == '\0') {
-                System.out.println("Deletion cancelled."); // exit the method and return to the previous menu
+                System.out.println("Deletion cancelled.");
                 return;
             }
             if (confirmation == 'y') {
@@ -222,9 +178,59 @@ public class OrderActions {
                 } else {
                     System.out.println("Failed to delete order from database.");
                 }
-                break;
             } else {
                 System.out.println("Invalid input. Please enter 'y' or 'b'.");
+            }
+        }
+    }
+
+    // Customer check order before make payment
+    public void checkOrder() throws RemoteException {
+        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
+        if (orderService == null) { return; }
+
+        // Filter orders by customer ID
+        List<Order> userOrderList = orderService.getOrders()
+                .stream()
+                .filter(order -> order.getUserId() == this.user.getId())
+                .toList();
+
+        double totalPrice = userOrderList.stream()
+                .mapToDouble(Order::getTotalPrice)
+                .sum();
+
+        // Check if there are no orders and return if true
+        if (userOrderList.isEmpty()) {
+            System.out.println("No orders found.");
+            InputUtils.waitForAnyKey();
+            return;
+        }
+
+        // Display order data table
+        OrderActions.displayUserOrders(this.user);
+
+        // Display total price
+        System.out.println("Total Price: $" + String.format("%.2f", totalPrice));
+
+        // Print line after the Total Price
+        UIUtils.line(60);
+
+        char confirmation = InputUtils.charInput("Press 'p' to proceed to payment for your orders, or press 'b' to go back.", 'b');
+        if (confirmation == '\0') {
+            System.out.println("Returning to previous menu.");
+            return;
+        }
+        if (confirmation == 'p' || confirmation == 'P') {
+            String paymentConfirmation = InputUtils.stringInput("Are you sure you want to proceed to payment? (yes/y to confirm)", "b");
+            if (paymentConfirmation.equalsIgnoreCase("yes") || paymentConfirmation.equalsIgnoreCase("y")) {
+                // Deduct the quantities from the food stock and clear the user's orders
+                if (orderService.checkout(this.user)) {
+                    System.out.println("Payment successful! Your order has been processed.");
+                } else {
+                    System.out.println("Payment failed. Please try again.");
+                }
+            } else {
+                System.out.println("Payment cancelled.");
             }
         }
     }

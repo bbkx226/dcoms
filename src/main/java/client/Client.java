@@ -8,8 +8,6 @@ import java.rmi.RemoteException;
 
 public class Client {
     public static void main(String[] args) throws MalformedURLException, NotBoundException, RemoteException {
-        // call Login register menu
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.start();
+        new MainMenu().start();
     }
 }

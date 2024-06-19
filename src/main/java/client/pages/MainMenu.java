@@ -2,26 +2,20 @@ package client.pages;
 
 import client.FoodActions;
 import client.components.Menu;
-import client.components.Table;
-import models.*;
-import remote.FoodServiceRemote;
 import utils.InputUtils;
 import utils.UIUtils;
 
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class MainMenu {
     private final Menu menu;
 
     public MainMenu() {
         List<String> options = List.of("Login", "View Menu", "Register", "Exit");
-        this.menu = new Menu("Welcome to McGee!", options, "Enter your choice: ");
+        this.menu = new Menu("Welcome to McGee!", options);
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
@@ -29,24 +23,21 @@ public class MainMenu {
             UIUtils.clrscr();
             menu.display();
 
-            switch (menu.getInput()) {
+            switch (menu.getInput("Enter your choice: ")) {
                 case 1:
-                    new LoginInterface().start();
+                    LoginInterface.start();
                     break;
                 case 2:
-                    FoodActions.viewMenu();
+                    FoodActions.displayFoods();
+                    InputUtils.waitForAnyKey();
                     break;
                 case 3:
                     new RegisterInterface().start();
                     break;
                 case 4:
-                    exitApp();
+                    System.out.println("Thank you for using McGee! Goodbye!");
+                    System.exit(1);
             }
         }
-    }
-
-    private static void exitApp() {
-        System.out.println("Thank you for using McGee! Goodbye!");
-        System.exit(1);
     }
 }

@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import models.Order;
+import models.User;
 
 // Provides remote order service
 public interface OrderServiceRemote extends Remote {
@@ -24,5 +25,5 @@ public interface OrderServiceRemote extends Remote {
     boolean deleteOrder(Order orderToRemove) throws RemoteException;
 
     // Checks out all orders
-    boolean checkout() throws RemoteException;
+    boolean checkout(User user) throws RemoteException;
 }

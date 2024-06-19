@@ -38,8 +38,6 @@ public class Table {
         UIUtils.line(totalWidth);
     }
 
-    public int getTotalWidth() { return totalWidth; }
-
     private int[] getColumnWidths(List<String[]> rows, String[] headers) {
         int[] columnWidths = new int[headers.length];
         for (int i = 0; i < headers.length; i++) {

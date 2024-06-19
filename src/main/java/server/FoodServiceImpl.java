@@ -21,7 +21,7 @@ public class FoodServiceImpl extends UnicastRemoteObject implements FoodServiceR
         List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
         int maxId = foods.isEmpty() ? 0 : foods.stream().mapToInt(Food::getId).max().orElse(0);
         int newId = maxId + 1;
-        if (foods.stream().anyMatch(food -> newName.equals((food.getName())))) {
+        if (foods.stream().anyMatch(food -> newName.equals(food.getName()))) {
             return false;
         }
 
@@ -51,13 +51,16 @@ public class FoodServiceImpl extends UnicastRemoteObject implements FoodServiceR
     // Method that updates a specific food item in the list if it exists.
     @Override
     public boolean updateFood(Food updatedFood) throws RemoteException {
-        Food food = getFoodById(updatedFood.getId());
-        if (food != null) {
-            List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
-            foods.set(updatedFood.getId() - 1, updatedFood);
-            FileUtils.updateFile(FileUtils.FileType.FOOD, foods, Food::toString);
-            return true;
-        } else return false;
+        if (getFoodById(updatedFood.getId()) == null) { return false; }
+
+        List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
+        for (int i = 0; i < foods.toArray().length; i++) {
+            if (updatedFood.getId() == foods.get(i).getId()) {
+                foods.set(i, updatedFood);
+            }
+        }
+        FileUtils.updateFile(FileUtils.FileType.FOOD, foods, Food::toString);
+        return true;
     }
 
     // Method that removes a specific food item by its ID from the list if it exists.
@@ -68,19 +71,5 @@ public class FoodServiceImpl extends UnicastRemoteObject implements FoodServiceR
             FileUtils.deleteFromFile(FileUtils.FileType.FOOD, foodId);
             return true;
         } else return false;
-    }
-
-    // Method that when creating food before check the food item if exists
-    @Override
-    public boolean checkIsFoodExisted(String newFood) throws RemoteException {
-        List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
-        return foods.stream().anyMatch(food -> newFood.equals(food.getName()));
-    }
-
-    // Method that check the food if exists
-    @Override
-    public boolean checkExistedFoodId(int foodId) throws RemoteException {
-        List<Food> foods = FileUtils.readFromFile(FileUtils.FileType.FOOD, Food::fromString);
-        return foods.stream().anyMatch(food -> Integer.valueOf(foodId).equals(food.getId()));
     }
 }

@@ -1,4 +1,4 @@
-package client.pages;
+package client.pages.admin;
 
 import client.components.Menu;
 import models.*;
@@ -8,39 +8,35 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.Scanner;
 
 public class AdminInterface {
     private final Menu menu;
 
     public AdminInterface(User user) {
-        List<String> options = List.of("View User Details", "View Menu", "Check Order", "Order", "Logout");
-        this.menu = new Menu("Welcome to McGee, " + user.getLastName() + "!!!", options, "Enter your choice: ");
+        String fullName = user.getFirstName() + " " + user.getLastName();
+        List<String> options = List.of("Manage Users", "Manage Food", "Manage Orders", "Logout");
+        this.menu = new Menu("Welcome to McGee, " + fullName + "!", options);
     }
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
-
         while (true) {
             UIUtils.clrscr();
             menu.display();
 
-            switch (menu.getInput()) {
+            switch (menu.getInput("Enter your choice: ")) {
                 case 1:
-                    new UserManagementInterface().start();
+                    UserManagementInterface.start();
                     break;
                 case 2:
-                    new FoodManagementInterface().start();
+                    FoodManagementInterface.start();
                     break;
                 case 3:
-                    new OrderManagementInterface().start();
+                    OrderManagementInterface.start();
                     break;
                 case 4:
-                    // Implement order() method
-                    break;
-                case 5: // Back option
+                    System.out.println("Logged out.");
                     return; // Return to the previous menu or perform any desired action
             }
         }
     }
-
 }

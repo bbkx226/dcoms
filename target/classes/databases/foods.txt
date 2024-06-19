@@ -1,6 +1,7 @@
-1,Apple,2,0.99
+1,Apple,43,0.99
 2,Banana,93,0.59
-3,Orange,46,1.29
+3,Orange,73,1.29
+9,Salmon,15,9.99
 10,Tomato,60,0.79
 11,Lettuce,50,1.29
 12,Carrot,70,0.89
@@ -12,5 +13,5 @@
 18,Olive Oil,25,6.99
 19,Butter,20,3.49
 20,Yogurt,50,0.99
-22,gas,4,100.0
-23,abcd,5,6.666
+21,test,23,2.0
+22,gas,3,3.0

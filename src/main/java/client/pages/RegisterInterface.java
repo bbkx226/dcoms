@@ -1,6 +1,7 @@
 package client.pages;
 
 
+import client.RemoteServiceLocator;
 import client.components.Form;
 import models.User;
 import remote.UserServiceRemote;
@@ -12,24 +13,17 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RegisterInterface {
-    private UserServiceRemote userService;
+    public static void start() throws MalformedURLException, NotBoundException, RemoteException {
+        UserServiceRemote userService = RemoteServiceLocator.getUserService();
+        if (userService == null) { return; }
 
-    public RegisterInterface() throws MalformedURLException, NotBoundException, RemoteException {
-        try {
-            userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
-        } catch (RemoteException e) {
-            System.out.println("Error occurred while trying to fetch user data.");
-            System.out.println("Please try again later.");
-        }
-    }
-
-    public void start() throws MalformedURLException, NotBoundException, RemoteException {
-        List<String> usernames = new ArrayList<>();
-        for (User user : userService.getAllUsers()) {
-            usernames.add(user.getUsername());
-        }
+        List<String> usernames = userService.getAllUsers()
+                .stream()
+                .map(User::getUsername)
+                .toList();
 
         UIUtils.line(50);
         UIUtils.printHeader("Register for a McGee account (Press 'b' to cancel)", 50);
@@ -39,13 +33,19 @@ public class RegisterInterface {
         if (!form.addStringField("firstName", "First Name: ")) { return; }
         if (!form.addStringField("lastName", "Last Name: ")) { return; }
         if (!form.addStringField("ICNum", "IC/Passport Number: ")) { return; }
-        if (!form.addStringField("username", "Username: ", usernames::contains, "Username already exists. Please try again.")) { return; }
+        String username;
+        while (true) {
+            if (!form.addStringField("username", "Username: ")) { return; }
+            username = (String) form.getField("username");
+            if (usernames.contains(username)) {
+                System.out.println("Username already exists. Please try again.");
+            } else break;
+        }
         if (!form.addStringField("password", "Password: ")) { return; }
 
         String firstName = (String) form.getField("firstName");
         String lastName = (String) form.getField("lastName");
         String ICNum = (String) form.getField("ICNum");
-        String username = (String) form.getField("username");
         String password = (String) form.getField("password");
 
         boolean isUserAdded = userService.addUser(firstName, lastName, ICNum, username, password);

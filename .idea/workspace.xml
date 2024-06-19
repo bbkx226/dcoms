@@ -5,31 +5,84 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1ef8d6d-4158-4399-8702-8b90565ffc41" name="Changes" comment="updated with missing code from XT">
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/RemoteServiceLocator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/admin/FoodManagementInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/admin/UserManagementInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/pages/customer/CustomerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/CustomerActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/CustomerActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/FoodActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/FoodActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/client/OrderActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/OrderActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/UserActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/UserActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/components/Form.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/components/Form.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/components/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/components/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/components/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/components/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/AdminInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/admin/AdminInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/CustomerInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/FoodManagementInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/LoginInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/LoginInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/OrderInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/customer/OrderInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/OrderManagementInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/admin/OrderManagementInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/RegisterInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/pages/RegisterInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/pages/UserManagementInterface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/databases/foods.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/databases/foods.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/OrderActions.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/OrderActions.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/UserActions.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/UserActions.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/databases/users.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/databases/users.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/remote/FoodServiceRemote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/remote/FoodServiceRemote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/remote/OrderServiceRemote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/remote/OrderServiceRemote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/remote/UserServiceRemote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/remote/UserServiceRemote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/FoodServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/FoodServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/InputUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/InputUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/Client.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/CustomerActions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/FoodActions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/Test.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/Test.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/UserActions.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/components/Form.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/components/Form.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/components/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/components/Menu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/components/Menu.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/components/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/components/Table.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/AdminInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/AdminInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/AdminInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/CustomerInterface.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/client/pages/FoodManagementInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/FoodManagementInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/LoginInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/LoginInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/MainMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/MainMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/RegisterInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/RegisterInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/UserManagementInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/UserManagementInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/java/databases/foods.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/java/databases/users.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/LoginInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/MainMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/OrderInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/OrderManagementInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/client/pages/OrderManagementInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/RegisterInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/client/pages/UserManagementInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/databases/foods.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/databases/foods.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/databases/users.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/databases/users.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/models/Food.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/Food.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/models/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/Order.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/models/UserType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/models/UserType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/remote/FoodServiceRemote.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/AuthServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/AuthServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/server/OrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/OrderServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/server/FoodServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/FoodServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/InputUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/InputUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/server/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/FileUtils$FileType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/FileUtils$FileType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/FileUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/FileUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/InputUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/UIUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/UIUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -58,22 +111,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;HelloXT&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Client.executor": "Run",
+    "Application.Server.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "qj",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/KZ/Desktop/test"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="client" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="client.Client" />
       <module name="DCOMS_ASM" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="client.*" />
+          <option name="PATTERN" value="client.Client" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -94,6 +153,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Client" />
+      <item itemvalue="Application.Server" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Client" />
@@ -142,5 +205,16 @@
     <MESSAGE value="no changes" />
     <MESSAGE value="updated with missing code from XT" />
     <option name="LAST_COMMIT_MESSAGE" value="updated with missing code from XT" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/client/pages/RegisterInterface.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
