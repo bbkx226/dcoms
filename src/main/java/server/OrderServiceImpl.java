@@ -4,7 +4,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import models.Food;
 import models.Order;
@@ -15,7 +14,6 @@ import remote.OrderServiceRemote;
 public class OrderServiceImpl extends UnicastRemoteObject implements OrderServiceRemote {
     private final List<Order> orders;
     private final FoodServiceImpl foodRepository;
-
 
     // Constructor that initializes an empty list of orders and a new FoodServiceImpl object.
     public OrderServiceImpl() throws RemoteException {
@@ -29,23 +27,20 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
     public boolean addOrder(int userId, int foodId, int qty) throws RemoteException {
         Food food = foodRepository.getFoodById(foodId);
         if (food != null && food.getQty() > 0) {
-            boolean foodOrderExists = false;
+            boolean orderExists = false;
             for (Order order : orders) {
                 if (order.getFoodId() == food.getId() && order.getUserId() == userId) { // Check userId as well
-                    foodOrderExists = true;
+                    orderExists = true;
                     int newQty = order.getQuantity() + qty;
                     if (newQty > food.getQty()) { return false; }
                     order.setQuantity(newQty);
-                    double newPrice = order.getQuantity() * food.getPrice();
-                    order.setPrice(newPrice);
                     break;
                 }
             }
-            if (!foodOrderExists) {
+            if (!orderExists) {
                 if (qty > food.getQty()) { return false; }
-                double newPrice = qty * food.getPrice();
                 int maxId = orders.stream().mapToInt(Order::getId).max().orElse(0);
-                Order newOrder = new Order(maxId + 1, foodId, food.getName(), userId, qty, newPrice); // Ensure unique ID
+                Order newOrder = new Order(maxId + 1, foodId, food.getName(), userId, qty, food.getPrice()); // Ensure unique ID
                 orders.add(newOrder);
             }
             return true;
@@ -101,27 +96,12 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
         return false;
     }
 
-    // Processes all orders, updating the quantity of each food item and clearing the list of orders.
-//    @Override
-//    public boolean checkout(User user) throws RemoteException {
-//        for (Order order : orders) {
-//            Food currentFood = foodRepository.getFoodById(order.getFoodId());
-//            if (currentFood == null || order.getQuantity() > currentFood.getQty()) {
-//                return false;
-//            }
-//            int newFoodQty = currentFood.getQty() - order.getQuantity();
-//            currentFood.setQty(newFoodQty);
-//            foodRepository.updateFood(currentFood);
-//        }
-//        orders.clear();
-//        return true;
-//    }
-
+    @Override
     public boolean checkout(User user) throws RemoteException {
         // Filter orders for the current user
         List<Order> userOrders = orders.stream()
                 .filter(order -> order.getUserId() == user.getId())
-                .collect(Collectors.toList());
+                .toList();
 
         for (Order order : userOrders) {
             Food currentFood = foodRepository.getFoodById(order.getFoodId());
@@ -130,16 +110,13 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
             }
             int newFoodQty = currentFood.getQty() - order.getQuantity();
             currentFood.setQty(newFoodQty);
-            foodRepository.updateFood(currentFood);
+            if (newFoodQty == 0) {
+                foodRepository.removeFood(currentFood.getId());
+            } else foodRepository.updateFood(currentFood);
         }
 
         // Remove the processed orders from the original list
         orders.removeAll(userOrders);
-
         return true;
     }
-
-
-
-
 }

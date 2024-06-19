@@ -1,27 +1,25 @@
 package utils;
 
-import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class InputUtils {
     public static String stringInput(String prompt, String cancelString) {
         Scanner scanner = new Scanner(System.in);
-        String input = "";
 
         while (true) {
             System.out.print(prompt);
 
-            String userInput = scanner.nextLine();
+            String userInput = scanner.nextLine().trim();
             if (userInput.equalsIgnoreCase(cancelString)) {
                 return null; // Return null to indicate cancellation
             }
 
-            input = userInput;
-            break;
-        }
+            if (!userInput.isEmpty()) {
+                return userInput;
+            }
 
-        return input;
+            System.out.println("Invalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
+        }
     }
 
     public static int intInput(String prompt, String cancelString) {

@@ -69,11 +69,15 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
     @Override
     public boolean updateUser(User updatedUser) throws RemoteException {
         List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
-        if (users.size() >= updatedUser.getId()) {
-            users.set(updatedUser.getId() - 1, updatedUser);
-            FileUtils.updateFile(FileUtils.FileType.USER, users, User::toString);
-            return true;
-        } else return false;
+        if (getUserById(updatedUser.getId()) == null) { return false; } // user not found
+
+        for (User user : users) {
+            if (user.getId() == updatedUser.getId()) {
+                users.set(users.indexOf(user), updatedUser);
+            }
+        }
+        FileUtils.updateFile(FileUtils.FileType.USER, users, User::toString);
+        return true;
     }
 
     // Removes a user if they are not an admin and they exist
@@ -85,19 +89,4 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
         FileUtils.deleteFromFile(FileUtils.FileType.USER, userToRemove.getId());
         return true;
     }
-
-    // Check a new user if the username is not exist or not
-    @Override
-    public boolean checkUserName(String newUsername) throws RemoteException {
-        List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
-        return users.stream().anyMatch(user -> newUsername.equals(user.getUsername()));
-    }
-
-    // Returns a user by their ID, or null if no such user exists
-    @Override
-    public boolean checkUserId(int userId) throws RemoteException {
-        List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
-        return users.stream().anyMatch(user -> user.getId() == userId);
-    }
-
 }

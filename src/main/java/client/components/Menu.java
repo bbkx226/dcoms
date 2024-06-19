@@ -8,22 +8,19 @@ import java.util.List;
 public class Menu {
     private final String header;
     private final List<String> options;
-    private final String prompt;
     private final int width;
-    private UIUtils uiUtils;
 
-    public Menu(String header, List<String> options, String prompt, int width) {
+    // menu with specific width
+    public Menu(String header, List<String> options, int width) {
         this.header = header;
         this.options = options;
-        this.prompt = prompt;
         this.width = width;
-
     }
 
-    public Menu(String header, List<String> options, String prompt) {
+    // menu with default width
+    public Menu(String header, List<String> options) {
         this.header = header;
         this.options = options;
-        this.prompt = prompt;
         this.width = UIUtils.defaultWidth;
     }
 
@@ -42,7 +39,7 @@ public class Menu {
         UIUtils.line(width);
     }
 
-    public int getInput() {
+    public int getInput(String prompt) {
         int choice = 0;
 
         while (true) {

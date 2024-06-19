@@ -22,11 +22,4 @@ public interface FoodServiceRemote extends Remote {
 
     // Removes a food item by its ID
     boolean removeFood(int id) throws RemoteException;
-
-    // check food is existing?
-    boolean checkIsFoodExisted(String newFood) throws RemoteException;
-
-    boolean checkExistedFoodId(int foodId) throws RemoteException;
-
-
 }

@@ -26,6 +26,4 @@ public interface OrderServiceRemote extends Remote {
 
     // Checks out all orders
     boolean checkout(User user) throws RemoteException;
-
-
 }

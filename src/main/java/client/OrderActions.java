@@ -4,459 +4,227 @@ import models.Food;
 import client.components.Table;
 import models.Order;
 import models.User;
-import remote.FoodServiceRemote;
 import remote.OrderServiceRemote;
-import remote.UserServiceRemote;
 import utils.InputUtils;
 import utils.UIUtils;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 public class OrderActions {
+    public static void displayOrderDetails(Order order) {
+        System.out.println("ID: " + order.getId());
+        System.out.println("User ID: " + order.getUserId());
+        System.out.println("Food ID: " + order.getFoodId());
+        System.out.println("Food Name: " + order.getFoodName());
+        System.out.println("Quantity: " + order.getQuantity());
+        System.out.println("Price/Unit: " + order.getPrice());
+        System.out.println("Total Price: " + order.getTotalPrice());
+    }
 
-    public void createOrder() throws MalformedURLException, NotBoundException, RemoteException {
-        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
-        OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
+    public static void displayAllOrders() throws RemoteException {
+        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
+        if (orderService == null) { return; }
 
-        Scanner scanner = new Scanner(System.in);
+        List<Order> orderList = orderService.getOrders();
+
+        String[] headers = {"Order ID", "Customer ID", "Food ID", "Food Name", "Price/Unit", "Quantity", "Total Price"};
+        List<String[]> rows = orderList.stream()
+                .map(order -> new String[] {
+                    String.valueOf(order.getId()),
+                    String.valueOf(order.getUserId()),
+                    String.valueOf(order.getFoodId()),
+                    order.getFoodName(),
+                    String.valueOf(order.getPrice()),
+                    String.valueOf(order.getQuantity()),
+                    String.valueOf(order.getTotalPrice()),
+                }).toList();
+
+        Table table = new Table("McGee's Order List", headers, rows);
+        table.display();
+    }
+
+    public static void displayUserOrders(User user) throws RemoteException {
+        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
+        if (orderService == null) { return; }
+
+        List<Order> orderList = orderService.getOrders();
+
+        String[] headers = {"Order ID", "Food ID", "Food Name", "Price/Unit", "Quantity", "Total Price"};
+        List<String[]> rows = orderList.stream()
+                .filter(order -> order.getUserId() == user.getId())
+                .map(order -> new String[] {
+                        String.valueOf(order.getId()),
+                        String.valueOf(order.getFoodId()),
+                        order.getFoodName(),
+                        String.valueOf(order.getPrice()),
+                        String.valueOf(order.getQuantity()),
+                        String.valueOf(order.getTotalPrice()),
+                }).toList();
+        Table table = new Table ("Your Orders", headers, rows);
+        table.display();
+    }
+
+    public static Order selectOrderById() throws RemoteException {
+        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
+        if (orderService == null) { return null; }
+
+        int selectedId = InputUtils.intInput("Enter the ID of the order ('b' for back): ", "b");
+        if (selectedId == Integer.MIN_VALUE) { return null; }
+        Order selectedOrder = orderService.getOrderByOrderId(selectedId);
+        if (selectedOrder == null) {
+            System.out.println("Order not found in database.");
+            InputUtils.waitForAnyKey();
+            return null;
+        }
+        return selectedOrder;
+    }
+
+    // Add order function for admin
+    public static void addOrder() throws RemoteException {
+        // Display users
+        UserActions.displayUsers();
 
         // Step 1: Select a user to place the order
-        int selectedUserId = selectUserForOrder();
+        User selectedUser = UserActions.selectUserById();
+        if (selectedUser == null) { return; }
 
-        if (selectedUserId == 0) { return; }
+        // Display foods menu
+        FoodActions.displayFoods();
 
         // Step 2: Select the food to order
-        int selectedFoodId = selectFoodForOrder();
-
-        if (selectedFoodId == 0) { return; }
-
-        // Step 3: Enter quantity of food to order and place the order
-        Food selectedFood = foodService.getFoodById(selectedFoodId);
+        Food selectedFood = FoodActions.selectFoodById();
+        if (selectedFood == null) { return; }
 
         while (true) {
-            try {
-                System.out.println("\n------------------------------------------------------------");
-                System.out.println("Selected Food Details:");
-                System.out.println("------------------------------------------------------------");
-                System.out.println("ID: " + selectedFood.getId());
-                System.out.println("Product Name: " + selectedFood.getName());
-                System.out.println("Quantity: " + selectedFood.getQty());
-                System.out.println("Price: " + selectedFood.getPrice());
-                System.out.println("------------------------------------------------------------");
+            // Display details of selected food
+            System.out.println();
+            UIUtils.line(60);
+            UIUtils.printHeader("Selected Food Details", 60);
+            UIUtils.line(60);
+            FoodActions.displayFoodDetails(selectedFood);
+            UIUtils.line(60);
 
-                int qty;
-                while (true) {
-                    System.out.print("Quantity: ");
-                    if (scanner.hasNextInt()) {
-                        qty = scanner.nextInt();
-                        if (qty < 1) {
-                            System.out.println("Quantity must be greater than 0.");
-                        } else {
-                            break;
-                        }
-                    } else {
-                        System.out.println("Invalid input. Please enter a valid quantity.");
-                        scanner.next(); // Consume invalid input
-                    }
+            // select quantity
+            int qty = InputUtils.intInput("Quantity: ", "b");
+            if (qty == Integer.MIN_VALUE) { return; }
+            if (qty < 0) {
+                System.out.println("Quantity must be greater than 0.");
+                continue;
+            }
+
+            // add order in server
+            OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
+            if (orderService == null) { return; }
+
+            if (orderService.addOrder(selectedUser.getId(), selectedFood.getId(), qty)) {
+                System.out.println("Order added successfully!");
+                break;
+            } else {
+                System.out.println("Invalid value. Please check your quantity.");
+            }
+        }
+    }
+
+    public static void updateOrder() throws RemoteException {
+        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
+        if (orderService == null) { return; }
+
+        while (true) {
+            // display orders
+            displayAllOrders();
+
+            // check if orders are empty
+            if (orderService.getOrders().isEmpty()) {
+                System.out.println("No data available.");
+                InputUtils.waitForAnyKey();
+                return;
+            }
+
+            // Step 1: select an order
+            Order selectedOrder = selectOrderById();
+            if (selectedOrder == null) { return; }
+
+            // Step 2: select new food to order (can be the same)
+            FoodActions.displayFoods();
+            Food selectedFood = FoodActions.selectFoodById();
+            if (selectedFood == null) { return; }
+
+            while (true) {
+                // Display selected food
+                System.out.println();
+                UIUtils.line(60);
+                UIUtils.printHeader("Selected Food Details", 60);
+                UIUtils.line(60);
+                FoodActions.displayFoodDetails(selectedFood);
+                UIUtils.line(60);
+
+                // Step 3: select food quantity
+                int qty = InputUtils.intInput("Quantity: ", "b");
+                if (qty == Integer.MIN_VALUE) { return; }
+                if (qty < 0) {
+                    System.out.println("Quantity must be greater than 0.");
+                    continue;
                 }
 
-                boolean orderCreated = orderService.addOrder(selectedUserId, selectedFoodId, qty);
+                // Step 4: Set order details to the selected food and quantity
+                selectedOrder.setFoodId(selectedFood.getId());
+                selectedOrder.setFoodName(selectedFood.getName());
+                selectedOrder.setQuantity(qty);
+                selectedOrder.setPrice(selectedFood.getPrice());
 
-                if (orderCreated) {
-                    System.out.println("Order created successfully.");
-                    scanner.nextLine();
-                    break;
+                // Step 5: Update order to server side
+                if (orderService.updateOrder(selectedOrder)) {
+                    System.out.println("Order updated successfully!");
+                    break; // go back to select another order to update
                 } else {
-                    System.out.println("Failed to create order. Please check the quantity and try again.");
+                    System.out.println("Invalid quantity. Please enter a valid quantity.");
                 }
-
-
-            } catch (RemoteException e) {
-                System.out.println("Error occurred while updating food details: " + e.getMessage());
-                System.out.println("Please try again later.");
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter a valid options.");
-                System.out.println("Press any key here to continue...");
-                scanner.nextLine();
             }
         }
     }
 
-    public void updateOrder() throws MalformedURLException, NotBoundException, RemoteException {
-        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
-        OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
-        Scanner scanner = new Scanner(System.in);
-
-        String[] headers = {"Order ID", "Customer ID", "Food ID", "Food Name","Price", "Quantity", "Total Price"};
-        String prompt = "Enter the orderID to update: ";
+    public static void deleteOrder() throws RemoteException {
+        OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
+        if (orderService == null) { return; }
 
         while (true) {
-            try {
-                List<Order> orderList = orderService.getOrders();
-                List<String[]> rows = new ArrayList<>();
-                for (Order order : orderList) {
-                    rows.add(new String[] {
-                            String.valueOf(order.getId()),
-                            String.valueOf(order.getUserId()),
-                            String.valueOf(order.getFoodId()),
-                            order.getFoodName(),
-                            String.valueOf(order.getPrice()),
-                            String.valueOf(order.getQuantity()),
-                            String.valueOf(order.getTotalPrice()),
-                    });
-                }
-                Table table = new Table("McGee's Order List", headers, rows);
+            displayAllOrders();
 
-                // Check if there are no orders and return if true
-                if (rows.isEmpty()) {
-                    System.out.println("No data available. Press Enter to exit.");
-                    InputUtils.waitForAnyKey();
-                    return;
-                }
-
-                // ClearScreen.clrscr();
-                // step 1 select a existing order
-                table.display(); // display order data table
-                System.out.print("Enter the orderID to update ('b' for back): ");
-
-                if (scanner.hasNextInt()) {
-                    int orderId = scanner.nextInt();
-                    Order SelectedOrder = orderService.getOrderByOrderId(orderId);
-
-                    if (orderId == -1) {
-                        return;
-                    }
-
-                    // step 2 get a new order item
-                    int selectNewFoodId = selectFoodForOrder();
-
-                    if (selectNewFoodId == 0) {
-                        return;
-                    }
-
-                    // step 3 get quantity
-                    int getQty = getOrderQuantity(selectNewFoodId);
-
-                    System.out.println(SelectedOrder);
-                    // step 4 set the food and update the quantity
-                    Food selectedFood = foodService.getFoodById(selectNewFoodId);
-
-                    SelectedOrder.setId(orderId);
-                    SelectedOrder.setFoodId(selectNewFoodId);;
-                    SelectedOrder.setFoodName(selectedFood.getName());
-                    SelectedOrder.setQuantity(getQty);
-                    SelectedOrder.setPrice(selectedFood.getPrice());
-
-                    // step 5 update the order
-                    boolean isUpdated = orderService.updateOrder(SelectedOrder);
-                    String checkUpdatedMessage = isUpdated ? "Order updated successfully." : "Failed to update order.";
-                    System.out.println(checkUpdatedMessage);
-                    InputUtils.waitForAnyKey();
-
-                } else {
-                    String userInput = scanner.next();
-                    if (userInput.equalsIgnoreCase("b")) {
-                        break; // Exit the loop if the user wants to go back
-                    } else {
-                        System.out.println("Invalid input. Please enter a valid OrderID or 'b' to go back.");
-                        InputUtils.waitForAnyKey();
-                    }
-                }
-
-
-
-
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter a valid input.");
+            // Check if there are no orders and return
+            if (orderService.getOrders().isEmpty()) {
+                System.out.println("No data available.");
                 InputUtils.waitForAnyKey();
-            } catch (RemoteException e) {
-                System.out.println("Error occurred while updating order details: " + e.getMessage());
-                InputUtils.waitForAnyKey();
-            }
-        }
-    }
-
-    public void deleteOrder() throws MalformedURLException, NotBoundException, RemoteException {
-        OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
-        Scanner scanner = new Scanner(System.in);
-
-        String[] headers = {"Order ID", "Customer ID", "Food ID", "Food Name","Price", "Quantity", "Total Price"};
-
-        while (true) {
-            try {
-                List<Order> orderList = orderService.getOrders();
-                List<String[]> rows = new ArrayList<>();
-                for (Order order : orderList) {
-                    rows.add(new String[] {
-                            String.valueOf(order.getId()),
-                            String.valueOf(order.getUserId()),
-                            String.valueOf(order.getFoodId()),
-                            order.getFoodName(),
-                            String.valueOf(order.getPrice()),
-                            String.valueOf(order.getQuantity()),
-                            String.valueOf(order.getTotalPrice()),
-                    });
-                }
-                Table table = new Table("McGee's Order List", headers, rows);
-
-                // Check if there are no orders and return if true
-                if (rows.isEmpty()) {
-                    System.out.println("No data available. Press Enter to exit.");
-                    InputUtils.waitForAnyKey(); // Wait for the user to press Enter
-                    return;
-                }
-                // ClearScreen.clrscr();
-                // step 1 select a existing order
-                table.display(); // display order data table
-                System.out.print("Enter the orderID to delete('b' for back): ");
-
-                if (scanner.hasNextInt()) {
-                    int orderId = scanner.nextInt();
-                    Order SelectedOrder = orderService.getOrderByOrderId(orderId);
-
-                    if (orderId == -1) {
-                        return;
-                    }
-
-                    // step 2 confirmation
-                    boolean isConfirmation = deleteConfirmation(orderId);
-                    if (!isConfirmation) { // User want to cancel delete
-                        return;
-                    }
-
-                    // step 3 delete the order
-                    boolean isDeleted = orderService.deleteOrder(SelectedOrder);
-                    String checkUpdatedMessage = isDeleted ? "Order deleted successfully." : "Failed to delete order.";
-                    System.out.println(checkUpdatedMessage);
-                    InputUtils.waitForAnyKey();
-
-                } else {
-                    String userInput = scanner.next();
-                    if (userInput.equalsIgnoreCase("b")) {
-                        break; // Exit the loop if the user wants to go back
-                    } else {
-                        System.out.println("Invalid input. Please enter a valid OrderID or 'b' to go back.");
-                        InputUtils.waitForAnyKey();
-                    }
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter a valid input.");
-                InputUtils.waitForAnyKey();
-            } catch (RemoteException e) {
-                System.out.println("Error occurred while updating order details: " + e.getMessage());
-                InputUtils.waitForAnyKey();
-            }
-        }
-
-
-    }
-
-    private int selectUserForOrder() throws MalformedURLException, NotBoundException, RemoteException {
-        UserServiceRemote userService = (UserServiceRemote) Naming.lookup("rmi://localhost:7777/userService");
-        List<User> userList = userService.getAllUsers();
-        UserActions userActions = new UserActions();
-        Scanner scanner = new Scanner(System.in);
-
-        String[] headers = {"ID", "First Name", "Last Name", "IC/Passport"};
-        String prompt = "Enter the ID of the user before order ('b' for back): ";
-
-        List<String[]> rows = new ArrayList<>();
-        List<Integer> optionsID = new ArrayList<>();
-
-        for (User user : userList) {
-            rows.add(new String[] {
-                    String.valueOf(user.getId()),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getICNum(),
-            });
-            optionsID.add(user.getId());
-        }
-
-        Table table = new Table("A List of User", headers, rows);
-
-        while (true) {
-            try {
-                table.display();
-                System.out.print("Enter the ID of the user before order ('b' for back): ");
-                if (scanner.hasNextInt()) { // Check the user input is int
-                    int selectedUserId = scanner.nextInt();
-                    boolean isUserExist = userService.checkUserId(selectedUserId);
-                    if (isUserExist) {
-                        return selectedUserId;
-                    } else {
-                        System.out.println("UserID does not exist.");
-                        InputUtils.waitForAnyKey();
-                    }
-                } else { // user input is string
-                    String userInput = scanner.next();
-                    if (userInput.equalsIgnoreCase("b")) {
-                        break; // Exit the loop if the user wants to go back
-                    } else {
-                        System.out.println("Invalid input. Please enter a valid userID or 'b' to go back.");
-                        InputUtils.waitForAnyKey();
-                    }
-                }
-
-            } catch (RemoteException e) {
-                System.out.println("Error occurred while checking username existence: " + e.getMessage());
-                InputUtils.waitForAnyKey();
-                return 0;
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter a valid userID.");
-                InputUtils.waitForAnyKey();
-            }
-        }
-        return 0;
-    }
-
-    private int selectFoodForOrder() throws MalformedURLException, NotBoundException, RemoteException {
-        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
-        List<Food> foodList = foodService.getAllFoods();
-        Scanner scanner = new Scanner(System.in);
-
-        String[] headers = {"ID", "Product", "Quantity", "Price"};
-        String prompt = "Enter the ID of the food to order ('b' for back): ";
-        List<String[]> rows = new ArrayList<>();
-        List<Integer> optionsID = new ArrayList<>();
-
-        for (Food food : foodList) {
-            rows.add(new String[] {
-                    String.valueOf(food.getId()),
-                    food.getName(),
-                    String.valueOf(food.getQty()),
-                    String.valueOf(food.getPrice()),
-            });
-            optionsID.add(food.getId());
-        }
-
-        Table table = new Table("A List of Food", headers, rows);
-
-        while (true) {
-            try {
-                table.display();
-                System.out.print("Enter the ID of the food to order ('b' for back): ");
-                if (scanner.hasNextInt()) { // Check the user input is int
-                    int selectedFoodId = scanner.nextInt();
-                    boolean isFoodExist = foodService.checkExistedFoodId(selectedFoodId);
-                    if (isFoodExist) {
-                        return selectedFoodId;
-                    } else {
-                        System.out.println("Food ID does not exist.");
-                        InputUtils.waitForAnyKey();
-                    }
-                } else { // user input is string
-                    String userInput = scanner.next();
-                    if (userInput.equalsIgnoreCase("b")) {
-                        break; // Exit the loop if the user wants to go back
-                    } else {
-                        System.out.println("Invalid input. Please enter a valid food ID or 'b' to go back.");
-                        InputUtils.waitForAnyKey();
-                    }
-                }
-
-            } catch (RemoteException e) {
-                System.out.println("Error occurred while checking Food existence: " + e.getMessage());
-                InputUtils.waitForAnyKey();
-                return 0;
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter a valid food ID.");
-                InputUtils.waitForAnyKey();
-            }
-        }
-        return 0;
-    }
-
-    // get Quantity
-    public int getOrderQuantity(int selectedFoodId) throws  MalformedURLException, NotBoundException, RemoteException {
-        FoodServiceRemote foodService = (FoodServiceRemote) Naming.lookup("rmi://localhost:7777/foodService");
-        Scanner scanner = new Scanner(System.in);
-
-        Food selectedFood = foodService.getFoodById(selectedFoodId);
-
-        while (true) {
-            try {
-                System.out.println("\n------------------------------------------------------------");
-                System.out.println("Selected Food Details:");
-                System.out.println("------------------------------------------------------------");
-                System.out.println("ID: " + selectedFood.getId());
-                System.out.println("Product Name: " + selectedFood.getName());
-                System.out.println("Quantity: " + selectedFood.getQty());
-                System.out.println("Price: " + selectedFood.getPrice());
-                System.out.println("------------------------------------------------------------");
-
-                int qty;
-                while (true) {
-                    System.out.print("Quantity: ");
-                    if (scanner.hasNextInt()) {
-                        qty = scanner.nextInt();
-                        if (qty < 1) {
-                            System.out.println("Quantity must be greater than 0.");
-                            scanner.nextLine();
-                        } else if (qty > selectedFood.getQty()) {
-                            System.out.println("Insufficient stock. Available quantity: " + selectedFood.getQty());
-                            scanner.nextLine();
-
-                        } else {
-                            return qty;
-                        }
-                    } else {
-                        System.out.println("Invalid input. Please enter a valid quantity.");
-                        InputUtils.waitForAnyKey();
-                    }
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter a valid options.");
-                InputUtils.waitForAnyKey();
-            }
-        }
-
-    }
-
-    public boolean deleteConfirmation(int selectedOrderId) throws MalformedURLException, NotBoundException, RemoteException {
-        OrderServiceRemote orderService = (OrderServiceRemote) Naming.lookup("rmi://localhost:7777/orderService");
-        
-        while (true) {
-            // retrieve the user details
-            Order orderToDelete = orderService.getOrderByOrderId(selectedOrderId);
-
-            // handle null usertodelete object
-            if (orderToDelete == null) {
-                System.out.println("Order not found in database.");
-                return false;
+                return;
             }
 
-            // display user details and confirmation prompt
+            // Step 1: Select an order
+            Order selectedOrder = selectOrderById();
+            if (selectedOrder == null) { return; }
+
+            // Display order details
             System.out.println();
             UIUtils.line(60);
             System.out.println("Are you sure you want to delete the following order?");
             UIUtils.line(60);
-            System.out.println("ID: " + orderToDelete.getId());
-            System.out.println("User ID: " + orderToDelete.getUserId());
-            System.out.println("Food ID: " + orderToDelete.getFoodId());
-            System.out.println("Food Name: " + orderToDelete.getFoodName());
-            System.out.println("Quantity: " + orderToDelete.getQuantity());
-            System.out.println("Price: " + orderToDelete.getPrice());
-            System.out.println("Total Price: " + orderToDelete.getTotalPrice());
+            displayOrderDetails(selectedOrder);
             UIUtils.line(60);
 
-            // prompt for confirmation
-            char confirmation = InputUtils.charInput("type 'y' to confirm deletion, 'n' to cancel, or 'b' to go back: ", 'b');
+            // Step 2: Confirmation
+            char confirmation = InputUtils.charInput("type 'y' to confirm deletion, 'b' to cancel: ", 'b');
+            if (confirmation == '\0') {
+                System.out.println("Deletion cancelled."); // exit the method and return to the previous menu
+                return;
+            }
             if (confirmation == 'y') {
-                return true;
-            } else if (confirmation == 'n') {
-                return false;
-            } else if (confirmation == 'b') {
-                return false;
+                if (orderService.deleteOrder(selectedOrder)) {
+                    System.out.println("Order deleted successfully.");
+                } else {
+                    System.out.println("Failed to delete order from database.");
+                }
+                break;
             } else {
-                System.out.println("Invalid input. Please enter 'y', 'n', or 'b'.");
+                System.out.println("Invalid input. Please enter 'y' or 'b'.");
             }
         }
     }
