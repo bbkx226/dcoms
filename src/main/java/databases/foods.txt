@@ -5,7 +5,7 @@
 11,Lettuce,50,1.29
 12,Carrot,70,0.89
 13,Potato,90,0.69
-14,Onion,85,0.79
+9,Salmon,13,9.99
 15,Garlic,40,1.99
 16,Rice,100,0.99
 17,Pasta,60,1.49
