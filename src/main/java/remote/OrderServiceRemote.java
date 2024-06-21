@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import models.Food;
 import models.Order;
 import models.User;
 
@@ -26,4 +27,7 @@ public interface OrderServiceRemote extends Remote {
 
     // Checks out all orders
     boolean checkout(User user) throws RemoteException;
+
+    // Returns a food item by its ID
+    Food getFoodById(int foodId) throws RemoteException;
 }

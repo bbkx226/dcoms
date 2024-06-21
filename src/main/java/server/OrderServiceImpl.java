@@ -103,26 +103,11 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
                 .filter(order -> order.getUserId() == user.getId())
                 .toList();
 
-        List<Order> outOfStockOrders = new ArrayList<>();
-
         for (Order order : userOrders) {
             Food currentFood = foodRepository.getFoodById(order.getFoodId());
             if (currentFood == null || order.getQuantity() > currentFood.getQty()) {
-                outOfStockOrders.add(order);
                 return false;
-
-        }
-
-        if (!outOfStockOrders.isEmpty()) {
-            System.out.println("The following items are out of stock or have insufficient quantity:");
-            for (Order order : outOfStockOrders) {
-                System.out.println("Food: " + order.getFoodName() + ", Ordered Quantity: " + order.getQuantity() + ", Available Quantity: " + foodRepository.getFoodById(order.getFoodId()).getQty());
             }
-            return false;
-        }
-
-        for (Order order : userOrders) {
-            Food currentFood = foodRepository.getFoodById(order.getFoodId());
             int newFoodQty = currentFood.getQty() - order.getQuantity();
             currentFood.setQty(newFoodQty);
             if (newFoodQty == 0) {
@@ -134,4 +119,11 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
         orders.removeAll(userOrders);
         return true;
     }
+
+    // Returns a food item by its ID
+    @Override
+    public Food getFoodById(int foodId) throws RemoteException {
+        return foodRepository.getFoodById(foodId);
+    }
+
 }

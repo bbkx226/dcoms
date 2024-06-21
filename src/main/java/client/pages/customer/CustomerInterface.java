@@ -4,6 +4,7 @@ import client.CustomerActions;
 import client.FoodActions;
 import client.components.Menu;
 import models.User;
+import utils.InputUtils;
 import utils.UIUtils;
 
 import java.net.MalformedURLException;
@@ -30,6 +31,7 @@ public class CustomerInterface {
             switch (menu.getInput("Enter your choice: ")) {
                 case 1:
                     FoodActions.displayFoods();
+                    InputUtils.waitForAnyKey();
                     break;
                 case 2:
                     new OrderInterface(this.user).start(); //Order, Update, Delete Food
