@@ -1,6 +1,6 @@
 1,Apple,2,0.99
-2,Banana,93,0.59
-3,Orange,46,1.29
+2,Banana,1,0.59
+3,Orange,45,1.29
 10,Tomato,60,0.79
 11,Lettuce,50,1.29
 12,Carrot,70,0.89

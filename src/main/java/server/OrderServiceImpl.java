@@ -119,4 +119,11 @@ public class OrderServiceImpl extends UnicastRemoteObject implements OrderServic
         orders.removeAll(userOrders);
         return true;
     }
+
+    // Returns a food item by its ID
+    @Override
+    public Food getFoodById(int foodId) throws RemoteException {
+        return foodRepository.getFoodById(foodId);
+    }
+
 }
