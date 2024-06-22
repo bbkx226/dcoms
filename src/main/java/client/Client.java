@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 import client.pages.MainMenu;
 
 public class Client {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         try {
             new MainMenu().start(); // Initialize and start the main menu
         } catch (MalformedURLException e) {

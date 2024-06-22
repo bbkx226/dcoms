@@ -18,25 +18,22 @@ public class MainMenu {
         this.menu = new Menu("Welcome to McGee!", options);
     }
 
-    public void start() throws MalformedURLException, NotBoundException, RemoteException {
+    public void start() throws MalformedURLException, NotBoundException, RemoteException, InterruptedException {
         while (true) {
             UIUtils.clearScreen();
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {
-                case 1:
-                    LoginInterface.start();
-                    break;
-                case 2:
+                case 1 -> LoginInterface.start();
+                case 2 -> {
                     FoodActions.displayFoods();
                     InputUtils.waitForAnyKey();
-                    break;
-                case 3:
-                    new RegisterInterface().start();
-                    break;
-                case 4:
+                }
+                case 3 -> RegisterInterface.start();
+                case 4 -> {
                     System.out.println("Thank you for using McGee! Goodbye!");
-                    System.exit(1);
+                    System.exit(0);
+                }
             }
         }
     }

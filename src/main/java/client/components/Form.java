@@ -25,34 +25,16 @@ public class Form {
 
     // Add an int field to the form with custom condition
     public boolean addIntField(String fieldName, String prompt, Predicate<Integer> condition, String errorMsg) {
-        boolean isValid;
-        int input;
-
-        do {
-            input = InputUtils.intInput(prompt, cancelString);
-            isValid = condition.test(input);
-
-            if (!isValid) { System.out.println(errorMsg); }
-            if (input == Integer.MIN_VALUE) { return false; }
-        } while (!isValid);
-
+        int input = getInputWithCondition(prompt, condition, errorMsg, InputType.INTEGER);
+        if (input == Integer.MIN_VALUE) return false;
         fields.put(fieldName, input);
         return true;
     }
 
     // Add a double field to the form with custom condition
     public boolean addDoubleField(String fieldName, String prompt, Predicate<Double> condition, String errorMsg) {
-        boolean isValid;
-        double input;
-
-        do {
-            input = InputUtils.doubleInput(prompt, cancelString);
-            isValid = condition.test(input);
-
-            if (!isValid) { System.out.println(errorMsg); }
-            if (Double.isNaN(input)) { return false; }
-        } while (!isValid);
-
+        double input = getInputWithCondition(prompt, condition, errorMsg, InputType.DOUBLE);
+        if (Double.isNaN(input)) return false;
         fields.put(fieldName, input);
         return true;
     }
@@ -60,5 +42,29 @@ public class Form {
     // Get the value of a field
     public Object getField(String fieldName) {
         return fields.get(fieldName);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getInputWithCondition(String prompt, Predicate<T> condition, String errorMsg, InputType type) {
+        T input;
+        boolean isValid;
+        do {
+            input = switch (type) {
+                case INTEGER -> (T) (Integer) InputUtils.intInput(prompt, cancelString);
+                case DOUBLE -> (T) (Double) InputUtils.doubleInput(prompt, cancelString);
+                default -> throw new IllegalStateException("Unexpected value: " + type);
+            };
+            isValid = condition.test(input);
+
+            if (!isValid) System.out.println(errorMsg);
+            if (input instanceof Integer && input.equals(Integer.MIN_VALUE) || input instanceof Double && ((Double) input).isNaN()) {
+                return null;
+            }
+        } while (!isValid);
+        return input;
+    }
+
+    private enum InputType {
+        INTEGER, DOUBLE
     }
 }

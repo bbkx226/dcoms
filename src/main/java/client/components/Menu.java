@@ -21,7 +21,7 @@ public class Menu {
     public Menu(String header, List<String> options) {
         this.header = header;
         this.options = options;
-        this.width = UIUtils.defaultWidth;
+        this.width = UIUtils.DEFAULT_WIDTH;
     }
 
     public void display() {
