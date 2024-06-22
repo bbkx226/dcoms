@@ -18,7 +18,8 @@ public class Form {
     // Add a string field, returns false if cancel string is entered
     public boolean addStringField(String fieldName, String prompt) {
         String input = InputUtils.stringInput(prompt, cancelString);
-        if (input == null) { return false; }
+
+        if (input == null) return false;
         fields.put(fieldName, input);
         return true;
     }
@@ -57,10 +58,9 @@ public class Form {
             isValid = condition.test(input);
 
             if (!isValid) System.out.println(errorMsg);
-            if (input instanceof Integer && input.equals(Integer.MIN_VALUE) || input instanceof Double && ((Double) input).isNaN()) {
-                return null;
-            }
+            if (input instanceof Integer && input.equals(Integer.MIN_VALUE) || input instanceof Double && ((Double) input).isNaN()) return null;
         } while (!isValid);
+        
         return input;
     }
 

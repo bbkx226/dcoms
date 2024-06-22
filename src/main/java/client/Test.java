@@ -1,20 +1,18 @@
 package client;
 
-import models.Food;
-import models.Order;
-import models.User;
-
-import remote.AuthServiceRemote;
-import remote.FoodServiceRemote;
-import remote.OrderServiceRemote;
-import remote.UserServiceRemote;
-
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-
 import java.util.List;
+
+import models.Food;
+import models.Order;
+import models.User;
+import remote.AuthServiceRemote;
+import remote.FoodServiceRemote;
+import remote.OrderServiceRemote;
+import remote.UserServiceRemote;
 
 public class Test {
     public static void test() throws MalformedURLException, NotBoundException, RemoteException {
@@ -32,7 +30,7 @@ public class Test {
         System.out.println(authService.authenticate("kaizhe", "123").toString());
         try {
             System.out.println(authService.authenticate("wrong username", "wrong password").toString());
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             System.err.println("incorrect username / password");
         }
 

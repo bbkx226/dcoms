@@ -21,8 +21,7 @@ public class Server {
             serverRegister.rebind("userService", new UserServiceImpl());
             serverRegister.rebind("foodService", new FoodServiceImpl());
             serverRegister.rebind("orderService", new OrderServiceImpl());
-
-            System.out.println("Food order server is running...");
+            LOGGER.log(Level.INFO, String.format("Food order server is running..."));
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, "Server exception: ", e);
         }

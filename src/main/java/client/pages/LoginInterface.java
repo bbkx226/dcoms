@@ -15,7 +15,7 @@ import remote.AuthServiceRemote;
 public class LoginInterface {
     public static void start() throws MalformedURLException, NotBoundException, RemoteException, InterruptedException {
         Form form = new Form();
-        form.addStringField("username", "Enter your username: ");
+        form.addStringField("username", "\nEnter your username: ");
         form.addStringField("password", "Enter your password: ");
 
         String username = (String) form.getField("username");
@@ -27,7 +27,7 @@ public class LoginInterface {
         User currentUser = authService.authenticate(username, password);
 
         if (currentUser == null) {
-            System.out.println("Invalid credentials. Please try again.");
+            System.out.println("\nInvalid credentials. Proceeding back to the main menu...");
             Thread.sleep(2000);
         } else if (currentUser.getUserType().equals(UserType.ADMIN)) {
             new AdminInterface(currentUser).start();

@@ -8,12 +8,8 @@ public enum UserType {
     private final String stringValue;
 
     // Constructor to initialize the string value of the enum
-    UserType(String stringValue) {
-        this.stringValue = stringValue;
-    }
+    UserType(String stringValue) { this.stringValue = stringValue; }
 
     // Returns the string value of the enum
-    public String getStringValue() {
-        return stringValue;
-    }
+    public String getStringValue() { return stringValue; }
 }

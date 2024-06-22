@@ -18,7 +18,7 @@ public class AdminInterface {
         this.menu = new Menu("Welcome to McGee, " + fullName + "!", options);
     }
 
-    public void start() throws MalformedURLException, NotBoundException, RemoteException {
+    public void start() throws MalformedURLException, NotBoundException, RemoteException, InterruptedException {
         while (true) {
             UIUtils.clearScreen();
             menu.display();

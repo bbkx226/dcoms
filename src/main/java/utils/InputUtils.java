@@ -19,7 +19,7 @@ public class InputUtils {
                 return userInput;
             }
 
-            System.out.println("Invalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
+            System.out.println("\nInvalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
         }
     }
 
@@ -35,7 +35,7 @@ public class InputUtils {
             try {
                 return Integer.parseInt(userInput);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
+                System.out.println("\nInvalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
             }
         }
     }
@@ -53,7 +53,7 @@ public class InputUtils {
                 return userInput.charAt(0);
             }
 
-            System.out.println("Invalid input. Please enter a single character or '" + cancelChar + "' to cancel.");
+            System.out.println("\nInvalid input. Please enter a single character or '" + cancelChar + "' to cancel.");
         }
     }
 
@@ -69,13 +69,13 @@ public class InputUtils {
             try {
                 return Double.parseDouble(userInput);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
+                System.out.println("\nInvalid input. Please enter a valid value or '" + cancelString + "' to cancel.");
             }
         }
     }
 
     public static void waitForAnyKey() {
-        System.out.println("Press any key to continue...");
+        System.out.println("\nPress any key to continue...");
         scanner.nextLine();
     }
 }

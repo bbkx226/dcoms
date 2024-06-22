@@ -26,11 +26,13 @@ public class MainMenu {
             switch (menu.getInput("Enter your choice: ")) {
                 case 1 -> LoginInterface.start();
                 case 2 -> {
+                    UIUtils.clearScreen();
                     FoodActions.displayFoods();
                     InputUtils.waitForAnyKey();
                 }
                 case 3 -> RegisterInterface.start();
                 case 4 -> {
+                    UIUtils.clearScreen();
                     System.out.println("Thank you for using McGee! Goodbye!");
                     System.exit(0);
                 }

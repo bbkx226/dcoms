@@ -30,6 +30,7 @@ public class CustomerInterface {
 
             switch (menu.getInput("Enter your choice: ")) {
                 case 1 -> {
+                    UIUtils.clearScreen();
                     FoodActions.displayFoods();
                     InputUtils.waitForAnyKey();
                 }

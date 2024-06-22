@@ -20,7 +20,7 @@ public class OrderInterface {
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
        List<String> options = List.of("Place Order", "Update Order", "Delete Order", "Back");
-       Menu menu = new Menu("Manage your orders", options);
+       Menu menu = new Menu("Manage your orders", options, 73);
 
        while (true) {
            UIUtils.clearScreen();

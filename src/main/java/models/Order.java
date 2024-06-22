@@ -5,10 +5,10 @@ import java.text.DecimalFormat;
 
 // Represents an order in the system
 public class Order implements Serializable {
+    private final int userId; // New field to store the ID of the user who placed the order
+    private String foodName;
     private int id;
     private int foodId;
-    private String foodName;
-    private final int userId; // New field to store the ID of the user who placed the order
     private int quantity;
     private double price;
 

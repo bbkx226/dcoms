@@ -11,7 +11,7 @@ import client.pages.RegisterInterface;
 import utils.UIUtils;
 
 public class UserManagementInterface {
-    public static void start() throws MalformedURLException, NotBoundException, RemoteException {
+    public static void start() throws MalformedURLException, NotBoundException, RemoteException, InterruptedException {
         List<String> options = List.of("Create User", "Update User", "Delete User", "Back");
         Menu menu = new Menu("Manage Users", options);
 

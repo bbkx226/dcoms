@@ -6,11 +6,10 @@ import java.io.Serializable;
 public class User implements Serializable {
     private final int id;
     private final UserType userType;
+    private final String username;
     private String firstName;
     private String lastName;
-//    private final String ICNum;
     private String ICNum;
-    private final String username;
     private String password;
 
     // Constructor to initialize the user

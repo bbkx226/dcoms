@@ -8,18 +8,9 @@ import models.Food;
 
 // Provides remote food service
 public interface FoodServiceRemote extends Remote {
-    // Adds a new food item
-    boolean addFood(String newName, int newQty, double newPrice) throws RemoteException;
-
-    // Returns a list of all food items
-    List<Food> getAllFoods() throws RemoteException;
-
-    // Returns a food item by its ID
-    Food getFoodById(int foodId) throws RemoteException;
-
-    // Updates an existing food item
-    boolean updateFood(Food updatedFood) throws RemoteException;
-
-    // Removes a food item by its ID
-    boolean removeFood(int id) throws RemoteException;
+    boolean addFood(String newName, int newQty, double newPrice) throws RemoteException; // Adds a new food item
+    List<Food> getAllFoods() throws RemoteException; // Returns a list of all food items
+    Food getFoodById(int foodId) throws RemoteException; // Returns a food item by its ID
+    boolean updateFood(Food updatedFood) throws RemoteException; // Updates an existing food item
+    boolean removeFood(int id) throws RemoteException; // Removes a food item by its ID
 }

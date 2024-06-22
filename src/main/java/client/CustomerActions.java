@@ -21,10 +21,10 @@ public class CustomerActions {
 
     private Order selectOrderById() throws RemoteException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
-        if (orderService == null) { return null; }
+        if (orderService == null) return null;
 
         int selectedId = InputUtils.intInput("Enter the ID of the order ('b' for back): ", "b");
-        if (selectedId == Integer.MIN_VALUE) { return null; }
+        if (selectedId == Integer.MIN_VALUE) return null;
 
         List<Order> userOrderList = orderService.getOrders()
                 .stream()
@@ -41,11 +41,12 @@ public class CustomerActions {
     // Customer Add Order
     public void addOrder() throws RemoteException {
         // display menu
+        UIUtils.clearScreen();
         FoodActions.displayFoods();
 
         // Step 1: Select the food to order
         Food selectedFood = FoodActions.selectFoodById();
-        if (selectedFood == null) { return; }
+        if (selectedFood == null) return;
 
         while (true) {
             // Display details of selected food
@@ -58,7 +59,7 @@ public class CustomerActions {
 
             // Step 2: Select quantity
             int qty = InputUtils.intInput("Quantity: ", "b");
-            if (qty == Integer.MIN_VALUE) { return; }
+            if (qty == Integer.MIN_VALUE) return;
             if (qty < 0) {
                 System.out.println("Quantity must be greater than 0.");
                 continue;
@@ -66,20 +67,18 @@ public class CustomerActions {
 
             // Step 3: Add order in server
             OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
-            if (orderService == null) { return; }
+            if (orderService == null) return;
 
             if (orderService.addOrder(this.user.getId(), selectedFood.getId(), qty)) {
                 System.out.println("Order added successfully!");
                 break;
-            } else {
-                System.out.println("Invalid value. Please check your quantity.");
-            }
+            } else System.out.println("Invalid value. Please check your quantity.");
         }
     }
 
     public void updateOrder() throws RemoteException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
-        if (orderService == null) { return; }
+        if (orderService == null) return;
 
         while (true) {
             // display customer's orders
@@ -94,12 +93,12 @@ public class CustomerActions {
 
             // Step 1: select an order
             Order selectedOrder = this.selectOrderById();
-            if (selectedOrder == null) { return; }
+            if (selectedOrder == null) return;
 
             // Step 2: select new food to order (can be the same)
             FoodActions.displayFoods();
             Food selectedFood = FoodActions.selectFoodById();
-            if (selectedFood == null) { return; }
+            if (selectedFood == null) return;
 
             while (true) {
                 // Display selected food
@@ -112,7 +111,7 @@ public class CustomerActions {
 
                 // Step 3: select food quantity
                 int qty = InputUtils.intInput("Quantity: ", "b");
-                if (qty == Integer.MIN_VALUE) { return; }
+                if (qty == Integer.MIN_VALUE) return;
                 if (qty < 0) {
                     System.out.println("Quantity must be greater than 0.");
                     continue;
@@ -128,9 +127,7 @@ public class CustomerActions {
                 if (orderService.updateOrder(selectedOrder)) {
                     System.out.println("Order updated successfully!");
                     break; // go back to select another order to update
-                } else {
-                    System.out.println("Invalid quantity. Please enter a valid quantity.");
-                }
+                } else System.out.println("Invalid quantity. Please enter a valid quantity.");
             }
         }
     }
@@ -138,7 +135,7 @@ public class CustomerActions {
     //Customer Delete Order from the Cart
     public void deleteOrder() throws RemoteException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
-        if (orderService == null) { return; }
+        if (orderService == null) return;
 
         while (true) {
             // Display user's orders
@@ -158,7 +155,7 @@ public class CustomerActions {
 
             // Step 1: Select an order
             Order selectedOrder = this.selectOrderById();
-            if (selectedOrder == null) { return; }
+            if (selectedOrder == null) return;
 
             // Display order details
             System.out.println();
@@ -177,24 +174,17 @@ public class CustomerActions {
             if (confirmation == 'y') {
                 if (orderService.deleteOrder(selectedOrder)) {
                     System.out.println("Order deleted successfully.");
-                } else {
-                    System.out.println("Failed to delete order from database.");
-                }
-            } else {
-                System.out.println("Invalid input. Please enter 'y' or 'b'.");
-            }
+                    UIUtils.clearScreen();
+                } else System.out.println("Failed to delete order from database.");
+            } else System.out.println("Invalid input. Please enter 'y' or 'b'.");
         }
     }
-
-
-
 
     // Customer check order before make payment
     public void checkOrder() throws RemoteException, InterruptedException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
-        if (orderService == null) { return; }
+        if (orderService == null) return;
 
-        // Filter orders by customer ID
         List<Order> userOrderList = orderService.getOrders()
                 .stream()
                 .filter(order -> order.getUserId() == this.user.getId())
@@ -204,20 +194,14 @@ public class CustomerActions {
                 .mapToDouble(Order::getTotalPrice)
                 .sum();
 
-        // Check if there are no orders and return if true
         if (userOrderList.isEmpty()) {
             System.out.println("No orders found.");
             InputUtils.waitForAnyKey();
             return;
         }
 
-        // Display order data table
         OrderActions.displayUserOrders(this.user);
-
-        // Display total price
         System.out.println("Total Price: $" + String.format("%.2f", totalPrice));
-
-        // Print line after the Total Price
         UIUtils.printLine(60);
 
         char confirmation = InputUtils.charInput("Press 'p' to proceed to payment for your orders, or press 'b' to go back: ", 'b');
@@ -232,14 +216,11 @@ public class CustomerActions {
                 return;
             }
             if (paymentConfirmation.equalsIgnoreCase("yes") || paymentConfirmation.equalsIgnoreCase("y")) {
-
                 // Check each order for sufficient stock
                 List<Order> insufficientStockOrders = new ArrayList<>();
                 for (Order order : userOrderList) {
                     Food food = orderService.getFoodById(order.getFoodId());
-                    if (food == null || order.getQuantity() > food.getQty()) {
-                        insufficientStockOrders.add(order);
-                    }
+                    if (food == null || order.getQuantity() > food.getQty()) insufficientStockOrders.add(order);
                 }
 
                 if (insufficientStockOrders.isEmpty()) {
@@ -247,9 +228,7 @@ public class CustomerActions {
                     if (orderService.checkout(this.user)) {
                         System.out.println("Payment successful! Your order has been processed.");
                         InputUtils.waitForAnyKey();
-                    } else {
-                        System.out.println("Payment failed. Please try again.");
-                    }
+                    } else System.out.println("Payment failed. Please try again.");
                 } else {
                     System.out.println("Payment failed.");
                     UIUtils.printLine(60);
@@ -276,22 +255,19 @@ public class CustomerActions {
                                     if (orderService.updateOrder(order)) {
                                         System.out.println("Order updated successfully.");
                                         break;
-                                    } else {
-                                        System.out.println("Failed to update order. Please try again.");
-                                    }
-                                } else {
-                                    System.out.println("Invalid quantity. Please enter a valid quantity.");
-                                }
-                                InputUtils.waitForAnyKey();
+                                    } else System.out.println("Failed to update order. Please try again.");
+                                } else System.out.println("Invalid quantity. Please enter a valid quantity.");
                             }
                         }
                     }
                 }
             } else {
                 System.out.println("Payment cancelled.");
+                Thread.sleep(1000);
             }
         } else {
             System.out.println("Payment cancelled.");
+            Thread.sleep(1000);
         }
     }
 

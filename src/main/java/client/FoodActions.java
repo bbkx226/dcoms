@@ -74,24 +74,22 @@ public class FoodActions {
                 System.out.println("Product already exists! Please enter a different product name.");
             } else break;
         }
-        if (!form.addIntField("quantity", "Quantity: ", input -> input > 0, "Invalid input. Please enter a valid quantity.")) { return; }
-        if (!form.addDoubleField("price", "Price: ", input -> input > 0,"Invalid input. Please enter a valid price.")) { return; }
+        if (!form.addIntField("quantity", "Quantity: ", input -> input > 0, "Invalid input. Please enter a valid quantity.")) return;
+        if (!form.addDoubleField("price", "Price: ", input -> input > 0,"Invalid input. Please enter a valid price.")) return; 
 
         int qty = (int) form.getField("quantity");
         double price = (double) form.getField("price");
 
         boolean isFoodAdded = foodService.addFood(name, qty, price);
-        if (isFoodAdded) {
-            System.out.println("Product added successfully!");
-        } else {
-            System.out.println("Product already exists! Please enter the details again.");
-        }
+        
+        if (isFoodAdded) System.out.println("Product added successfully!");
+        else System.out.println("Product already exists! Please enter the details again.");
     }
 
     public static void updateFood() throws RemoteException {
         displayFoods();
         Food selectedFood = selectFoodById();
-        if (selectedFood == null) { return; }
+        if (selectedFood == null) return;
 
         // Prompt user to select detail to update
         while (true) {
@@ -107,12 +105,12 @@ public class FoodActions {
             menu.display();
 
             FoodServiceRemote foodService = RemoteServiceLocator.getFoodService();
-            if (foodService == null) { return; }
+            if (foodService == null) return;
 
             switch (menu.getInput("Select a detail to update: ")) {
                 case 1 -> {
                     String newName = InputUtils.stringInput("Enter product's new name: ", "b");
-                    if (newName == null) { break; }
+                    if (newName == null) break;
 
                     List<Food> foodList = foodService.getAllFoods();
                     boolean isNameExists = foodList.stream()
@@ -135,7 +133,7 @@ public class FoodActions {
                 }
                 case 3 -> {
                     double newPrice = InputUtils.doubleInput("Enter product's new price: ", "b");
-                    if (Double.isNaN(newPrice)) { break; }
+                    if (Double.isNaN(newPrice)) break;
                     if (newPrice < 0) {
                         System.out.println("Invalid input. Please enter a valid price.");
                         continue;
@@ -148,11 +146,8 @@ public class FoodActions {
             }
 
             // Update the food details
-            if (foodService.updateFood(selectedFood)) {
-                System.out.println("Food details updated successfully.");
-            } else {
-                System.out.println("Failed to update food details.");
-            }
+            if (foodService.updateFood(selectedFood)) System.out.println("Food details updated successfully.");
+            else System.out.println("Failed to update food details.");
         }
     }
 
@@ -160,7 +155,7 @@ public class FoodActions {
         while (true) {
             displayFoods();
             Food selectedFood = selectFoodById();
-            if (selectedFood == null) { return; }
+            if (selectedFood == null) return;
 
             // display food details and confirmation prompt
             System.out.println();
@@ -178,17 +173,13 @@ public class FoodActions {
             }
             if (confirmation == 'y') {
                 FoodServiceRemote foodService = RemoteServiceLocator.getFoodService();
-                if (foodService == null) { return; }
+                if (foodService == null) return;
 
-                if (foodService.removeFood(selectedFood.getId())) {
-                    System.out.println("Product deleted successfully.");
-                } else {
-                    System.out.println("Failed to delete product from database.");
-                }
+                if (foodService.removeFood(selectedFood.getId())) System.out.println("Product deleted successfully.");
+                else System.out.println("Failed to delete product from database.");
+
                 break;
-            } else {
-                System.out.println("Invalid input. Please enter 'y' or 'b'.");
-            }
+            } else System.out.println("Invalid input. Please enter 'y' or 'b'.");
         }
     }
 }

@@ -6,9 +6,7 @@ public class UIUtils {
     // Clears the screen by printing new lines
     public static void clearScreen() {
         final int linesToClear = 100;
-        for (int i = 0; i < linesToClear; i++) {
-            System.out.println();
-        }
+        for (int i = 0; i < linesToClear; i++) System.out.println();
     }
 
     // Overloaded implementation of line()
