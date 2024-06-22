@@ -28,26 +28,26 @@ public class User implements Serializable {
     public int getId() { return id; }
     public UserType getUserType() { return userType; }
     public String getUserTypeString() { return userType.getStringValue(); }
+
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
+
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
+
     public String getICNum() { return ICNum; }
     public void setICNum(String ICNum) { this.ICNum = ICNum; }
+
     public String getUsername() { return username; }
+    
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
     // Converts the user to a string
     @Override
     public String toString() {
-        return  id + "," +
-                userType.getStringValue() + "," +
-                firstName + "," +
-                lastName + "," +
-                ICNum + "," +
-                username + "," +
-                password;
+        return String.format("%d,%s,%s,%s,%s,%s,%s",
+                id, userType.getStringValue(), firstName, lastName, ICNum, username, password);
     }
 
     // Creates a user from a string

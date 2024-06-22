@@ -1,10 +1,10 @@
 package client.components;
 
-import utils.InputUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
+
+import utils.InputUtils;
 
 public class Form {
     private final Map<String, Object> fields;

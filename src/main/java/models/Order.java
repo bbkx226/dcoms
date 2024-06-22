@@ -23,31 +23,34 @@ public class Order implements Serializable {
     }
 
     // Getters and setters
-    public int getId() { return id; } // Returns the ID of the order
-    public int getFoodId() { return foodId; } // Returns the ID of the food item in the order
-    public String getFoodName() { return foodName; } // Returns the name of the food item in the order
-    public int getUserId() { return userId; } // Returns the ID of the user who placed the order
-    public int getQuantity() { return quantity; } // Returns the quantity of the food item in the order
-    public void setQuantity(int qty) { this.quantity = qty; } // Sets the quantity of the food item in the order
-    public void setId(int id) { this.id = id; } // Sets the quantity of the food item in the order
-    public void setFoodId(int foodId) { this.foodId = foodId; } // Sets the quantity of the food item in the order
-    public void setFoodName(String foodName) { this.foodName = foodName; } // Sets the quantity of the food item in the order
-    public double getPrice() { DecimalFormat df = new DecimalFormat("#.##"); // Define the decimal format to round to 2 decimal places
-        return Double.parseDouble(df.format(price)); } // Returns the price of the food item in the order
-    public void setPrice(double price) { this.price = price; } // Sets the price of the food item in the order
-    public double getTotalPrice() { DecimalFormat df = new DecimalFormat("#.##"); // Define the decimal format to round to 2 decimal places
-        return Double.parseDouble(df.format(quantity * price)); } // Returns the total price of the order
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
+    public int getFoodId() { return foodId; }
+    public void setFoodId(int foodId) { this.foodId = foodId; }
+
+    public String getFoodName() { return foodName; }
+    public void setFoodName(String foodName) { this.foodName = foodName; }
+
+    public int getUserId() { return userId; }
+
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public double getPrice() { return roundToTwoDecimalPlaces(price); }
+    public void setPrice(double price) { this.price = price; }
+
+    public double getTotalPrice() { return roundToTwoDecimalPlaces(quantity * price); }
+
+    private double roundToTwoDecimalPlaces(double value) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format(value));
+    }
+    
     // Converts the order to a string
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", foodId=" + foodId +
-                ", userId=" + userId +
-                ", foodName='" + foodName + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                '}';
+        return String.format("Order{id=%d, foodId=%d, userId=%d, foodName='%s', quantity=%d, price=%.2f}", 
+                id, foodId, userId, foodName, quantity, getPrice());
     }
 }

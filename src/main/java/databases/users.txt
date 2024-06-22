@@ -1,8 +1,1 @@
 1,ADMIN,they,kai zhe,0123456789,tkz,123
-2,CUSTOMER,ang,xu tian,0123456789,axt,123
-3,CUSTOMER,brandon,ban kai xian,hihihi,bran,123
-4,CUSTOMER,They,Kai Zhe,123456789,kaizhe,123
-7,CUSTOMER,asdf,asdf,grape,fqwefqw,qwef
-10,CUSTOMER,test,test,test,testt,test
-11,CUSTOMER,test,baga,test,test,test
-12,CUSTOMER,abcd,abcd,abcd,abcd,abcd
