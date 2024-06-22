@@ -21,17 +21,12 @@ public class UserManagementInterface {
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {
-                case 1:
-                    RegisterInterface.start();
-                    break;
-                case 2:
-                    UserActions.updateUser();
-                    break;
-                case 3:
-                    UserActions.deleteUser();
-                    break;
-                case 4:
+                case 1 -> RegisterInterface.start();
+                case 2 -> UserActions.updateUser();
+                case 3 -> UserActions.deleteUser();
+                case 4 -> {
                     return;
+                }
             }
         }
     }

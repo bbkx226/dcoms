@@ -39,25 +39,25 @@ public class Table {
     }
 
     private int[] getColumnWidths(List<String[]> rows, String[] headers) {
-        int[] columnWidths = new int[headers.length];
+        int[] widths = new int[headers.length]; // Renamed variable for clarity
         for (int i = 0; i < headers.length; i++) {
-            columnWidths[i] = headers[i].length();
+            widths[i] = headers[i].length();
         }
-
+    
         for (String[] row : rows) {
             for (int i = 0; i < row.length; i++) {
-                columnWidths[i] = Math.max(columnWidths[i], row[i].length());
+                widths[i] = Math.max(widths[i], row[i].length());
             }
         }
-        return columnWidths;
+        return widths;
     }
 
     private int calcTotalWidth(int[] columnWidths) {
-        int totalWidth = 2;
+        int calculatedTotalWidth = 2; // Renamed variable to avoid hiding
         for (int width : columnWidths) {
-            totalWidth += width + 3; // Adding 3 for padding and separator
+            calculatedTotalWidth += width + 3; // Adding 3 for padding and separator
         }
-        return totalWidth;
+        return calculatedTotalWidth;
     }
 
     private void printRow(String[] row, int[] columnWidths) {
@@ -69,8 +69,8 @@ public class Table {
         System.out.println(sb);
     }
 
-    private void printCenteredMessage(int width, String message) {
-        int paddingSize = ((width - message.length()) / 2) - 1; // -1 because the "|" have 2
+    private void printCenteredMessage(int messageWidth, String message) {
+        int paddingSize = ((messageWidth - message.length()) / 2) - 1; // -1 because the "|" have 2
         String padding = " ".repeat(Math.max(0, paddingSize));
         System.out.println("|" + padding + message + padding + "|");
     }

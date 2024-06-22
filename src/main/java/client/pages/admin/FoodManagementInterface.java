@@ -20,17 +20,12 @@ public class FoodManagementInterface {
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {
-                case 1:
-                    FoodActions.addFood();
-                    break;
-                case 2:
-                    FoodActions.updateFood();
-                    break;
-                case 3:
-                    FoodActions.deleteFood();
-                    break;
-                case 4:
+                case 1 -> FoodActions.addFood();
+                case 2 -> FoodActions.updateFood();
+                case 3 -> FoodActions.deleteFood();
+                case 4 -> {
                     return;
+                }
             }
         }
     }

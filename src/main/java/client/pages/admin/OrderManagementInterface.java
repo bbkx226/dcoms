@@ -20,17 +20,12 @@ public class OrderManagementInterface {
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {
-                case 1:
-                    OrderActions.addOrder();
-                    break;
-                case 2:
-                    OrderActions.updateOrder();
-                    break;
-                case 3:
-                    OrderActions.deleteOrder();
-                    break;
-                case 4:
+                case 1 -> OrderActions.addOrder();
+                case 2 -> OrderActions.updateOrder();
+                case 3 -> OrderActions.deleteOrder();
+                case 4 -> {
                     return;
+                }
             }
         }
     }

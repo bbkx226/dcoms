@@ -29,17 +29,12 @@ public class OrderInterface {
            menu.display();
 
            switch (menu.getInput("Enter your choice: ")) {
-               case 1:
-                   ca.addOrder();
-                   break;
-               case 2:
-                   ca.updateOrder();
-                   break;
-               case 3:
-                   ca.deleteOrder();
-                   break;
-               case 4:
+               case 1 -> ca.addOrder();
+               case 2 -> ca.updateOrder();
+               case 3 -> ca.deleteOrder();
+               case 4 -> {
                    return;
+               }
            }
        }
     }

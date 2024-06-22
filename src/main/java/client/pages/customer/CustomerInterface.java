@@ -23,25 +23,22 @@ public class CustomerInterface {
         this.user = user;
     }
 
-    public void start() throws MalformedURLException, NotBoundException, RemoteException {
+    public void start() throws MalformedURLException, NotBoundException, RemoteException, InterruptedException {
         while (true) {
             UIUtils.clearScreen();
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {
-                case 1:
+                case 1 -> {
                     FoodActions.displayFoods();
                     InputUtils.waitForAnyKey();
-                    break;
-                case 2:
-                    new OrderInterface(this.user).start(); //Order, Update, Delete Food
-                    break;
-                case 3:
-                    new CustomerActions(this.user).checkOrder(); // Check orders in cart & proceed to payment
-                    break;
-                case 4:
+                }
+                case 2 -> new OrderInterface(this.user).start(); //Order, Update, Delete Food
+                case 3 -> new CustomerActions(this.user).checkOrder(); // Check orders in cart & proceed to payment
+                case 4 -> {
                     System.out.println("Logged out.");
                     return; // Return to the previous menu
+                }
             }
         }
     }

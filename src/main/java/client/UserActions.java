@@ -71,20 +71,21 @@ public class UserActions {
             menu.display();
 
             switch (menu.getInput("Select a detail to update: ")) {
-                case 1:
+                case 1 -> {
                     String newFirstName = InputUtils.stringInput("Enter new first name: ", "b");
                     if (newFirstName != null) { selectedUser.setFirstName(newFirstName); }
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     String newLastName = InputUtils.stringInput("Enter new last name: ", "b");
                     if (newLastName != null) { selectedUser.setLastName(newLastName); }
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     String newICNum = InputUtils.stringInput("Enter new IC/Passport: ", "b");
                     if (newICNum != null) { selectedUser.setICNum(newICNum); }
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     return;
+                }
             }
 
             UserServiceRemote userService = RemoteServiceLocator.getUserService();

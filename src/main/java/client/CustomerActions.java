@@ -190,7 +190,7 @@ public class CustomerActions {
 
 
     // Customer check order before make payment
-    public void checkOrder() throws RemoteException {
+    public void checkOrder() throws RemoteException, InterruptedException {
         OrderServiceRemote orderService = RemoteServiceLocator.getOrderService();
         if (orderService == null) { return; }
 
@@ -220,14 +220,19 @@ public class CustomerActions {
         // Print line after the Total Price
         UIUtils.printLine(60);
 
-        char confirmation = InputUtils.charInput("Press 'p' to proceed to payment for your orders, or press 'b' to go back.", 'b');
+        char confirmation = InputUtils.charInput("Press 'p' to proceed to payment for your orders, or press 'b' to go back: ", 'b');
         if (confirmation == '\0') {
             System.out.println("Returning to previous menu.");
             return;
         }
         if (confirmation == 'p' || confirmation == 'P') {
-            String paymentConfirmation = InputUtils.stringInput("Are you sure you want to proceed to payment? (yes/y to confirm)", "b");
+            String paymentConfirmation = InputUtils.stringInput("Are you sure you want to proceed to payment? (yes/y to confirm): ", "b");
+            if (paymentConfirmation == null) {
+                System.out.println("Returning to previous menu.");
+                return;
+            }
             if (paymentConfirmation.equalsIgnoreCase("yes") || paymentConfirmation.equalsIgnoreCase("y")) {
+
                 // Check each order for sufficient stock
                 List<Order> insufficientStockOrders = new ArrayList<>();
                 for (Order order : userOrderList) {
@@ -252,42 +257,33 @@ public class CustomerActions {
 
                     for (Order order : insufficientStockOrders) {
                         Food food = orderService.getFoodById(order.getFoodId());
-                        System.out.println("Item: " + food.getName() );
-                        System.out.println("Available Stock: " + (food != null ? food.getQty() : 0));
-                    }
-
-                    // Prompt the customer to delete or update the orders with insufficient stock
-                    for (Order insufficientOrder : insufficientStockOrders) {
-                        char action = InputUtils.charInput("Would you like to delete (d) or update (u) the quantity of " + insufficientOrder.getFoodName() + "? (d/u): ", 'b');
-                        if (action == 'd') {
-                            if (orderService.deleteOrder(insufficientOrder)) {
-                                System.out.println("Order deleted successfully.");
-                                InputUtils.waitForAnyKey();
-                                break;
+                        System.out.println("Item: " + order.getFoodName());
+                        if (food == null || food.getQty() <= 0) {
+                            System.out.println("No stocks available.");
+                            if (orderService.deleteOrder(order)) {
+                                System.out.println("Order deleted successfully due to insufficient stock.");
                             } else {
                                 System.out.println("Failed to delete order.");
                             }
-                        } else if (action == 'u') {
+                            InputUtils.waitForAnyKey();
+                        } else {
+                            System.out.println("Available Stock: " + food.getQty());
                             while (true) {
-                                int newQty = InputUtils.intInput("Enter new quantity for " + insufficientOrder.getFoodName() + ": ", "b");
+                                int newQty = InputUtils.intInput("Enter new quantity for " + order.getFoodName() + ": ", "b");
                                 if (newQty == Integer.MIN_VALUE) { return; }
-                                Food foodItem = orderService.getFoodById(insufficientOrder.getFoodId());
-                                if (newQty > 0 && foodItem != null && newQty <= foodItem.getQty()) {
-                                    insufficientOrder.setQuantity(newQty);
-                                    if (orderService.updateOrder(insufficientOrder)) {
+                                if (newQty > 0 && newQty <= food.getQty() && newQty != order.getQuantity()) {
+                                    order.setQuantity(newQty);
+                                    if (orderService.updateOrder(order)) {
                                         System.out.println("Order updated successfully.");
-                                        InputUtils.waitForAnyKey();
                                         break;
                                     } else {
                                         System.out.println("Failed to update order. Please try again.");
-                                        InputUtils.waitForAnyKey();
                                     }
                                 } else {
                                     System.out.println("Invalid quantity. Please enter a valid quantity.");
                                 }
+                                InputUtils.waitForAnyKey();
                             }
-                        } else {
-                            System.out.println("Invalid input. Skipping this item.");
                         }
                     }
                 }

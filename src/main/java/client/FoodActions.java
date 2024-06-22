@@ -110,7 +110,7 @@ public class FoodActions {
             if (foodService == null) { return; }
 
             switch (menu.getInput("Select a detail to update: ")) {
-                case 1:
+                case 1 -> {
                     String newName = InputUtils.stringInput("Enter product's new name: ", "b");
                     if (newName == null) { break; }
 
@@ -123,8 +123,8 @@ public class FoodActions {
                         continue;
                     }
                     selectedFood.setName(newName);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     int newQty = InputUtils.intInput("Enter product quantity: ", "b");
                     if (newQty == Integer.MIN_VALUE) { break; }
                     if (newQty < 0) {
@@ -132,8 +132,8 @@ public class FoodActions {
                         continue;
                     }
                     selectedFood.setQty(newQty);
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     double newPrice = InputUtils.doubleInput("Enter product's new price: ", "b");
                     if (Double.isNaN(newPrice)) { break; }
                     if (newPrice < 0) {
@@ -141,9 +141,10 @@ public class FoodActions {
                         continue;
                     }
                     selectedFood.setPrice(newPrice);
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     return;
+                }
             }
 
             // Update the food details

@@ -24,18 +24,13 @@ public class AdminInterface {
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {
-                case 1:
-                    UserManagementInterface.start();
-                    break;
-                case 2:
-                    FoodManagementInterface.start();
-                    break;
-                case 3:
-                    OrderManagementInterface.start();
-                    break;
-                case 4:
+                case 1 -> UserManagementInterface.start();
+                case 2 -> FoodManagementInterface.start();
+                case 3 -> OrderManagementInterface.start();
+                case 4 -> {
                     System.out.println("Logged out.");
                     return; // Return to the previous menu or perform any desired action
+                }
             }
         }
     }

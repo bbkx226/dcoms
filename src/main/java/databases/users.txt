@@ -1,1 +1,4 @@
 1,ADMIN,they,kai zhe,0123456789,tkz,123
+2,CUSTOMER,Brandon Ban,Kai Xian,anon123,bbkx,123
+3,CUSTOMER,Ang,Xu Tian,anon456,axt,123
+4,CUSTOMER,Wong,Qian Jie,anon789,wqj,123
