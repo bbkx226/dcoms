@@ -1,13 +1,13 @@
 package client.pages.admin;
 
-import client.OrderActions;
-import client.components.Menu;
-import utils.UIUtils;
-
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
+
+import client.OrderActions;
+import client.components.Menu;
+import utils.UIUtils;
 
 public class OrderManagementInterface {
     public static void start() throws MalformedURLException, NotBoundException, RemoteException {
@@ -15,7 +15,7 @@ public class OrderManagementInterface {
         Menu menu = new Menu("Manage Orders", options);
 
         while (true) {
-            UIUtils.clrscr();
+            UIUtils.clearScreen();
             OrderActions.displayAllOrders();
             menu.display();
 

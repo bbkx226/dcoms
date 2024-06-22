@@ -1,15 +1,15 @@
 package client;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
 import models.Food;
 import models.Order;
 import models.User;
 import remote.OrderServiceRemote;
 import utils.InputUtils;
 import utils.UIUtils;
-
-import java.rmi.RemoteException;
-import java.util.List;
-import java.util.ArrayList;
 
 
 public class CustomerActions {
@@ -50,11 +50,11 @@ public class CustomerActions {
         while (true) {
             // Display details of selected food
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             UIUtils.printHeader("Selected Food Details", 60);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             FoodActions.displayFoodDetails(selectedFood);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             // Step 2: Select quantity
             int qty = InputUtils.intInput("Quantity: ", "b");
@@ -104,11 +104,11 @@ public class CustomerActions {
             while (true) {
                 // Display selected food
                 System.out.println();
-                UIUtils.line(60);
+                UIUtils.printLine(60);
                 UIUtils.printHeader("Selected Food Details", 60);
-                UIUtils.line(60);
+                UIUtils.printLine(60);
                 FoodActions.displayFoodDetails(selectedFood);
-                UIUtils.line(60);
+                UIUtils.printLine(60);
 
                 // Step 3: select food quantity
                 int qty = InputUtils.intInput("Quantity: ", "b");
@@ -162,11 +162,11 @@ public class CustomerActions {
 
             // Display order details
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             System.out.println("Are you sure you want to delete the following order?");
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             OrderActions.displayOrderDetails(selectedOrder);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             // Step 2: Confirmation
             char confirmation = InputUtils.charInput("type 'y' to confirm deletion, 'b' to cancel: ", 'b');
@@ -218,7 +218,7 @@ public class CustomerActions {
         System.out.println("Total Price: $" + String.format("%.2f", totalPrice));
 
         // Print line after the Total Price
-        UIUtils.line(60);
+        UIUtils.printLine(60);
 
         char confirmation = InputUtils.charInput("Press 'p' to proceed to payment for your orders, or press 'b' to go back.", 'b');
         if (confirmation == '\0') {
@@ -247,7 +247,7 @@ public class CustomerActions {
                     }
                 } else {
                     System.out.println("Payment failed.");
-                    UIUtils.line(60);
+                    UIUtils.printLine(60);
                     System.out.println("The following items do not have enough stock: ");
 
                     for (Order order : insufficientStockOrders) {

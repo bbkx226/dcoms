@@ -68,9 +68,9 @@ public class FileUtils {
             boolean removed = lines.removeIf(line -> matchId(line, id));
             if (removed) {
                 Files.write(fileType.getFilePath(), lines);
-                LOGGER.log(Level.INFO, "Item with ID " + id + " deleted successfully.");
+                LOGGER.log(Level.INFO, "Item with ID {0} deleted successfully.", id);
             } else {
-                LOGGER.log(Level.WARNING, "Item with ID " + id + " not found.");
+                LOGGER.log(Level.WARNING, "Item with ID {0} not found.", id);
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error deleting from file", e);

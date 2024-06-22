@@ -1,19 +1,16 @@
 package client.pages;
 
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.List;
+
 import client.RemoteServiceLocator;
 import client.components.Form;
 import models.User;
 import remote.UserServiceRemote;
 import utils.UIUtils;
-
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class RegisterInterface {
     public static void start() throws MalformedURLException, NotBoundException, RemoteException {
@@ -25,9 +22,9 @@ public class RegisterInterface {
                 .map(User::getUsername)
                 .toList();
 
-        UIUtils.line(50);
+        UIUtils.printLine(50);
         UIUtils.printHeader("Register for a McGee account (Press 'b' to cancel)", 50);
-        UIUtils.line(50);
+        UIUtils.printLine(50);
 
         Form form = new Form();
         if (!form.addStringField("firstName", "First Name: ")) { return; }

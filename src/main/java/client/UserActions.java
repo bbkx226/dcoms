@@ -1,14 +1,14 @@
 package client;
 
+import java.rmi.RemoteException;
+import java.util.List;
+
 import client.components.Menu;
 import client.components.Table;
 import models.User;
 import remote.UserServiceRemote;
 import utils.InputUtils;
 import utils.UIUtils;
-
-import java.rmi.RemoteException;
-import java.util.List;
 
 public class UserActions {
     public static void displayUserDetails(User user) {
@@ -60,11 +60,11 @@ public class UserActions {
         // Prompt user to select detail to update
         while (true) {
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             UIUtils.printHeader("Original User Details", 60);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             displayUserDetails(selectedUser);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             List<String> options = List.of("First Name", "Last Name", "IC/Passport", "Back");
             Menu menu = new Menu("", options);
@@ -107,11 +107,11 @@ public class UserActions {
 
             // display user details and confirmation prompt
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             System.out.println("Are you sure you want to delete the following user?");
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             displayUserDetails(selectedUser);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             // prompt for confirmation
             char confirmation = InputUtils.charInput("type 'y' to confirm deletion, 'b' to cancel.", 'b');

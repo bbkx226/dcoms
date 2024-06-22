@@ -1,15 +1,15 @@
 package client;
 
-import models.Food;
+import java.rmi.RemoteException;
+import java.util.List;
+
 import client.components.Table;
+import models.Food;
 import models.Order;
 import models.User;
 import remote.OrderServiceRemote;
 import utils.InputUtils;
 import utils.UIUtils;
-
-import java.rmi.RemoteException;
-import java.util.List;
 
 public class OrderActions {
     public static void displayOrderDetails(Order order) {
@@ -99,11 +99,11 @@ public class OrderActions {
         while (true) {
             // Display details of selected food
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             UIUtils.printHeader("Selected Food Details", 60);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             FoodActions.displayFoodDetails(selectedFood);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             // select quantity
             int qty = InputUtils.intInput("Quantity: ", "b");
@@ -153,11 +153,11 @@ public class OrderActions {
             while (true) {
                 // Display selected food
                 System.out.println();
-                UIUtils.line(60);
+                UIUtils.printLine(60);
                 UIUtils.printHeader("Selected Food Details", 60);
-                UIUtils.line(60);
+                UIUtils.printLine(60);
                 FoodActions.displayFoodDetails(selectedFood);
-                UIUtils.line(60);
+                UIUtils.printLine(60);
 
                 // Step 3: select food quantity
                 int qty = InputUtils.intInput("Quantity: ", "b");
@@ -204,11 +204,11 @@ public class OrderActions {
 
             // Display order details
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             System.out.println("Are you sure you want to delete the following order?");
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             displayOrderDetails(selectedOrder);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             // Step 2: Confirmation
             char confirmation = InputUtils.charInput("type 'y' to confirm deletion, 'b' to cancel: ", 'b');

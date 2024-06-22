@@ -15,20 +15,7 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceR
         super();
     }
 
-    // Adds a new user if the username is not already taken
-//    @Override
-//    public boolean addUser(String newFirstName, String newLastName, String newICNum, String newUsername, String newPassword) throws RemoteException {
-//        List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
-//        if (users.stream().anyMatch(user -> newUsername.equals(user.getUsername()))) {
-//            return false;
-//        }
-//        int newId = users.size() + 1;
-//        UserType newUserType = UserType.CUSTOMER;
-//        User newUser = new User(newId, newUserType, newFirstName, newLastName, newICNum, newUsername, newPassword);
-//        FileUtils.appendToFile(FileUtils.FileType.USER, newUser, User::toString);
-//        return true;
-//    }
-
+    @Override
     public boolean addUser(String newFirstName, String newLastName, String newICNum, String newUsername, String newPassword) throws RemoteException {
         List<User> users = FileUtils.readFromFile(FileUtils.FileType.USER, User::fromString);
         // Find the maximum user ID in the list

@@ -1,8 +1,8 @@
 package client.components;
 
-import utils.UIUtils;
-
 import java.util.List;
+
+import utils.UIUtils;
 
 public class Table {
     private final String header;
@@ -22,11 +22,11 @@ public class Table {
 
     // display table's headers and data
     public void display() {
-        UIUtils.line(totalWidth);
+        UIUtils.printLine(totalWidth);
         UIUtils.printHeader(header, totalWidth);
-        UIUtils.line(totalWidth);
+        UIUtils.printLine(totalWidth);
         printRow(headers,columnWidths);
-        UIUtils.line(totalWidth);
+        UIUtils.printLine(totalWidth);
         // Check if there are no rows to display (data)
         if (rows.isEmpty()) {
             printCenteredMessage(totalWidth, "No data available");
@@ -35,7 +35,7 @@ public class Table {
                 printRow(row, columnWidths);
             }
         }
-        UIUtils.line(totalWidth);
+        UIUtils.printLine(totalWidth);
     }
 
     private int[] getColumnWidths(List<String[]> rows, String[] headers) {

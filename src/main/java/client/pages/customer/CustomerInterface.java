@@ -1,16 +1,16 @@
 package client.pages.customer;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.List;
+
 import client.CustomerActions;
 import client.FoodActions;
 import client.components.Menu;
 import models.User;
 import utils.InputUtils;
 import utils.UIUtils;
-
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.List;
 
 public class CustomerInterface {
     private final Menu menu;
@@ -25,7 +25,7 @@ public class CustomerInterface {
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
         while (true) {
-            UIUtils.clrscr();
+            UIUtils.clearScreen();
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {

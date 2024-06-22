@@ -1,14 +1,14 @@
 package client.pages;
 
-import client.FoodActions;
-import client.components.Menu;
-import utils.InputUtils;
-import utils.UIUtils;
-
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
+
+import client.FoodActions;
+import client.components.Menu;
+import utils.InputUtils;
+import utils.UIUtils;
 
 public class MainMenu {
     private final Menu menu;
@@ -20,7 +20,7 @@ public class MainMenu {
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
         while (true) {
-            UIUtils.clrscr();
+            UIUtils.clearScreen();
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {

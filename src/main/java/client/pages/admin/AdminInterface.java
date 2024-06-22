@@ -1,13 +1,13 @@
 package client.pages.admin;
 
-import client.components.Menu;
-import models.*;
-import utils.UIUtils;
-
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
+
+import client.components.Menu;
+import models.User;
+import utils.UIUtils;
 
 public class AdminInterface {
     private final Menu menu;
@@ -20,7 +20,7 @@ public class AdminInterface {
 
     public void start() throws MalformedURLException, NotBoundException, RemoteException {
         while (true) {
-            UIUtils.clrscr();
+            UIUtils.clearScreen();
             menu.display();
 
             switch (menu.getInput("Enter your choice: ")) {

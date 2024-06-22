@@ -22,7 +22,7 @@ public class Server {
             serverRegister.rebind("foodService", new FoodServiceImpl());
             serverRegister.rebind("orderService", new OrderServiceImpl());
 
-            System.out.println("Food order service is running...");
+            System.out.println("Food order server is running...");
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, "Server exception: ", e);
         }

@@ -5,7 +5,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import models.Food;
-import models.User;
 import remote.FoodServiceRemote;
 import utils.FileUtils;
 

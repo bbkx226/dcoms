@@ -1,26 +1,26 @@
 package utils;
 
 public class UIUtils {
-    public static int defaultWidth = 60; // default width
+    public static final int DEFAULT_WIDTH = 60; // Default width constant
 
-    public static void clrscr() {
-        for (int i = 0; i < 100; i++) {
+    // Clears the screen by printing new lines
+    public static void clearScreen() {
+        final int linesToClear = 100;
+        for (int i = 0; i < linesToClear; i++) {
             System.out.println();
         }
     }
 
     // Overloaded implementation of line()
-    public static void line(int width) {
-        for (int i = 0; i < width; i++) {
-            System.out.print("-");
-        }
-        System.out.println(); // Move to the next line after printing the dashes
+    public static void printLine(int width) {
+        String line = "-".repeat(width);
+        System.out.println(line);
     }
 
-    // Overloaded implementation of printHeader()
+    // Prints a header centered within the specified width
     public static void printHeader(String header, int width) {
         int paddingSize = (width - header.length()) / 2;
-        String padding = " ".repeat((Math.max(0, paddingSize)));
+        String padding = " ".repeat(Math.max(0, paddingSize));
         System.out.println(padding + header + padding);
     }
 }

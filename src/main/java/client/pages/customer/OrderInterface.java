@@ -1,15 +1,15 @@
 package client.pages.customer;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.List;
+
 import client.CustomerActions;
 import client.OrderActions;
 import client.components.Menu;
 import models.User;
 import utils.UIUtils;
-
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.List;
 
 public class OrderInterface {
     private final User user;
@@ -23,7 +23,7 @@ public class OrderInterface {
        Menu menu = new Menu("Manage your orders", options);
 
        while (true) {
-           UIUtils.clrscr();
+           UIUtils.clearScreen();
            OrderActions.displayUserOrders(this.user);
            CustomerActions ca = new CustomerActions(this.user);
            menu.display();

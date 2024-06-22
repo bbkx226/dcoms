@@ -1,9 +1,9 @@
 package client.components;
 
+import java.util.List;
+
 import utils.InputUtils;
 import utils.UIUtils;
-
-import java.util.List;
 
 public class Menu {
     private final String header;
@@ -27,16 +27,16 @@ public class Menu {
     public void display() {
         // if header is not empty, print header with format
         if (!header.isEmpty()){
-            UIUtils.line(width);
+            UIUtils.printLine(width);
             UIUtils.printHeader(header, width);
-            UIUtils.line(width);
+            UIUtils.printLine(width);
         }
 
         for (int i = 0; i < options.size(); i++) {
             System.out.println("[" + (i + 1) + "] " + options.get(i));
         }
 
-        UIUtils.line(width);
+        UIUtils.printLine(width);
     }
 
     public int getInput(String prompt) {

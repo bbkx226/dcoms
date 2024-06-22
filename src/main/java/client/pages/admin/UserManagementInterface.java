@@ -1,14 +1,14 @@
 package client.pages.admin;
 
-import client.UserActions;
-import client.components.Menu;
-import client.pages.RegisterInterface;
-import utils.UIUtils;
-
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
+
+import client.UserActions;
+import client.components.Menu;
+import client.pages.RegisterInterface;
+import utils.UIUtils;
 
 public class UserManagementInterface {
     public static void start() throws MalformedURLException, NotBoundException, RemoteException {
@@ -16,7 +16,7 @@ public class UserManagementInterface {
         Menu menu = new Menu("Manage Users", options);
 
         while (true) {
-            UIUtils.clrscr();
+            UIUtils.clearScreen();
             UserActions.displayUsers();
             menu.display();
 

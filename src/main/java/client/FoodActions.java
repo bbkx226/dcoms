@@ -1,15 +1,15 @@
 package client;
 
+import java.rmi.RemoteException;
+import java.util.List;
+
 import client.components.Form;
-import models.Food;
 import client.components.Menu;
 import client.components.Table;
+import models.Food;
 import remote.FoodServiceRemote;
 import utils.InputUtils;
 import utils.UIUtils;
-
-import java.rmi.RemoteException;
-import java.util.List;
 
 public class FoodActions {
     public static void displayFoodDetails(Food food) {
@@ -54,9 +54,9 @@ public class FoodActions {
     }
 
     public static void addFood() throws RemoteException {
-        UIUtils.line(50);
+        UIUtils.printLine(50);
         UIUtils.printHeader("McGee Food", 50);
-        UIUtils.line(50);
+        UIUtils.printLine(50);
 
         FoodServiceRemote foodService = RemoteServiceLocator.getFoodService();
         if (foodService == null) { return; }
@@ -96,11 +96,11 @@ public class FoodActions {
         // Prompt user to select detail to update
         while (true) {
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             UIUtils.printHeader("Original Product Details", 60);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             displayFoodDetails(selectedFood);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             List<String> options = List.of("Product Name", "Quantity", "Price", "Back");
             Menu menu = new Menu("", options);
@@ -163,11 +163,11 @@ public class FoodActions {
 
             // display food details and confirmation prompt
             System.out.println();
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             System.out.println("Are you sure you want to delete the following product?");
-            UIUtils.line(60);
+            UIUtils.printLine(60);
             displayFoodDetails(selectedFood);
-            UIUtils.line(60);
+            UIUtils.printLine(60);
 
             // prompt for confirmation
             char confirmation = InputUtils.charInput("Type 'y' to confirm deletion, 'b' to cancel: ", 'b');
